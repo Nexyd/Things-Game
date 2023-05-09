@@ -2,10 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class UserSettings {
-  static late final UserSettings? _instance;
-
   String name;
-  Image avatar;
+  String avatar;
   Color primaryColor;
   Color textColor;
   Color backgroundColor;
@@ -20,36 +18,50 @@ class UserSettings {
     required this.language,
   });
 
-  static Future<void> init() async {
-    final prefs = await SharedPreferences.getInstance();
-    final primary = _getColor(prefs.getString('primaryColor'));
-    final text = _getColor(prefs.getString('textColor'));
-    final background = _getColor(prefs.getString('backgroundColor'));
+  static final UserSettings _instance = _init();
 
-    _instance = UserSettings._privateConstructor(
-      name: prefs.getString('name') ?? "",
-      avatar: Image.asset(prefs.getString('avatar') ?? "null"),
+  static UserSettings get instance => _instance;
+
+  static UserSettings _init() {
+    Map<String, String?> data = {};
+    _getSettingsFromPrefs().then(
+      (value) => data.addAll(value),
+    );
+
+    final primary = _getColor(data['primaryColor'] ?? "");
+    final text = _getColor(data['textColor'] ?? "");
+    final background = _getColor(data['backgroundColor'] ?? "");
+
+    return UserSettings._privateConstructor(
+      name: data['name'] ?? "",
+      avatar: data['avatar'] ?? "",
       primaryColor: primary ?? Colors.red,
       textColor: text ?? Colors.white,
       backgroundColor: background ?? Colors.grey.shade800,
-      language: prefs.getString('language') ?? "es_ES",
+      language: data['language'] ?? "es_ES",
     );
   }
 
-  static Color? _getColor(String? hexString) {
-    try {
-      return Color(int.parse(hexString!, radix: 16));
-    } on Exception catch (error) {
-      debugPrint("### Exception parsing hex color: $error ###");
-      return null;
-    }
+  static Future<Map<String, String?>> _getSettingsFromPrefs() async {
+    final prefs = await SharedPreferences.getInstance();
+    return {
+      'name': prefs.getString('name'),
+      'avatar': prefs.getString('avatar'),
+      'primary': prefs.getString('primary'),
+      'primaryColor': prefs.getString('primaryColor'),
+      'textColor': prefs.getString('textColor'),
+      'backgroundColor': prefs.getString('backgroundColor'),
+      'language': prefs.getString('language'),
+    };
   }
 
-  static UserSettings get instance {
-    if (_instance == null) {
-      UserSettings.init();
+  static Color? _getColor(String hexString) {
+    try {
+      return Color(int.parse(hexString, radix: 16));
+    } on Exception catch (error) {
+      debugPrint(
+          "### Exception parsing hex color: $hexString - Error: $error ###");
+      return null;
     }
-
-    return _instance!;
   }
 }

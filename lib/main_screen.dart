@@ -24,12 +24,12 @@ class MainScreen extends StatelessWidget {
             fit: BoxFit.fill,
           ),
         ),
-        child: getContent(context),
+        child: _getContent(context),
       ),
     );
   }
 
-  Widget getContent(BuildContext context) {
+  Widget _getContent(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
     return Column(
       children: [
