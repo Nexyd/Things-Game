@@ -82,9 +82,6 @@ class _ColorPickerState extends State<CustomColorPicker> {
         UserSettings.instance.backgroundColor = color;
         break;
     }
-
-    final test = prefs.getString("primaryColor");
-    print("### test prefs: $test ###");
   }
 
   Color _getColorFromSettings() {
