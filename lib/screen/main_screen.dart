@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:things_game/widget/color_picker.dart';
 
 import '../widget/styled_button.dart';
 import '../config/user_settings.dart';
@@ -34,6 +33,32 @@ class MainScreen extends StatelessWidget {
     final screenSize = MediaQuery.of(context).size;
     return Column(
       children: [
+        // Config button
+        Align(
+          alignment: Alignment.topRight,
+          child: Padding(
+            padding: const EdgeInsets.only(
+                right: 35.0,
+                top: 10.0
+            ),
+            child: MaterialButton(
+              onPressed: () {
+                print("### config button pressed ###");
+                // Navigator.of(context).push(
+                //   MaterialPageRoute(
+                //     builder: (context) => const ConfigScreen(),
+                //   ),
+                // );
+              },
+              child: Image.asset(
+                "images/config.png",
+                width: 40,
+                height: 40,
+              ),
+            ),
+          ),
+        ),
+
         // App Logo
         SizedBox(
           height: screenSize.height * 0.65,
@@ -54,14 +79,14 @@ class MainScreen extends StatelessWidget {
         ),
 
         // Join game button
-        // StyledButton(
-        //   onPressed: () => print("### join game clicked! ###"),
-        //   text: "Unirse a partida",
-        //   type: ButtonType.destructive,
-        // ),
-        const CustomColorPicker(
-          colorTag: "primaryColor",
+        StyledButton(
+          onPressed: () => print("### join game clicked! ###"),
+          text: "Unirse a partida",
+          type: ButtonType.destructive,
         ),
+        // const CustomColorPicker(
+        //   colorTag: "primaryColor",
+        // ),
       ],
     );
   }

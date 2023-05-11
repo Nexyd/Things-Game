@@ -18,10 +18,7 @@ class UserSettings {
     required this.language,
   });
 
-  //static final UserSettings _instance = _init();
   static UserSettings? _instance;
-
-  //static UserSettings get instance => _instance;
   static UserSettings get instance {
     return _instance!;
   }
@@ -32,9 +29,6 @@ class UserSettings {
   }
 
   static Future<UserSettings> _init() async {
-    // _getSettingsFromPrefs().then(
-    //   (value) => _setFromPrefs(value),
-    // );
     Map<String, String?> data = await _getSettingsFromPrefs();
     final primary = _getColor(data['primaryColor']);
     final text = _getColor(data['textColor']);
@@ -70,21 +64,6 @@ class UserSettings {
       return null;
     }
   }
-
-  // static void _setFromPrefs(Map<String, String?> prefs) {
-  //   final primary = _getColor(prefs['primaryColor']);
-  //   final text = _getColor(prefs['textColor']);
-  //   final background = _getColor(prefs['backgroundColor']);
-  //
-  //   instance.name = prefs['name'] ?? "";
-  //   instance.avatar = prefs['avatar'] ?? "";
-  //   instance.primaryColor = primary ?? Colors.red;
-  //   instance.textColor = text ?? Colors.white;
-  //   instance.backgroundColor = background ?? Colors.grey.shade800;
-  //   instance.language = prefs['language'] ?? "es_ES";
-  //
-  //   debugPrint("### UserSettings: ${instance.toString()} ###");
-  // }
 
   @override
   String toString() {
