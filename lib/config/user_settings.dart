@@ -19,11 +19,16 @@ class UserSettings {
   });
 
   //static final UserSettings _instance = _init();
-  static final Future<UserSettings> _instance = _init();
+  static UserSettings? _instance;
 
   //static UserSettings get instance => _instance;
-  static Future<UserSettings> get instance async {
-    return await _instance;
+  static UserSettings get instance {
+    return _instance!;
+  }
+
+  static Future<void> init() async {
+    Future.delayed(const Duration(seconds: 2));
+    _instance = await _init();
   }
 
   static Future<UserSettings> _init() async {
@@ -35,16 +40,14 @@ class UserSettings {
     final text = _getColor(data['textColor']);
     final background = _getColor(data['backgroundColor']);
 
-    return await Future.value(
-        UserSettings._privateConstructor(
+    return UserSettings._privateConstructor(
         name: data['name'] ?? "",
         avatar: data['name'] ?? "",
         primaryColor: primary ?? Colors.red,
         textColor: text ?? Colors.white,
         backgroundColor: background ?? Colors.grey.shade800,
         language: data['name'] ?? "es_ES",
-      )
-    );
+      );
   }
 
   static Future<Map<String, String?>> _getSettingsFromPrefs() async {

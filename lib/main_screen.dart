@@ -4,11 +4,37 @@ import 'package:things_game/widget/color_picker.dart';
 import 'widget/styled_button.dart';
 import 'config/user_settings.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
   @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
+  bool isInit = false;
+  
+  @override
+  void initState() {
+    // TODO: implement initState
+    UserSettings.init().then((value) {
+      setState(() {
+        isInit = true;
+      });
+    });
+    super.initState();
+  }
+
+  @override
   Widget build(BuildContext context) {
+    if (!isInit) {
+      return const Scaffold(
+        body: Center(
+          child: CircularProgressIndicator(),
+        ),
+      );
+    }
+
     // TODO: this comes out before the SharedPrefs has readed the values.
     final test = UserSettings.instance.primaryColor.value.toRadixString(16);
     print("### test: #$test ###");
