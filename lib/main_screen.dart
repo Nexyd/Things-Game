@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:things_game/widget/color_picker.dart';
 
 import 'widget/styled_button.dart';
 import 'config/user_settings.dart';
@@ -8,6 +9,10 @@ class MainScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: this comes out before the SharedPrefs has readed the values.
+    final test = UserSettings.instance.primaryColor.value.toRadixString(16);
+    print("### test: #$test ###");
+
     return Scaffold(
       backgroundColor: UserSettings.instance.backgroundColor,
       body: Container(
@@ -53,10 +58,13 @@ class MainScreen extends StatelessWidget {
         ),
 
         // Join game button
-        StyledButton(
-          onPressed: () => print("### join game clicked! ###"),
-          text: "Unirse a partida",
-          type: ButtonType.destructive,
+        // StyledButton(
+        //   onPressed: () => print("### join game clicked! ###"),
+        //   text: "Unirse a partida",
+        //   type: ButtonType.destructive,
+        // ),
+        const CustomColorPicker(
+          colorTag: "primaryColor",
         ),
       ],
     );
