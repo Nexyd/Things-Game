@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import '../widget/styled_button.dart';
 import '../config/user_settings.dart';
+import 'config_screen.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -43,12 +44,11 @@ class MainScreen extends StatelessWidget {
             ),
             child: MaterialButton(
               onPressed: () {
-                print("### config button pressed ###");
-                // Navigator.of(context).push(
-                //   MaterialPageRoute(
-                //     builder: (context) => const ConfigScreen(),
-                //   ),
-                // );
+                Navigator.of(context).push(
+                  MaterialPageRoute(
+                    builder: (context) => const ConfigScreen(),
+                  ),
+                );
               },
               child: Image.asset(
                 "images/config.png",
@@ -84,9 +84,6 @@ class MainScreen extends StatelessWidget {
           text: "Unirse a partida",
           type: ButtonType.destructive,
         ),
-        // const CustomColorPicker(
-        //   colorTag: "primaryColor",
-        // ),
       ],
     );
   }

@@ -1,22 +1,19 @@
 import 'package:flutter/material.dart';
+import 'package:things_game/config/user_settings.dart';
 
-class ConfigScreen extends StatefulWidget {
+import '../widget/styled_app_bar.dart';
+
+class ConfigScreen extends StatelessWidget {
   const ConfigScreen({super.key});
-
-  @override
-  State<ConfigScreen> createState() => _ConfigScreenState();
-}
-
-class _ConfigScreenState extends State<ConfigScreen> {
-  @override
-  void initState() {
-    super.initState();
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Container(),
+      appBar: const StyledAppBar("Configuración"),
+      body: Container(
+        color: UserSettings.instance.backgroundColor,
+        child: Container(),
+      ),
     );
   }
 }
