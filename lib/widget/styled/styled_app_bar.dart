@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:things_game/widget/styled/styled_text.dart';
 
-import '../config/user_settings.dart';
+import '../../config/user_settings.dart';
 
 class StyledAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
@@ -17,17 +18,13 @@ class StyledAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: UserSettings.instance.primaryColor,
       leading: IconButton(
+        highlightColor: Colors.transparent,
         onPressed: () {
           Navigator.of(context).pop();
         },
         icon: const Icon(Icons.arrow_back),
       ),
-      title: Text(
-        title,
-        style: TextStyle(
-          color: UserSettings.instance.textColor,
-        ),
-      ),
+      title: StyledText(title),
     );
   }
 }

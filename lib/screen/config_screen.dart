@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
 
-import '../widget/styled_app_bar.dart';
+import '../widget/configuration.dart';
+import '../widget/styled/styled_app_bar.dart';
 
 class ConfigScreen extends StatelessWidget {
   const ConfigScreen({super.key});
@@ -12,7 +13,7 @@ class ConfigScreen extends StatelessWidget {
       appBar: const StyledAppBar("Configuración"),
       body: Container(
         color: UserSettings.instance.backgroundColor,
-        child: Container(),
+        child: const Configuration(),
       ),
     );
   }

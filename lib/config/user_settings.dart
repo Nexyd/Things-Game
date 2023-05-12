@@ -19,6 +19,7 @@ class UserSettings {
   });
 
   static UserSettings? _instance;
+
   static UserSettings get instance {
     return _instance!;
   }
@@ -35,13 +36,13 @@ class UserSettings {
     final background = _getColor(data['backgroundColor']);
 
     return UserSettings._privateConstructor(
-        name: data['name'] ?? "",
-        avatar: data['name'] ?? "",
-        primaryColor: primary ?? Colors.red,
-        textColor: text ?? Colors.white,
-        backgroundColor: background ?? Colors.grey.shade800,
-        language: data['name'] ?? "es_ES",
-      );
+      name: data['name'] ?? "Player",
+      avatar: data['name'] ?? "",
+      primaryColor: primary ?? Colors.red,
+      textColor: text ?? Colors.white,
+      backgroundColor: background ?? Colors.grey.shade800,
+      language: data['name'] ?? "es_ES",
+    );
   }
 
   static Future<Map<String, String?>> _getSettingsFromPrefs() async {
@@ -72,12 +73,12 @@ class UserSettings {
     final hexBackground = backgroundColor.value.toRadixString(16);
 
     return "{"
-      "name: $name,"
-      "avatar: $avatar,"
-      "primaryColor: #${hexPrimary.toUpperCase()},"
-      "textColor: #${hexText.toUpperCase()},"
-      "backgroundColor: #${hexBackground.toUpperCase()},"
-      "language: $language"
-    "}";
+        "name: $name,"
+        "avatar: $avatar,"
+        "primaryColor: #${hexPrimary.toUpperCase()},"
+        "textColor: #${hexText.toUpperCase()},"
+        "backgroundColor: #${hexBackground.toUpperCase()},"
+        "language: $language"
+        "}";
   }
 }

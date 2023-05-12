@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-
-import '../config/user_settings.dart';
+import 'package:things_game/widget/styled/styled_text.dart';
+import 'package:things_game/config/user_settings.dart';
 
 enum ButtonType { constructive, destructive }
 
@@ -36,12 +36,7 @@ class StyledButton extends StatelessWidget {
             Radius.circular(20.0),
           ),
         ),
-        child: Text(
-          text,
-          style: TextStyle(
-            color: UserSettings.instance.textColor,
-          ),
-        ),
+        child: StyledText(text),
       ),
     );
   }
@@ -62,11 +57,9 @@ class StyledButton extends StatelessWidget {
             ),
           ),
         ),
-        child: Text(
+        child: StyledText(
           text,
-          style: TextStyle(
-            color: UserSettings.instance.primaryColor,
-          ),
+          isDestructive: true,
         ),
       ),
     );

@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/widget/styled/styled_text.dart';
 
 class CustomColorPicker extends StatefulWidget {
   const CustomColorPicker({
@@ -20,11 +21,6 @@ class _ColorPickerState extends State<CustomColorPicker> {
   Widget build(BuildContext context) {
     return InkWell(
       onTap: () => raiseDialog(context),
-      child: Container(
-        color: Colors.red.shade300,
-        width: 100,
-        height: 50,
-      ),
     );
   }
 
@@ -34,29 +30,58 @@ class _ColorPickerState extends State<CustomColorPicker> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
-          title: const Text('Pick a color!'),
+          title: const StyledText('Pick a color!'),
+          backgroundColor: UserSettings.instance.backgroundColor,
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: pickerColor,
+              //Theme.of(context).textTheme.bodyText1:
+              labelTextStyle: TextStyle(
+                color: UserSettings.instance.textColor,
+              ),
               onColorChanged: (color) {
                 setState(() => pickerColor = color);
               },
             ),
           ),
+          actionsAlignment: MainAxisAlignment.spaceBetween,
           actions: <Widget>[
-            ElevatedButton(
-              child: const Text('Got it'),
-              onPressed: () {
-                _saveToPrefs(pickerColor);
-                Navigator.of(context).pop();
-              },
+            Padding(
+              padding: const EdgeInsets.only(
+                left: 10.0,
+                bottom: 10.0,
+              ),
+              child: InkWell(
+                highlightColor: Colors.transparent,
+                splashFactory: NoSplash.splashFactory,
+                child: const StyledText(
+                  'Cancel',
+                  isDestructive: true,
+                  fontWeight: FontWeight.bold,
+                ),
+                onTap: () {
+                  Navigator.of(context).pop();
+                },
+              ),
             ),
-            ElevatedButton(
-              child: const Text('Cancel'),
-              onPressed: () {
-                Navigator.of(context).pop();
-              },
-            )
+            Padding(
+              padding: const EdgeInsets.only(
+                right: 10.0,
+                bottom: 10.0,
+              ),
+              child: InkWell(
+                highlightColor: Colors.transparent,
+                splashFactory: NoSplash.splashFactory,
+                child: const StyledText(
+                  'Got it',
+                  fontWeight: FontWeight.bold,
+                ),
+                onTap: () {
+                  _saveToPrefs(pickerColor);
+                  Navigator.of(context).pop();
+                },
+              ),
+            ),
           ],
         );
       },

@@ -15,8 +15,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     UserSettings.init().then((value) {
       setState(() {
-        // Navigate to main_screen
-        print("### UserSettings initialized. ###");
+        debugPrint("### UserSettings initialized. ###");
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const MainScreen(),
@@ -30,7 +29,6 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: Add splash image.
     return const Scaffold(
       body: Center(
         child: CircularProgressIndicator(),

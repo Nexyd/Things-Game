@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-
-import '../widget/styled_button.dart';
-import '../config/user_settings.dart';
-import 'config_screen.dart';
+import 'package:things_game/screen/user_settings_screen.dart';
+import 'package:things_game/widget/styled/styled_button.dart';
+import 'package:things_game/config/user_settings.dart';
 
 class MainScreen extends StatelessWidget {
   const MainScreen({super.key});
@@ -38,15 +37,13 @@ class MainScreen extends StatelessWidget {
         Align(
           alignment: Alignment.topRight,
           child: Padding(
-            padding: const EdgeInsets.only(
-                right: 35.0,
-                top: 10.0
-            ),
+            padding: const EdgeInsets.only(right: 35.0, top: 10.0),
             child: MaterialButton(
+              highlightColor: Colors.transparent,
               onPressed: () {
                 Navigator.of(context).push(
                   MaterialPageRoute(
-                    builder: (context) => const ConfigScreen(),
+                    builder: (context) => const UserSettingsScreen(),
                   ),
                 );
               },
