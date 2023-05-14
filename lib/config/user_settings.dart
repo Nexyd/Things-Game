@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/constants.dart';
@@ -37,7 +39,7 @@ class UserSettings {
     final text = _getColor(data[TEXT_COLOR]);
     final background = _getColor(data[BACKGROUND_COLOR]);
     final avatar = data[AVATAR] != null
-        ? Image.asset(data[AVATAR]!)
+        ? _getAvatar(data[AVATAR]!)
         : const AvatarIcon();
 
     return UserSettings._privateConstructor(
@@ -60,6 +62,15 @@ class UserSettings {
       "backgroundColor": prefs.getString(BACKGROUND_COLOR),
       "language": prefs.getString(LANGUAGE),
     };
+  }
+
+  static Widget _getAvatar(String path) {
+    final file = File(path);
+    return SizedBox(
+      width: AVATAR_SIZE,
+      height: AVATAR_SIZE,
+      child: Image.file(file),
+    );
   }
 
   static Color? _getColor(String? hexString) {

@@ -3,26 +3,22 @@ import 'package:things_game/screen/user_settings_screen.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/config/user_settings.dart';
 
-class MainScreen extends StatelessWidget {
+class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
+  @override
+  State<MainScreen> createState() => _MainScreenState();
+}
+
+class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: UserSettings.instance.backgroundColor,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-        decoration: BoxDecoration(
-          image: DecorationImage(
-            image: const AssetImage(
-              "images/background_main.png",
-            ),
-            colorFilter: ColorFilter.mode(
-              UserSettings.instance.primaryColor,
-              BlendMode.srcIn,
-            ),
-            fit: BoxFit.fill,
-          ),
+        decoration: _getDecoration(
+          "images/background_main.png",
         ),
         child: _getContent(context),
       ),
@@ -45,12 +41,16 @@ class MainScreen extends StatelessWidget {
                   MaterialPageRoute(
                     builder: (context) => const UserSettingsScreen(),
                   ),
-                );
+                ).then((value) {
+                  setState(() {});
+                });
               },
-              child: Image.asset(
-                "images/config.png",
+              child: Container(
                 width: 40,
                 height: 40,
+                decoration: _getDecoration(
+                  "images/config.png",
+                ),
               ),
             ),
           ),
@@ -70,18 +70,31 @@ class MainScreen extends StatelessWidget {
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: StyledButton(
-            onPressed: () => print("### create game clicked! ###"),
+            onPressed: () => debugPrint("### create game clicked! ###"),
             text: "Crear partida",
           ),
         ),
 
         // Join game button
         StyledButton(
-          onPressed: () => print("### join game clicked! ###"),
+          onPressed: () => debugPrint("### join game clicked! ###"),
           text: "Unirse a partida",
           type: ButtonType.destructive,
         ),
       ],
+    );
+  }
+
+  BoxDecoration _getDecoration(String asset) {
+    return BoxDecoration(
+      image: DecorationImage(
+        image: AssetImage(asset),
+        colorFilter: ColorFilter.mode(
+          UserSettings.instance.primaryColor,
+          BlendMode.srcIn,
+        ),
+        fit: BoxFit.fill,
+      ),
     );
   }
 }

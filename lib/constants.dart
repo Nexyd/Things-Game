@@ -5,3 +5,5 @@ const String PRIMARY_COLOR = "primaryColor";
 const String TEXT_COLOR = "textColor";
 const String BACKGROUND_COLOR = "backgroundColor";
 const String LANGUAGE = "language";
+
+const double AVATAR_SIZE = 40;

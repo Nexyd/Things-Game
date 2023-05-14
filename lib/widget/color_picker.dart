@@ -5,19 +5,25 @@ import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/constants.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 
-class CustomColorPicker extends StatefulWidget {
-  const CustomColorPicker({
+class ColorPickerWrapper extends StatefulWidget {
+  final String colorTag;
+  final Function() callback;
+
+  const ColorPickerWrapper({
     super.key,
     required this.colorTag,
+    required this.callback,
   });
-
-  final String colorTag;
 
   @override
   State<StatefulWidget> createState() => _ColorPickerState();
 }
 
-class _ColorPickerState extends State<CustomColorPicker> {
+enum _DialogButtonType { left, right }
+
+class _ColorPickerState extends State<ColorPickerWrapper> {
+  Color? pickerColor;
+
   @override
   Widget build(BuildContext context) {
     return InkWell(
@@ -26,7 +32,7 @@ class _ColorPickerState extends State<CustomColorPicker> {
   }
 
   void raiseDialog(BuildContext context) {
-    Color pickerColor = _getColorFromSettings();
+    pickerColor = _getColorFromSettings();
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -35,7 +41,7 @@ class _ColorPickerState extends State<CustomColorPicker> {
           backgroundColor: UserSettings.instance.backgroundColor,
           content: SingleChildScrollView(
             child: ColorPicker(
-              pickerColor: pickerColor,
+              pickerColor: pickerColor!,
               labelTextStyle: TextStyle(
                 color: UserSettings.instance.textColor,
               ),
@@ -46,52 +52,49 @@ class _ColorPickerState extends State<CustomColorPicker> {
           ),
           actionsAlignment: MainAxisAlignment.spaceBetween,
           actions: <Widget>[
-            Padding(
-              padding: const EdgeInsets.only(
-                left: 10.0,
-                bottom: 10.0,
-              ),
-              child: InkWell(
-                highlightColor: Colors.transparent,
-                splashFactory: NoSplash.splashFactory,
-                child: const StyledText(
-                  'Cancel',
-                  isDestructive: true,
-                  fontWeight: FontWeight.bold,
-                ),
-                onTap: () {
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(
-                right: 10.0,
-                bottom: 10.0,
-              ),
-              child: InkWell(
-                highlightColor: Colors.transparent,
-                splashFactory: NoSplash.splashFactory,
-                child: const StyledText(
-                  'Got it',
-                  fontWeight: FontWeight.bold,
-                ),
-                onTap: () {
-                  _saveToPrefs(pickerColor);
-                  Navigator.of(context).pop();
-                },
-              ),
-            ),
+            _getButton(_DialogButtonType.left),
+            _getButton(_DialogButtonType.right),
           ],
         );
       },
+    ).whenComplete(
+      () => widget.callback(),
+    );
+  }
+
+  Widget _getButton(_DialogButtonType type) {
+    bool isLeft = type == _DialogButtonType.left;
+    String title = isLeft ? "Cancel" : "Got it";
+
+    return Padding(
+      padding: EdgeInsets.only(
+        left: isLeft ? 10.0 : 0.0,
+        right: isLeft ? 0.0 : 10.0,
+        bottom: 10.0,
+      ),
+      child: InkWell(
+        highlightColor: Colors.transparent,
+        splashFactory: NoSplash.splashFactory,
+        onTap: () {
+          if (!isLeft && pickerColor != null) {
+            _saveToPrefs(pickerColor!);
+          }
+
+          Navigator.of(context).pop();
+        },
+        child: StyledText(
+          title,
+          isDestructive: isLeft,
+          fontWeight: FontWeight.bold,
+        ),
+      ),
     );
   }
 
   Future<void> _saveToPrefs(Color color) async {
     final prefs = await SharedPreferences.getInstance();
     final hexString = color.value.toRadixString(16);
-    print("### hex: #$hexString ###");
+    debugPrint("### hex: #$hexString ###");
     prefs.setString(widget.colorTag, hexString);
 
     switch (widget.colorTag) {

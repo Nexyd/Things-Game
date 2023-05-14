@@ -20,10 +20,13 @@ class UserSettingsScreen extends StatefulWidget {
 
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
   bool isImagePicked = false;
-  Widget avatar = const AvatarIcon();
 
   @override
   Widget build(BuildContext context) {
+    if (UserSettings.instance.avatar is! AvatarIcon) {
+      isImagePicked = true;
+    }
+
     return Scaffold(
       appBar: const StyledAppBar("User settings"),
       body: Container(
@@ -40,7 +43,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           debugPrint("### avatar saved! ###");
         });
       },
-      child: isImagePicked ? avatar : const AvatarIcon(),
+      child: isImagePicked ? UserSettings.instance.avatar : const AvatarIcon(),
     );
 
     final cells = [
@@ -112,8 +115,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       ),
       width: iconSize,
       height: iconSize,
-      child: CustomColorPicker(
+      child: ColorPickerWrapper(
         colorTag: tag,
+        callback: () => setState(() {}),
       ),
     );
   }
@@ -157,15 +161,14 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       try {
         final file = File(path);
         baseAvatar = SizedBox(
-          width: 40,
-          height: 40,
+          width: AVATAR_SIZE,
+          height: AVATAR_SIZE,
           child: Image.file(file),
         );
 
         _saveToPrefs(AVATAR, path);
         setState(() {
           isImagePicked = true;
-          avatar = baseAvatar;
         });
       } catch (error) {
         debugPrint("### Error trying to parse image path: $path... ###");
