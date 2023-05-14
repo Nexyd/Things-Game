@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:things_game/constants.dart';
+import 'package:things_game/widget/avatar_icon.dart';
 
 class UserSettings {
   String name;
-  String avatar;
+  Widget avatar;
   Color primaryColor;
   Color textColor;
   Color backgroundColor;
@@ -31,29 +33,32 @@ class UserSettings {
 
   static Future<UserSettings> _init() async {
     Map<String, String?> data = await _getSettingsFromPrefs();
-    final primary = _getColor(data['primaryColor']);
-    final text = _getColor(data['textColor']);
-    final background = _getColor(data['backgroundColor']);
+    final primary = _getColor(data[PRIMARY_COLOR]);
+    final text = _getColor(data[TEXT_COLOR]);
+    final background = _getColor(data[BACKGROUND_COLOR]);
+    final avatar = data[AVATAR] != null
+        ? Image.asset(data[AVATAR]!)
+        : const AvatarIcon();
 
     return UserSettings._privateConstructor(
-      name: data['name'] ?? "Player",
-      avatar: data['name'] ?? "",
+      name: data[NAME] ?? "Player",
+      avatar: avatar,
       primaryColor: primary ?? Colors.red,
       textColor: text ?? Colors.white,
       backgroundColor: background ?? Colors.grey.shade800,
-      language: data['name'] ?? "es_ES",
+      language: data[LANGUAGE] ?? "es_ES",
     );
   }
 
   static Future<Map<String, String?>> _getSettingsFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     return {
-      'name': prefs.getString('name'),
-      'avatar': prefs.getString('avatar'),
-      'primaryColor': prefs.getString('primaryColor'),
-      'textColor': prefs.getString('textColor'),
-      'backgroundColor': prefs.getString('backgroundColor'),
-      'language': prefs.getString('language'),
+      "name": prefs.getString(NAME),
+      "avatar": prefs.getString(AVATAR),
+      "primaryColor": prefs.getString(PRIMARY_COLOR),
+      "textColor": prefs.getString(TEXT_COLOR),
+      "backgroundColor": prefs.getString(BACKGROUND_COLOR),
+      "language": prefs.getString(LANGUAGE),
     };
   }
 

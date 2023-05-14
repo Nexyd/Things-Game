@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/constants.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 
 class CustomColorPicker extends StatefulWidget {
@@ -35,7 +36,6 @@ class _ColorPickerState extends State<CustomColorPicker> {
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: pickerColor,
-              //Theme.of(context).textTheme.bodyText1:
               labelTextStyle: TextStyle(
                 color: UserSettings.instance.textColor,
               ),
@@ -95,15 +95,15 @@ class _ColorPickerState extends State<CustomColorPicker> {
     prefs.setString(widget.colorTag, hexString);
 
     switch (widget.colorTag) {
-      case "primaryColor":
+      case PRIMARY_COLOR:
         UserSettings.instance.primaryColor = color;
         break;
 
-      case "textColor":
+      case TEXT_COLOR:
         UserSettings.instance.textColor = color;
         break;
 
-      case "backgroundColor":
+      case BACKGROUND_COLOR:
         UserSettings.instance.backgroundColor = color;
         break;
     }
@@ -111,13 +111,13 @@ class _ColorPickerState extends State<CustomColorPicker> {
 
   Color _getColorFromSettings() {
     switch (widget.colorTag) {
-      case "primaryColor":
+      case PRIMARY_COLOR:
         return UserSettings.instance.primaryColor;
 
-      case "textColor":
+      case TEXT_COLOR:
         return UserSettings.instance.textColor;
 
-      case "backgroundColor":
+      case BACKGROUND_COLOR:
         return UserSettings.instance.backgroundColor;
 
       default:

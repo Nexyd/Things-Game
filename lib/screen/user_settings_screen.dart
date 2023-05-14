@@ -1,3 +1,6 @@
+import 'dart:io';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/config/user_settings.dart';
@@ -6,9 +9,18 @@ import 'package:things_game/widget/color_picker.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/util/debouncer.dart';
+import 'package:things_game/constants.dart';
 
-class UserSettingsScreen extends StatelessWidget {
+class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
+
+  @override
+  State<UserSettingsScreen> createState() => _UserSettingsScreenState();
+}
+
+class _UserSettingsScreenState extends State<UserSettingsScreen> {
+  bool isImagePicked = false;
+  Widget avatar = const AvatarIcon();
 
   @override
   Widget build(BuildContext context) {
@@ -23,17 +35,20 @@ class UserSettingsScreen extends StatelessWidget {
 
   Widget _getContent() {
     Widget icon = InkWell(
-      // TODO: open image picker.
-      onTap: () => print("### Avatar pressed ###"),
-      child: const AvatarIcon(),
+      onTap: () {
+        _pickAvatar().then((value) {
+          debugPrint("### avatar saved! ###");
+        });
+      },
+      child: isImagePicked ? avatar : const AvatarIcon(),
     );
 
     final cells = [
       {"Name": _getTextField()},
       {"Avatar": icon},
-      {"Primary color": _getColorIcon("primaryColor")},
-      {"Text color": _getColorIcon("textColor")},
-      {"Background color": _getColorIcon("backgroundColor")},
+      {"Primary color": _getColorIcon(PRIMARY_COLOR)},
+      {"Text color": _getColorIcon(TEXT_COLOR)},
+      {"Background color": _getColorIcon(BACKGROUND_COLOR)},
       //{"Language": _getColorIcon("")},
     ];
 
@@ -68,7 +83,7 @@ class UserSettingsScreen extends StatelessWidget {
         final name = controller.value.text;
         debouncer.run(() {
           debugPrint("### save name: $name to prefs... ###");
-          _saveToPrefs(name);
+          _saveToPrefs(NAME, name);
         });
       },
       style: TextStyle(color: UserSettings.instance.textColor),
@@ -105,13 +120,13 @@ class UserSettingsScreen extends StatelessWidget {
 
   Color _getColor(String colorTag) {
     switch (colorTag) {
-      case "primaryColor":
+      case PRIMARY_COLOR:
         return UserSettings.instance.primaryColor;
 
-      case "textColor":
+      case TEXT_COLOR:
         return UserSettings.instance.textColor;
 
-      case "backgroundColor":
+      case BACKGROUND_COLOR:
         return _getBackground();
     }
 
@@ -128,8 +143,36 @@ class UserSettingsScreen extends StatelessWidget {
     );
   }
 
-  Future<void> _saveToPrefs(String name) async {
+  Future<void> _saveToPrefs(String tag, String name) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString("name", name);
+    prefs.setString(tag, name);
+  }
+
+  Future<Widget> _pickAvatar() async {
+    FilePickerResult? result = await FilePicker.platform.pickFiles();
+    Widget baseAvatar = const AvatarIcon();
+    final path = result?.files.single.path;
+
+    if (path != null) {
+      try {
+        final file = File(path);
+        baseAvatar = SizedBox(
+          width: 40,
+          height: 40,
+          child: Image.file(file),
+        );
+
+        _saveToPrefs(AVATAR, path);
+        setState(() {
+          isImagePicked = true;
+          avatar = baseAvatar;
+        });
+      } catch (error) {
+        debugPrint("### Error trying to parse image path: $path... ###");
+      }
+    }
+
+    UserSettings.instance.avatar = baseAvatar;
+    return baseAvatar;
   }
 }
