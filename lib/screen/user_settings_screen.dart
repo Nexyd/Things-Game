@@ -207,17 +207,17 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         break;
 
       case "English":
-        const locale = Locale("en", "UK");
+        const locale = Locale("en", "GB");
         I18n.of(context).locale = locale;
         UserSettings.instance.language = locale;
-        _saveToPrefs(LANGUAGE, "en_UK");
+        _saveToPrefs(LANGUAGE, "en_GB");
         break;
 
       case "Inglés":
-        const locale = Locale("en", "UK");
+        const locale = Locale("en", "GB");
         I18n.of(context).locale = locale;
         UserSettings.instance.language = locale;
-        _saveToPrefs(LANGUAGE, "en_UK");
+        _saveToPrefs(LANGUAGE, "en_GB");
         break;
 
       default:
