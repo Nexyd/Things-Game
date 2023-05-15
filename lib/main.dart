@@ -1,22 +1,30 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_localizations/flutter_localizations.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 import 'package:things_game/screen/splash_screen.dart';
 
 void main() {
-  runApp(const MyApp());
+  runApp(
+    I18n(child: const ThingsGame()),
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class ThingsGame extends StatelessWidget {
+  const ThingsGame({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Things Game',
-      theme: ThemeData(
-        primarySwatch: Colors.red,
-      ),
-      home: const SplashScreen(),
+    return const MaterialApp(
+      localizationsDelegates: [
+        GlobalMaterialLocalizations.delegate,
+        GlobalWidgetsLocalizations.delegate,
+        GlobalCupertinoLocalizations.delegate,
+      ],
+      supportedLocales: [
+        Locale('es', "ES"),
+        Locale('en', "GB"),
+      ],
+      home: SplashScreen(),
     );
   }
 }

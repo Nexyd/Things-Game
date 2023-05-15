@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
-
-import '../widget/configuration.dart';
-import '../widget/styled/styled_app_bar.dart';
+import 'package:things_game/widget/configuration.dart';
+import 'package:things_game/widget/styled/styled_app_bar.dart';
 
 class ConfigScreen extends StatelessWidget {
   const ConfigScreen({super.key});
@@ -10,7 +9,7 @@ class ConfigScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: const StyledAppBar("Configuración"),
+      appBar: StyledAppBar("Configuración"),
       body: Container(
         color: UserSettings.instance.backgroundColor,
         child: const Configuration(),

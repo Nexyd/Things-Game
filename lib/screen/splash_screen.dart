@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:things_game/screen/main_screen.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 
-import '../config/user_settings.dart';
+import 'package:things_game/screen/main_screen.dart';
+import 'package:things_game/config/user_settings.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
@@ -16,6 +17,8 @@ class _SplashScreenState extends State<SplashScreen> {
     UserSettings.init().then((value) {
       setState(() {
         debugPrint("### UserSettings initialized. ###");
+        I18n.of(context).locale = UserSettings.instance.language;
+        debugPrint("### Language: ${UserSettings.instance.language}. ###");
         Navigator.of(context).push(
           MaterialPageRoute(
             builder: (context) => const MainScreen(),

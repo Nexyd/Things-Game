@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:things_game/constants.dart';
 import 'package:things_game/widget/avatar_icon.dart';
 
@@ -11,7 +12,7 @@ class UserSettings {
   Color primaryColor;
   Color textColor;
   Color backgroundColor;
-  String language;
+  Locale language;
 
   UserSettings._privateConstructor({
     required this.name,
@@ -29,7 +30,6 @@ class UserSettings {
   }
 
   static Future<void> init() async {
-    Future.delayed(const Duration(seconds: 2));
     _instance = await _init();
   }
 
@@ -39,7 +39,7 @@ class UserSettings {
     final text = _getColor(data[TEXT_COLOR]);
     final background = _getColor(data[BACKGROUND_COLOR]);
     final avatar = data[AVATAR] != null
-        ? _getAvatar(data[AVATAR]!)
+        ? _getAvatarImage(data[AVATAR]!)
         : const AvatarIcon();
 
     return UserSettings._privateConstructor(
@@ -48,7 +48,7 @@ class UserSettings {
       primaryColor: primary ?? Colors.red,
       textColor: text ?? Colors.white,
       backgroundColor: background ?? Colors.grey.shade800,
-      language: data[LANGUAGE] ?? "es_ES",
+      language: _getLocale(data[LANGUAGE]),
     );
   }
 
@@ -64,7 +64,7 @@ class UserSettings {
     };
   }
 
-  static Widget _getAvatar(String path) {
+  static Widget _getAvatarImage(String path) {
     final file = File(path);
     return SizedBox(
       width: AVATAR_SIZE,
@@ -80,6 +80,13 @@ class UserSettings {
       debugPrint("### Exception parsing hex color: $hexString ###");
       return null;
     }
+  }
+
+  static Locale _getLocale(String? locale) {
+    final localeData = locale?.split("_");
+    return localeData != null
+        ? Locale(localeData[0], localeData[1])
+        : const Locale("es", "ES");
   }
 
   @override

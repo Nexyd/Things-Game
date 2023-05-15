@@ -2,14 +2,16 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:i18n_extension/i18n_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/constants.dart';
+import 'package:things_game/translations/user_settings_screen.i18n.dart';
+import 'package:things_game/util/debouncer.dart';
 import 'package:things_game/widget/avatar_icon.dart';
 import 'package:things_game/widget/color_picker.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/util/debouncer.dart';
-import 'package:things_game/constants.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
@@ -20,14 +22,12 @@ class UserSettingsScreen extends StatefulWidget {
 
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
   bool isImagePicked = false;
-  final StyledAppBar appBar = StyledAppBar("User settings");
+  String? localeStr = "Spanish".i18n;
+  final StyledAppBar appBar = StyledAppBar("User settings".i18n);
 
   @override
   Widget build(BuildContext context) {
-    if (UserSettings.instance.avatar is! AvatarIcon) {
-      isImagePicked = true;
-    }
-
+    _setup();
     return Scaffold(
       appBar: appBar,
       body: Container(
@@ -35,6 +35,22 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         child: _getContent(),
       ),
     );
+  }
+
+  void _setup() {
+    if (UserSettings.instance.avatar is! AvatarIcon) {
+      isImagePicked = true;
+    }
+
+    switch (UserSettings.instance.language.languageCode) {
+      case "en":
+        localeStr = "English".i18n;
+        break;
+
+      case "es":
+        localeStr = "Spanish".i18n;
+        break;
+    }
   }
 
   Widget _getContent() {
@@ -48,12 +64,12 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     );
 
     final cells = [
-      {"Name": _getTextField()},
-      {"Avatar": icon},
-      {"Primary color": _getColorIcon(PRIMARY_COLOR)},
-      {"Text color": _getColorIcon(TEXT_COLOR)},
-      {"Background color": _getColorIcon(BACKGROUND_COLOR)},
-      //{"Language": _getColorIcon("")},
+      {"Name".i18n: _getTextField()},
+      {"Avatar".i18n: icon},
+      {"Primary color".i18n: _getColorIcon(PRIMARY_COLOR)},
+      {"Text color".i18n: _getColorIcon(TEXT_COLOR)},
+      {"Background color".i18n: _getColorIcon(BACKGROUND_COLOR)},
+      {"Language".i18n: _getDropdown()},
     ];
 
     return ListView.builder(
@@ -119,7 +135,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       child: ColorPickerWrapper(
         colorTag: tag,
         callback: () => setState(() {
-          appBar.notifier?.value = UserSettings.instance.primaryColor;
+          appBar.colorNotifier?.value = UserSettings.instance.primaryColor;
         }),
       ),
     );
@@ -150,7 +166,72 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     );
   }
 
+  Widget _getDropdown() {
+    return DropdownButton<String>(
+      alignment: Alignment.centerRight,
+      dropdownColor: UserSettings.instance.backgroundColor,
+      focusColor: UserSettings.instance.primaryColor,
+      underline: Container(),
+      items: [
+        DropdownMenuItem(
+          value: "Spanish".i18n,
+          child: StyledText("Spanish".i18n),
+        ),
+        DropdownMenuItem(
+          value: "English".i18n,
+          child: StyledText("English".i18n),
+        ),
+      ],
+      value: localeStr,
+      onChanged: (value) {
+        debugPrint("### Changed value to: $value ###");
+        _saveLanguage(value);
+      },
+    );
+  }
+
+  void _saveLanguage(String? language) {
+    switch (language) {
+      case "Spanish":
+        const locale = Locale("es", "ES");
+        I18n.of(context).locale = locale;
+        UserSettings.instance.language = locale;
+        _saveToPrefs(LANGUAGE, "es_ES");
+        break;
+
+      case "Español":
+        const locale = Locale("es", "ES");
+        I18n.of(context).locale = locale;
+        UserSettings.instance.language = locale;
+        _saveToPrefs(LANGUAGE, "es_ES");
+        break;
+
+      case "English":
+        const locale = Locale("en", "UK");
+        I18n.of(context).locale = locale;
+        UserSettings.instance.language = locale;
+        _saveToPrefs(LANGUAGE, "en_UK");
+        break;
+
+      case "Inglés":
+        const locale = Locale("en", "UK");
+        I18n.of(context).locale = locale;
+        UserSettings.instance.language = locale;
+        _saveToPrefs(LANGUAGE, "en_UK");
+        break;
+
+      default:
+        debugPrint("### Could not save language... ###");
+    }
+
+    setState(() {
+      localeStr = language;
+      appBar.titleNotifier?.value = "User settings".i18n;
+    });
+  }
+
   Future<void> _saveToPrefs(String tag, String name) async {
+    debugPrint("### Saving \"$name\" in entry: \"$tag\"... ###");
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(tag, name);
   }

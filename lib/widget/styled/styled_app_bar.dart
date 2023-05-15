@@ -5,7 +5,8 @@ import 'package:things_game/config/user_settings.dart';
 //ignore: must_be_immutable
 class StyledAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
-  ValueNotifier<Color>? notifier;
+  ValueNotifier<Color>? colorNotifier;
+  ValueNotifier<String>? titleNotifier;
 
   StyledAppBar(
     this.title, {
@@ -23,17 +24,10 @@ class StyledAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _StyledAppBarState extends State<StyledAppBar> {
   @override
   Widget build(BuildContext context) {
-    widget.notifier ??= ValueNotifier<Color>(
-      UserSettings.instance.primaryColor,
-    );
-
-    widget.notifier!.addListener(() {
-      debugPrint("### Updating color on StyledAppBar... ###");
-      setState(() {});
-    });
+    _initNotifiers();
 
     return AppBar(
-      backgroundColor: widget.notifier!.value,
+      backgroundColor: widget.colorNotifier!.value,
       leading: IconButton(
         highlightColor: Colors.transparent,
         onPressed: () {
@@ -41,7 +35,24 @@ class _StyledAppBarState extends State<StyledAppBar> {
         },
         icon: const Icon(Icons.arrow_back),
       ),
-      title: StyledText(widget.title),
+      title: StyledText(widget.titleNotifier!.value),
     );
+  }
+
+  void _initNotifiers() {
+    widget.colorNotifier ??= ValueNotifier<Color>(
+      UserSettings.instance.primaryColor,
+    );
+
+    widget.colorNotifier!.addListener(() {
+      debugPrint("### Updating color on StyledAppBar... ###");
+      setState(() {});
+    });
+
+    widget.titleNotifier ??= ValueNotifier<String>(widget.title);
+    widget.titleNotifier!.addListener(() {
+      debugPrint("### Updating title on StyledAppBar... ###");
+      setState(() {});
+    });
   }
 }
