@@ -20,6 +20,7 @@ class UserSettingsScreen extends StatefulWidget {
 
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
   bool isImagePicked = false;
+  final StyledAppBar appBar = StyledAppBar("User settings");
 
   @override
   Widget build(BuildContext context) {
@@ -28,7 +29,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     }
 
     return Scaffold(
-      appBar: const StyledAppBar("User settings"),
+      appBar: appBar,
       body: Container(
         color: UserSettings.instance.backgroundColor,
         child: _getContent(),
@@ -117,7 +118,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       height: iconSize,
       child: ColorPickerWrapper(
         colorTag: tag,
-        callback: () => setState(() {}),
+        callback: () => setState(() {
+          appBar.notifier?.value = UserSettings.instance.primaryColor;
+        }),
       ),
     );
   }
