@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/screen/user_settings_screen.dart';
@@ -21,36 +23,41 @@ class _MainScreenState extends State<MainScreen> {
         decoration: _getDecoration(
           "assets/background_main.png",
         ),
-        child: _getContent(context),
+        child: SafeArea(
+          child: _getContent(context),
+        ),
       ),
     );
   }
 
   Widget _getContent(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
+    final configPadding = Platform.isIOS ? 25.0 : 10.0;
+
     return Column(
       children: [
         // Config button
         Align(
           alignment: Alignment.topRight,
-          child: Padding(
-            padding: const EdgeInsets.only(right: 35.0, top: 10.0),
-            child: MaterialButton(
+          child: Container(
+            margin: EdgeInsets.only(right: 60.0, top: configPadding),
+            child: InkWell(
               highlightColor: Colors.transparent,
-              onPressed: () {
-                Navigator.of(context)
-                    .push(
+              splashFactory: NoSplash.splashFactory,
+              onTap: () {
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const UserSettingsScreen(),
                   ),
-                )
-                    .then((value) {
-                  setState(() {});
-                });
+                ).then(
+                  (value) {
+                    setState(() {});
+                  },
+                );
               },
               child: Container(
-                width: 40,
-                height: 40,
+                width: 45,
+                height: 45,
                 decoration: _getDecoration(
                   "assets/config.png",
                 ),
@@ -61,12 +68,21 @@ class _MainScreenState extends State<MainScreen> {
 
         // App Logo
         SizedBox(
-          height: screenSize.height * 0.65,
+          height: screenSize.height * 0.20,
           width: screenSize.width,
-          child: Image.asset(
-            "assets/logo.png",
-            scale: 3,
+          child: Align(
+            alignment: Alignment.bottomCenter,
+            child: Image.asset(
+              "assets/logo.png",
+              scale: 3,
+            ),
           ),
+        ),
+
+        // Empty space
+        SizedBox(
+          height: screenSize.height * 0.30,
+          width: screenSize.width,
         ),
 
         // Create game button
