@@ -27,7 +27,7 @@ class StyledButton extends StatelessWidget {
 
   Widget _getConstructiveButton() {
     return SizedBox(
-      width: 135,
+      width: 140,
       child: MaterialButton(
         onPressed: onPressed,
         color: UserSettings.instance.primaryColor,
@@ -43,7 +43,7 @@ class StyledButton extends StatelessWidget {
 
   Widget _getDestructiveButton() {
     return SizedBox(
-      width: 135,
+      width: 140,
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(

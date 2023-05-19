@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         decoration: _getDecoration(
-          "images/background_main.png",
+          "assets/background_main.png",
         ),
         child: _getContent(context),
       ),
@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
                 width: 40,
                 height: 40,
                 decoration: _getDecoration(
-                  "images/config.png",
+                  "assets/config.png",
                 ),
               ),
             ),
@@ -64,7 +64,7 @@ class _MainScreenState extends State<MainScreen> {
           height: screenSize.height * 0.65,
           width: screenSize.width,
           child: Image.asset(
-            "images/logo.png",
+            "assets/logo.png",
             scale: 3,
           ),
         ),
@@ -82,7 +82,6 @@ class _MainScreenState extends State<MainScreen> {
         StyledButton(
           onPressed: () => debugPrint("### join game clicked! ###"),
           text: "Join game".i18n,
-          type: ButtonType.destructive,
         ),
       ],
     );
