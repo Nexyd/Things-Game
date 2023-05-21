@@ -16,13 +16,16 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
+    const imagePath = "assets/background_main_ios.png";
+    // final imagePath = Platform.isIOS
+    //     ? "assets/background_main_ios.png"
+    //     : "assets/background_main_android.png";
+
     return Scaffold(
       backgroundColor: UserSettings.instance.backgroundColor,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-        decoration: _getDecoration(
-          "assets/background_main.png",
-        ),
+        decoration: _getDecoration(imagePath),
         child: SafeArea(
           child: _getContent(context),
         ),
@@ -40,7 +43,10 @@ class _MainScreenState extends State<MainScreen> {
         Align(
           alignment: Alignment.topRight,
           child: Container(
-            margin: EdgeInsets.only(right: 60.0, top: configPadding),
+            margin: EdgeInsets.only(
+              right: 65.0,
+              top: configPadding,
+            ),
             child: InkWell(
               highlightColor: Colors.transparent,
               splashFactory: NoSplash.splashFactory,
