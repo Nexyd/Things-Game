@@ -16,16 +16,13 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    const imagePath = "assets/background_main_ios.png";
-    // final imagePath = Platform.isIOS
-    //     ? "assets/background_main_ios.png"
-    //     : "assets/background_main_android.png";
-
     return Scaffold(
       backgroundColor: UserSettings.instance.backgroundColor,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
-        decoration: _getDecoration(imagePath),
+        decoration: _getDecoration(
+          "assets/background_main.png",
+        ),
         child: SafeArea(
           child: _getContent(context),
         ),
