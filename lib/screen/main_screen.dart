@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/screen/config_screen.dart';
 import 'package:things_game/screen/user_settings_screen.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
@@ -32,7 +33,7 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _getContent(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final configPadding = Platform.isIOS ? 25.0 : 10.0;
+    final configPadding = Platform.isIOS ? 0.0 : 10.0;
 
     return Column(
       children: [
@@ -92,7 +93,13 @@ class _MainScreenState extends State<MainScreen> {
         Padding(
           padding: const EdgeInsets.only(bottom: 20.0),
           child: StyledButton(
-            onPressed: () => debugPrint("### create game clicked! ###"),
+            onPressed: () {
+              Navigator.of(context).push(
+                MaterialPageRoute(
+                  builder: (context) => ConfigScreen(),
+                ),
+              );
+            },
             text: "Create game".i18n,
           ),
         ),

@@ -7,11 +7,11 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/constants.dart';
 import 'package:things_game/translations/user_settings_screen.i18n.dart';
-import 'package:things_game/util/debouncer.dart';
 import 'package:things_game/widget/avatar_icon.dart';
 import 'package:things_game/widget/color_picker.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
+import 'package:things_game/widget/styled/styled_text_field.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
@@ -94,30 +94,15 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
   Widget _getTextField() {
     TextEditingController controller = TextEditingController();
-    final debouncer = Debouncer(milliseconds: 500);
     controller.text = UserSettings.instance.name;
 
-    return TextField(
+    return StyledTextField(
+      hint: 'Enter user name',
       controller: controller,
-      onChanged: (text) {
+      onChanged: () {
         final name = controller.value.text;
-        debouncer.run(() {
-          debugPrint("### save name: $name to prefs... ###");
-          _saveToPrefs(NAME, name);
-        });
+        _saveToPrefs(NAME, name);
       },
-      style: TextStyle(color: UserSettings.instance.textColor),
-      decoration: InputDecoration(
-        border: UnderlineInputBorder(
-          borderSide: BorderSide(
-            color: UserSettings.instance.textColor,
-          ),
-        ),
-        hintText: 'Enter user name',
-        hintStyle: TextStyle(
-          color: UserSettings.instance.textColor,
-        ),
-      ),
     );
   }
 
