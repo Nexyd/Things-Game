@@ -1,0 +1,25 @@
+
+Flutter - ThingsGame (El juego de las cosas)
+--------------------------------------------
+
+1 - pastebin
+	- crear partida desde la api
+	- clave de sala = codigo pastebin
+	- 
+
+2 - firebase
+	...
+
+
+3 - pastebin + firebase
+	pastebin
+	- crear partida desde la api
+	- clave de sala = codigo pastebin
+	- formato json *game.json*
+
+	firebase
+	- comprobacion de jugadores listos
+	- comprobacion de mensajes enviados
+
+4 - conexion directa (movil a movil)
+	...

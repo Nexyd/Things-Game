@@ -1,0 +1,63 @@
+
+Flutter - ThingsGame (El juego de las cosas)
+--------------------------------------------
+Views: https://www.figma.com/file/Of4FF491F4x9f6jjLCzHLB/Untitled?node-id=47909%3A2&t=pnBYki6pR3l5JXM6-1
+
+- MainMenu
+	- Crear partida
+	- Unirse a partida
+
+- Crear partida
+	- Configuracion
+	- Crear partida
+
+- Buscar partidas
+	- Buscar por id
+	- Partidas disponibles
+	- Filtrar por configuracion
+
+- Sala
+	- Id partida
+	- Jugadores (Ready/Not)
+	- Dueño
+	- Configuracion
+	- Empezar
+	- Abandonar sala
+
+- Partida
+	- Jugadores
+	- Puntuaciones
+	- Pregunta actual
+	- Historico
+	- Respuesta
+
+- AdivinarRespuesta (Ventana dialogo?)
+	- Respuestas
+	- Jugadores
+
+- Resultado final
+	- Ganador
+	- Jugadores
+	- Puntuaciones
+	- Volver a la sala
+	- Volver al inicio
+
+- Configuracion
+	- Jugadores
+	- Rondas
+	- Puntuación máxima
+	- Privada
+	- ...
+
+(la configuración inicial del usuario se sacará de un json)
+- PreferenciasUsuario
+	- Nombre
+	- Avatar
+	- Color*
+	- Idioma
+
+
+
+* = 3 colores a cambiar (primario, texto y fondo)
+Si el color primario es blanco, el texto de navegación y botones pasará a negro
+Botones de cancelación tendrán color de fondo

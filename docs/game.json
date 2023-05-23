@@ -1,0 +1,34 @@
+{
+	"numPlayers": "4",
+	"numRounds": "7",
+	"maxPoints": "30",
+	"isPrivate": "true",
+	"questionBoard": [
+		{
+			"question": "Lorem impsum?",
+			"answers": [
+				{ "player1": "Lorem lorem" },
+				{ "player2": "No tan lorem" },
+				{ "player3": "Un poco lorem" },
+				{ "player4": "Lorem impsum" },
+			],
+			"assignments": [
+				"player1" {
+					"No tan lorem": "player4",
+					"Un poco lorem": "player2",
+					"Lorem impsum": "player3"
+				},
+				"player2" {
+					"No tan lorem": "player3",
+					"Lorem lorem": "player4",
+					"Lorem impsum": "player1"
+				},
+				...
+			]
+		},
+		{
+			"question": "Lorem impsum v2?",
+			...
+		}
+	]
+}
