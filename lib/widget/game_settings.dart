@@ -16,19 +16,19 @@ class ConfigurationData {
   });
 }
 
-class Configuration extends StatefulWidget {
+class GameSettings extends StatefulWidget {
   final ValueNotifier<ConfigurationData> notifier;
 
-  const Configuration({
+  const GameSettings({
     super.key,
     required this.notifier,
   });
 
   @override
-  State<Configuration> createState() => _ConfigurationState();
+  State<GameSettings> createState() => _GameSettingsState();
 }
 
-class _ConfigurationState extends State<Configuration> {
+class _GameSettingsState extends State<GameSettings> {
   bool light = true;
 
   @override
@@ -90,7 +90,7 @@ class _ConfigurationState extends State<Configuration> {
   Widget _getSwitch() {
     return Switch(
       value: light,
-      activeColor: Colors.red,
+      activeColor: UserSettings.instance.primaryColor,
       onChanged: (bool value) {
         setState(() {
           light = value;

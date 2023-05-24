@@ -11,8 +11,8 @@ class StyledButton extends StatelessWidget {
 
   const StyledButton({
     super.key,
-    required this.onPressed,
     required this.text,
+    required this.onPressed,
     this.type = ButtonType.constructive,
   });
 
