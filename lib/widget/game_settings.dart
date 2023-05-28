@@ -8,11 +8,13 @@ class ConfigurationData {
   int players;
   int rounds;
   int maxPoints;
+  bool isPrivate;
 
   ConfigurationData({
     this.players = 0,
-    this.rounds  = 0,
+    this.rounds = 0,
     this.maxPoints = 0,
+    this.isPrivate = true,
   });
 }
 
@@ -41,20 +43,14 @@ class _GameSettingsState extends State<GameSettings> {
 
   Widget _getContent() {
     final cells = [
-      {"Players".i18n: _getTextField()},
-      {"Rounds".i18n:  _getTextField()},
-      {"Max. points".i18n: _getTextField()},
+      {"Players".i18n: _getTextField("players")},
+      {"Rounds".i18n: _getTextField("rounds")},
+      {"Max. points".i18n: _getTextField("maxPoints")},
       {"Private".i18n: _getSwitch()},
     ];
 
-    // final cells = [
-    //   {"Players".i18n: const StyledTextField(hint: '')},
-    //   {"Rounds".i18n:  const StyledTextField(hint: '')},
-    //   {"Max. points".i18n: const StyledTextField(hint: '')},
-    //   // {"Private".i18n: _getColorIcon(TEXT_COLOR)},
-    // ];
-
     return ListView.builder(
+      shrinkWrap: true,
       itemCount: cells.length,
       physics: const NeverScrollableScrollPhysics(),
       itemBuilder: (BuildContext context, int index) {
@@ -74,17 +70,46 @@ class _GameSettingsState extends State<GameSettings> {
     );
   }
 
-  Widget _getTextField() {
+  Widget _getTextField(String field) {
+    TextEditingController controller = TextEditingController();
     return StyledTextField(
       hint: '',
-      onChanged: () {
-        print("### config data - "
+      controller: controller,
+      onChanged: (value) {
+        updateField(
+          field,
+          int.parse(controller.value.text),
+        );
+
+        print(
+          "### config data - "
           "players: ${widget.notifier.value.players}, "
           "rounds: ${widget.notifier.value.rounds}, "
           "max points: ${widget.notifier.value.maxPoints} "
-        "###");
+          "###",
+        );
       },
     );
+  }
+
+  void updateField(String field, int value) {
+    switch (field) {
+      case "players":
+        widget.notifier.value.players = value;
+        break;
+
+      case "rounds":
+        widget.notifier.value.rounds = value;
+        break;
+
+      case "maxPoints":
+        widget.notifier.value.maxPoints = value;
+        break;
+
+      default:
+        print("### Incorrect field data ###");
+        break;
+    }
   }
 
   Widget _getSwitch() {
@@ -94,6 +119,7 @@ class _GameSettingsState extends State<GameSettings> {
       onChanged: (bool value) {
         setState(() {
           light = value;
+          widget.notifier.value.isPrivate = value;
         });
       },
     );

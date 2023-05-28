@@ -2,11 +2,10 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/screen/create_room_screen.dart';
 import 'package:things_game/screen/user_settings_screen.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
-
-import 'create_room_screen.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -50,13 +49,11 @@ class _MainScreenState extends State<MainScreen> {
               highlightColor: Colors.transparent,
               splashFactory: NoSplash.splashFactory,
               onTap: () {
-                Navigator.of(context)
-                    .push(
+                Navigator.of(context).push(
                   MaterialPageRoute(
                     builder: (context) => const UserSettingsScreen(),
                   ),
-                )
-                    .then(
+                ).then(
                   (value) {
                     setState(() {});
                   },

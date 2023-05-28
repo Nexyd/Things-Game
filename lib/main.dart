@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:things_game/screen/splash_screen.dart';
 
+import 'cubit/game_room_cubit.dart';
+
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  FlutterNativeSplash.preserve(
+    widgetsBinding: widgetsBinding,
+  );
 
   runApp(
     I18n(child: const ThingsGame()),
@@ -15,6 +20,18 @@ void main() {
 
 class ThingsGame extends StatelessWidget {
   const ThingsGame({super.key});
+
+  @override
+  Widget build(BuildContext context) {
+    return BlocProvider(
+      create: (context) => GameRoomCubit(),
+      child: const ThingsGameView(),
+    );
+  }
+}
+
+class ThingsGameView extends StatelessWidget {
+  const ThingsGameView({super.key});
 
   @override
   Widget build(BuildContext context) {

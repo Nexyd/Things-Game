@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/translations/config_screen.i18n.dart';
+import 'package:things_game/translations/game_settings_screen.i18n.dart';
 import 'package:things_game/widget/game_settings.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 

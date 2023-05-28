@@ -99,7 +99,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return StyledTextField(
       hint: 'Enter user name',
       controller: controller,
-      onChanged: () {
+      onChanged: (value) {
         final name = controller.value.text;
         _saveToPrefs(NAME, name);
       },

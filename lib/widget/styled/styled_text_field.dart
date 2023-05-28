@@ -4,7 +4,7 @@ import 'package:things_game/util/debouncer.dart';
 
 class StyledTextField extends StatelessWidget {
   final String hint;
-  final Function()? onChanged;
+  final Function(String)? onChanged;
   final TextEditingController? controller;
 
   const StyledTextField({
@@ -22,7 +22,7 @@ class StyledTextField extends StatelessWidget {
       onChanged: (text) {
         debouncer.run(() {
           if (onChanged != null) {
-            onChanged!();
+            onChanged!(text);
           }
         });
       },
