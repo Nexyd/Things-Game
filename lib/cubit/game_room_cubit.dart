@@ -22,6 +22,12 @@ class GameRoomCubit extends Cubit<GameRoomState> {
     );
   }
 
+  void getOpenRooms() {
+    //emit(LoadingGameList());
+    emit(GameListLoaded());
+    print("### cubit get open rooms ###");
+  }
+
   int addPlayerToRoom(String name) {
     print("### cubit add player ###");
     return 0;

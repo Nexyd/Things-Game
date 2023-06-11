@@ -12,6 +12,7 @@ import 'package:things_game/widget/color_picker.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
+import 'package:things_game/util/color_utils.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
@@ -57,7 +58,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     Widget icon = InkWell(
       onTap: () {
         _pickAvatar().then((value) {
-          debugPrint("### avatar saved! ###");
+          print("### avatar saved! ###");
         });
       },
       child: isImagePicked ? UserSettings.instance.avatar : const AvatarIcon(),
@@ -135,20 +136,10 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         return UserSettings.instance.textColor;
 
       case BACKGROUND_COLOR:
-        return _getBackground();
+        return UserSettings.instance.backgroundColor.shade();
     }
 
     return Colors.transparent;
-  }
-
-  Color _getBackground() {
-    final color = UserSettings.instance.backgroundColor;
-    return Color.fromRGBO(
-      color.red <= 245 ? color.red + 10 : color.red - 10,
-      color.green <= 245 ? color.green + 10 : color.green - 10,
-      color.blue <= 245 ? color.blue + 10 : color.blue - 10,
-      color.opacity,
-    );
   }
 
   Widget _getDropdown() {
@@ -169,7 +160,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       ],
       value: localeStr,
       onChanged: (value) {
-        debugPrint("### Changed value to: $value ###");
+        print("### Changed value to: $value ###");
         _saveLanguage(value);
       },
     );
@@ -206,7 +197,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         break;
 
       default:
-        debugPrint("### Could not save language... ###");
+        print("### Could not save language... ###");
     }
 
     setState(() {
@@ -216,7 +207,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   }
 
   Future<void> _saveToPrefs(String tag, String name) async {
-    debugPrint("### Saving \"$name\" in entry: \"$tag\"... ###");
+    print("### Saving \"$name\" in entry: \"$tag\"... ###");
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(tag, name);
   }
@@ -240,7 +231,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           isImagePicked = true;
         });
       } catch (error) {
-        debugPrint("### Error trying to parse image path: $path... ###");
+        print("### Error trying to parse image path: $path... ###");
       }
     }
 

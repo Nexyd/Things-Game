@@ -45,13 +45,13 @@ class _StyledAppBarState extends State<StyledAppBar> {
     );
 
     widget.colorNotifier!.addListener(() {
-      debugPrint("### Updating color on StyledAppBar... ###");
+      print("### Updating color on StyledAppBar... ###");
       setState(() {});
     });
 
     widget.titleNotifier ??= ValueNotifier<String>(widget.title);
     widget.titleNotifier!.addListener(() {
-      debugPrint("### Updating title on StyledAppBar... ###");
+      print("### Updating title on StyledAppBar... ###");
       setState(() {});
     });
   }

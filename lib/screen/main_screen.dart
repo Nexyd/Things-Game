@@ -3,6 +3,7 @@ import 'dart:io';
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/screen/create_room_screen.dart';
+import 'package:things_game/screen/search_room_screen.dart';
 import 'package:things_game/screen/user_settings_screen.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
@@ -107,7 +108,13 @@ class _MainScreenState extends State<MainScreen> {
         // Join game button
         StyledButton(
           text: "Join game".i18n,
-          onPressed: () => debugPrint("### join game clicked! ###"),
+          onPressed: () {
+            Navigator.of(context).push(
+              MaterialPageRoute(
+                builder: (context) => SearchRoomScreen(),
+              ),
+            );
+          },
         ),
       ],
     );

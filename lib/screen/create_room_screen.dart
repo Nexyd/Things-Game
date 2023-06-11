@@ -14,24 +14,6 @@ class CreateRoomScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    // TODO: this will be useful for posterior screens (lobby / game)
-    // return BlocConsumer<GameRoomCubit, GameRoomState>(
-    //     //bloc: userRegisterCubit,
-    //     builder: (context, state) => Container(),
-    //     listenWhen: (previousState, state) {
-    //       return state is UserRegisterSuccess;
-    //     },
-    //     listener: (context, state) {
-    //       if (state is UserRegisterSuccess) {
-    //         Navigator.of(context).pop();
-    //       }
-    //     },
-    // );
-
-    return _getContent(context);
-  }
-
-  Widget _getContent(BuildContext context) {
     final cubit = BlocProvider.of<GameRoomCubit>(context);
     final notifier = ValueNotifier<ConfigurationData>(data);
 
@@ -52,5 +34,19 @@ class CreateRoomScreen extends StatelessWidget {
         ],
       ),
     );
+
+    // TODO: this will be useful for posterior screens (lobby / game)
+    // return BlocConsumer<GameRoomCubit, GameRoomState>(
+    //     //bloc: userRegisterCubit,
+    //     builder: (context, state) => Container(),
+    //     listenWhen: (previousState, state) {
+    //       return state is UserRegisterSuccess;
+    //     },
+    //     listener: (context, state) {
+    //       if (state is UserRegisterSuccess) {
+    //         Navigator.of(context).pop();
+    //       }
+    //     },
+    // );
   }
 }

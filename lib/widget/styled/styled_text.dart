@@ -4,13 +4,17 @@ import 'package:things_game/config/user_settings.dart';
 class StyledText extends StatelessWidget {
   final String text;
   final bool isDestructive;
+  final double? fontSize;
   final FontWeight? fontWeight;
+  final FontStyle? fontStyle;
 
   const StyledText(
     this.text, {
     super.key,
     this.isDestructive = false,
     this.fontWeight,
+    this.fontSize,
+    this.fontStyle,
   });
 
   @override
@@ -25,6 +29,8 @@ class StyledText extends StatelessWidget {
       style: TextStyle(
         color: textColor,
         fontWeight: fontWeight,
+        fontSize: fontSize,
+        fontStyle: fontStyle,
       ),
     );
   }

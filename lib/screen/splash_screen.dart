@@ -18,10 +18,10 @@ class _SplashScreenState extends State<SplashScreen> {
     UserSettings.init().then((value) {
       setState(() {
         FlutterNativeSplash.remove();
-        debugPrint("### UserSettings initialized ###");
+        print("### UserSettings initialized ###");
 
         I18n.of(context).locale = UserSettings.instance.language;
-        debugPrint("### Language: ${UserSettings.instance.language} ###");
+        print("### Language: ${UserSettings.instance.language} ###");
 
         Navigator.of(context).push(
           MaterialPageRoute(

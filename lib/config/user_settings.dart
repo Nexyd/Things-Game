@@ -77,7 +77,7 @@ class UserSettings {
     try {
       return Color(int.parse(hexString ?? "", radix: 16));
     } on Exception catch (_) {
-      debugPrint("### Exception parsing hex color: $hexString ###");
+      print("### Exception parsing hex color: $hexString ###");
       return null;
     }
   }

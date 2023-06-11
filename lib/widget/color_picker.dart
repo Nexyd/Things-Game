@@ -94,7 +94,7 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
   Future<void> _saveToPrefs(Color color) async {
     final prefs = await SharedPreferences.getInstance();
     final hexString = color.value.toRadixString(16);
-    debugPrint("### hex: #$hexString ###");
+    print("### hex: #$hexString ###");
     prefs.setString(widget.colorTag, hexString);
 
     switch (widget.colorTag) {
