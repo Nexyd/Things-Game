@@ -6,14 +6,21 @@ import 'package:things_game/translations/search_room_screen.i18n.dart';
 import 'package:things_game/util/color_utils.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
+import 'package:things_game/cubit/game_room_cubit.dart';
+import 'package:things_game/util/debouncer.dart';
 
-import '../cubit/game_room_cubit.dart';
+class SearchRoomScreen extends StatefulWidget {
+  const SearchRoomScreen({super.key});
 
-class SearchRoomScreen extends StatelessWidget {
+  @override
+  State<SearchRoomScreen> createState() => _SearchRoomScreenState();
+}
+
+class _SearchRoomScreenState extends State<SearchRoomScreen> {
   // TODO: change String to GameRoomData
   List<String> gameList = [];
-
-  SearchRoomScreen({super.key});
+  final List<String> fullList = ["valoue1", "valiue2", "velue3"];
+  bool isListInitialized = false;
 
   @override
   Widget build(BuildContext context) {
@@ -31,7 +38,7 @@ class SearchRoomScreen extends StatelessWidget {
 
             // List title
             Padding(
-              padding: const EdgeInsets.symmetric(vertical: 20.0),
+              padding: const EdgeInsets.only(top: 20.0),
               child: StyledText("- $listTitle -", fontSize: 25),
             ),
 
@@ -70,7 +77,9 @@ class SearchRoomScreen extends StatelessWidget {
 
   Widget _getListGames(BuildContext context) {
     final cubit = BlocProvider.of<GameRoomCubit>(context);
-    cubit.getOpenRooms();
+    if (!isListInitialized) {
+      cubit.getOpenRooms();
+    }
 
     return BlocBuilder<GameRoomCubit, GameRoomState>(
       bloc: cubit,
@@ -85,20 +94,25 @@ class SearchRoomScreen extends StatelessWidget {
         }
 
         if (state is GameListLoaded) {
-          // gameList = state.gameList;
-          // gameList.add("value1");
-          // gameList.add("value2");
-          // gameList.add("value2");
+          if (!isListInitialized) {
+            // fullList.addAll(state.gameList);
+            gameList = fullList;
+            isListInitialized = true;
+          }
 
           if (gameList.isEmpty) {
-            return StyledText(
-              "No games available".i18n,
-              fontSize: 20,
-              fontStyle: FontStyle.italic,
+            return Padding(
+              padding: const EdgeInsets.only(top: 10.0),
+              child: StyledText(
+                "No games available".i18n,
+                fontSize: 20,
+                fontStyle: FontStyle.italic,
+              ),
             );
           }
 
           return ListView.separated(
+            shrinkWrap: true,
             itemCount: gameList.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
@@ -124,10 +138,19 @@ class SearchRoomScreen extends StatelessWidget {
   }
 
   void _filterResultsBy(String value) {
-    print("### search value: $value ###");
-    // TODO: filter game list by search value
-    // TODO: compare with GameRoomData.id
-    // TODO: filter id.contains(value) with regEx?
-    // TODO: add debouncer
+    final debouncer = Debouncer(milliseconds: 500);
+    debouncer.run(() {
+      gameList = fullList.where((element) {
+        bool result = true;
+        for (var character in value.characters) {
+          result = element.indexOf(character) > 0;
+          if (!result) return false;
+        }
+
+        return result;
+      }).toList();
+
+      setState(() {});
+    });
   }
 }
