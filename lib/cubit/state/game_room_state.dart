@@ -11,6 +11,8 @@ class LoadingGameList extends GameRoomState {}
 
 class GameListLoaded extends GameRoomState {
   // TODO: add game list
+  // final List<GameRoom> gameList;
+  // GameListLoaded({required this.gameList});
 }
 
 class PlayerJoined extends GameRoomState {}

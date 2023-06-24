@@ -1,16 +1,19 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/assignment.dart';
+import 'package:things_game/cubit/model/game_room.dart';
+import 'package:things_game/cubit/repository/game_room_repository.dart';
 import 'package:things_game/cubit/state/game_room_state.dart';
 import 'package:things_game/widget/game_settings.dart';
 
 class GameRoomCubit extends Cubit<GameRoomState> {
-  // String roomId;
+  GameRoom actualGame = GameRoom.empty();
+  final GameRoomRepository repo = GameRoomRepository();
 
   GameRoomCubit() : super(GameRoomInitial());
 
   void createRoom(
     ConfigurationData data,
-  ) {
+  ) async {
     print("### cubit create room ###");
     print(
       "### room data - "
@@ -20,6 +23,27 @@ class GameRoomCubit extends Cubit<GameRoomState> {
       "isPrivate: ${data.isPrivate} "
       "###",
     );
+
+    actualGame = actualGame.copyWith(
+      numPlayers: data.players,
+      numRounds: data.rounds,
+      maxPoints: data.maxPoints,
+      isPrivate: data.isPrivate,
+    );
+
+    print("### printing game json... ###");
+    print("### ${actualGame.toJson()} ###");
+
+    final result = await repo.createRoom(
+      actualGame.toJson().toString(),
+    );
+
+    if (result.startsWith("error")) {
+      emit(GameRoomError());
+    } else {
+      print("### game id: $result ###");
+      actualGame.id = result;
+    }
   }
 
   void getOpenRooms() {
@@ -28,7 +52,7 @@ class GameRoomCubit extends Cubit<GameRoomState> {
     print("### cubit get open rooms ###");
   }
 
-  int addPlayerToRoom(String name) {
+  int addPlayer(String name) {
     print("### cubit add player ###");
     return 0;
   }

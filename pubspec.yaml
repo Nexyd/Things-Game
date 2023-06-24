@@ -45,6 +45,12 @@ dependencies:
   flutter_native_splash: ^2.2.19
   flutter_launcher_icons: ^0.12.0
   loggy: ^2.0.3
+  pastebin: ^1.0.1
+
+  # Dio
+  dio: ^4.0.6
+  dio_cache_interceptor: ^3.4.0
+  pretty_dio_logger: ^1.1.1
   flutter_loggy_dio: ^2.0.1
 
 dev_dependencies:

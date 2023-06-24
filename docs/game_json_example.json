@@ -1,8 +1,15 @@
 {
+	"name": "Game#241",
 	"numPlayers": 4,
 	"numRounds": 7,
 	"maxPoints": 30,
 	"isPrivate": true,
+	"playerList": [
+		"player1",
+		"player2",
+		"player3",
+		"player4"
+	],
 	"questionBoard": [
 		{
 			"question": "Lorem impsum?",

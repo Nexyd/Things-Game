@@ -9,6 +9,8 @@ import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/cubit/game_room_cubit.dart';
 import 'package:things_game/util/debouncer.dart';
 
+import '../cubit/model/game_room.dart';
+
 class SearchRoomScreen extends StatefulWidget {
   const SearchRoomScreen({super.key});
 
@@ -17,10 +19,13 @@ class SearchRoomScreen extends StatefulWidget {
 }
 
 class _SearchRoomScreenState extends State<SearchRoomScreen> {
-  // TODO: change String to GameRoomData
-  List<String> gameList = [];
-  final List<String> fullList = ["valoue1", "valiue2", "velue3"];
   bool isListInitialized = false;
+  List<GameRoom> gameList = [];
+  final List<GameRoom> fullList = [
+    GameRoom.sample(),
+    GameRoom.sample(),
+    GameRoom.sample(),
+  ];
 
   @override
   Widget build(BuildContext context) {
@@ -118,7 +123,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
               return ListTile(
                 title: StyledText(
                   // TODO: change to gameList[index].name,
-                  gameList[index],
+                  gameList[index].name,
                   fontSize: 20,
                 ),
               );
@@ -143,7 +148,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
       gameList = fullList.where((element) {
         bool result = true;
         for (var character in value.characters) {
-          result = element.indexOf(character) > 0;
+          result = element.name.indexOf(character) > 0;
           if (!result) return false;
         }
 
