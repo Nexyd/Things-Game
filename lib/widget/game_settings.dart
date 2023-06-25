@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/translations/configuration.i18n.dart';
+import 'package:things_game/translations/game_settings.i18n.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
 
@@ -27,10 +27,10 @@ class GameSettings extends StatefulWidget {
   });
 
   @override
-  State<GameSettings> createState() => _GameSettingsState();
+  State<GameSettings> createState() => GameSettingsState();
 }
 
-class _GameSettingsState extends State<GameSettings> {
+class GameSettingsState extends State<GameSettings> {
   bool light = true;
 
   @override
@@ -72,27 +72,48 @@ class _GameSettingsState extends State<GameSettings> {
 
   Widget _getTextField(String field) {
     TextEditingController controller = TextEditingController();
+    controller.text = _setInitialValue(field);
+
     return StyledTextField(
       hint: '',
       controller: controller,
       onChanged: (value) {
-        updateField(
+        _updateField(
           field,
           int.parse(controller.value.text),
         );
-
-        print(
-          "### config data - "
-          "players: ${widget.notifier.value.players}, "
-          "rounds: ${widget.notifier.value.rounds}, "
-          "max points: ${widget.notifier.value.maxPoints} "
-          "###",
-        );
       },
+      onError: () => _validate(
+        int.parse(controller.value.text),
+        field == "players",
+      ),
     );
   }
 
-  void updateField(String field, int value) {
+  String _setInitialValue(String field) {
+    String result = "";
+    switch (field) {
+      case "players":
+        result = widget.notifier.value.players.toString();
+        break;
+
+      case "rounds":
+        result = widget.notifier.value.rounds.toString();
+        break;
+
+      case "maxPoints":
+        result = widget.notifier.value.maxPoints.toString();
+        break;
+
+      default:
+        print("### Incorrect field data ###");
+        break;
+    }
+
+    return result;
+  }
+
+  void _updateField(String field, int value) {
     switch (field) {
       case "players":
         widget.notifier.value.players = value;
@@ -123,5 +144,37 @@ class _GameSettingsState extends State<GameSettings> {
         });
       },
     );
+  }
+
+  String? _validate(int value, [isNumPlayers = false]) {
+    if (isNumPlayers && value < 3) {
+      return 'The number of players must be greater than 2'.i18n;
+    }
+
+    if (value < 0) {
+      return 'The value must be greater than 0'.i18n;
+    }
+
+    return null;
+  }
+
+  bool validateFields() {
+    if (_validate(widget.notifier.value.players, true) != null) {
+      return false;
+    }
+
+    if (_validate(widget.notifier.value.rounds) != null) {
+      return false;
+    }
+
+    if (_validate(widget.notifier.value.maxPoints) != null) {
+      return false;
+    }
+
+    return true;
+  }
+
+  void refresh() {
+    setState(() {});
   }
 }
