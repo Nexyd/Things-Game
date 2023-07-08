@@ -6,6 +6,7 @@ import 'package:things_game/constants.dart';
 
 class GameRoomRepository {
   late Dio client;
+  final String userKey = "9bf04d6fed8c18ff03d257a0ba6864e0";
   final pastebin = withSingleApiDevKey(
     apiDevKey: "KMyCYinFCWJDdNlTQRYhYBDz2kLog4vB",
   );
@@ -14,10 +15,20 @@ class GameRoomRepository {
     client = _getClient();
   }
 
-  Future<String> createRoom(String roomJson) async {
-    final result = await pastebin.paste(pasteText: roomJson);
-    String resultString = "";
+  Future<String> createRoom(
+    String roomJson, [
+    bool isPrivate = false,
+  ]) async {
+    final result = await pastebin.paste(
+      pasteText: roomJson,
+      options: PasteOptions(
+        apiUserKey: userKey,
+        pasteVisiblity: isPrivate ? Visibility.private : Visibility.unlisted,
+        //pasteVisiblity: Visibility.unlisted,
+      ),
+    );
 
+    String resultString = "";
     result.fold(
       (error) => resultString = "error: $error",
       (value) => resultString = value.toString(),

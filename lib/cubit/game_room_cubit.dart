@@ -14,16 +14,6 @@ class GameRoomCubit extends Cubit<GameRoomState> {
   void createRoom(
     ConfigurationData data,
   ) async {
-    print("### cubit create room ###");
-    print(
-      "### room data - "
-      "players: ${data.players}, "
-      "rounds: ${data.rounds}, "
-      "points: ${data.maxPoints}, "
-      "isPrivate: ${data.isPrivate} "
-      "###",
-    );
-
     actualGame = actualGame.copyWith(
       numPlayers: data.players,
       numRounds: data.rounds,
@@ -31,18 +21,17 @@ class GameRoomCubit extends Cubit<GameRoomState> {
       isPrivate: data.isPrivate,
     );
 
-    print("### printing game json... ###");
-    print("### ${actualGame.toJson()} ###");
-
     final result = await repo.createRoom(
       actualGame.toJson().toString(),
     );
 
+    print("### result: $result ###");
     if (result.startsWith("error")) {
       emit(GameRoomError());
     } else {
-      print("### game id: $result ###");
-      actualGame.id = result;
+      actualGame.id = result.substring(
+        result.lastIndexOf("/") + 1,
+      );
     }
   }
 

@@ -17,6 +17,16 @@ extension Localization on String {
       {
         "en_gb": "Private",
         "es_es": "Privada",
+      } +
+
+      // Validation Errors
+      {
+        "en_gb": "The number of players must be greater than 2",
+        "es_es": "El número de jugadores debe ser superior a 2",
+      } +
+      {
+        "en_gb": "The value must be greater than 0",
+        "es_es": "El valor debe ser superior a 0",
       };
 
   String get i18n => localize(this, _t);

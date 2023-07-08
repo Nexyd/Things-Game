@@ -30,6 +30,10 @@ class UserSettings {
   }
 
   static Future<void> init() async {
+    if (_instance != null) {
+      return;
+    }
+
     _instance = await _init();
   }
 

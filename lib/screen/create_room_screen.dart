@@ -16,19 +16,24 @@ class CreateRoomScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<GameRoomCubit>(context);
     final notifier = ValueNotifier<ConfigurationData>(data);
+    final key = GlobalKey<GameSettingsState>();
 
     return Scaffold(
-      appBar: StyledAppBar("Game settings".i18n),
+      appBar: StyledAppBar("Create a room".i18n),
       backgroundColor: UserSettings.instance.backgroundColor,
       body: Column(
         children: [
           GameSettings(
+            key: key,
             notifier: notifier,
           ),
           StyledButton(
             text: "Create".i18n,
             onPressed: () {
-              cubit.createRoom(notifier.value);
+              key.currentState?.refresh();
+              if (key.currentState?.validateFields() == true) {
+                cubit.createRoom(notifier.value);
+              }
             },
           ),
         ],

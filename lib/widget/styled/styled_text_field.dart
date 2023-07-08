@@ -6,12 +6,14 @@ class StyledTextField extends StatelessWidget {
   final String hint;
   final Function(String)? onChanged;
   final TextEditingController? controller;
+  final String? Function()? onError;
 
   const StyledTextField({
     super.key,
     required this.hint,
     this.onChanged,
     this.controller,
+    this.onError,
   });
 
   @override
@@ -36,10 +38,20 @@ class StyledTextField extends StatelessWidget {
           ),
         ),
         hintText: hint,
+        // TODO: this gets called only once.
+        errorText: _getErrorText(),
         hintStyle: TextStyle(
           color: UserSettings.instance.textColor,
         ),
       ),
     );
+  }
+
+  String? _getErrorText() {
+    if (onError != null) {
+      return onError!();
+    }
+
+    return null;
   }
 }

@@ -122,7 +122,6 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 title: StyledText(
-                  // TODO: change to gameList[index].name,
                   gameList[index].name,
                   fontSize: 20,
                 ),
