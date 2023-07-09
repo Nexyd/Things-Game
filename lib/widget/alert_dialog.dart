@@ -38,7 +38,7 @@ class BasicDialog {
       barrierDismissible: true,
       builder: (BuildContext context) => AlertDialog(
         title: icon ?? StyledText(title!),
-        backgroundColor: UserSettings.instance.backgroundColor,
+        backgroundColor: UserSettings.I.backgroundColor,
         content: contentWidget ?? StyledText(content!),
         actions: <Widget>[
           Align(

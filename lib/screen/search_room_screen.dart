@@ -33,7 +33,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
     return Scaffold(
       appBar: StyledAppBar("Search room".i18n),
-      backgroundColor: UserSettings.instance.backgroundColor,
+      backgroundColor: UserSettings.I.backgroundColor,
       body: Container(
         margin: const EdgeInsets.all(10.0),
         child: Column(
@@ -60,21 +60,21 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
       hintText: "Room id".i18n,
       textStyle: MaterialStateProperty.all(
         TextStyle(
-          color: UserSettings.instance.textColor,
+          color: UserSettings.I.textColor,
         ),
       ),
       leading: Icon(
         Icons.menu,
-        color: UserSettings.instance.textColor,
+        color: UserSettings.I.textColor,
       ),
       trailing: [
         Icon(
           Icons.search,
-          color: UserSettings.instance.textColor,
+          color: UserSettings.I.textColor,
         )
       ],
       backgroundColor: MaterialStateProperty.all(
-        UserSettings.instance.backgroundColor.shade(20),
+        UserSettings.I.backgroundColor.shade(20),
       ),
       onChanged: _filterResultsBy,
     );
@@ -130,7 +130,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
             separatorBuilder: (BuildContext context, int index) {
               return Divider(
                 height: 1,
-                color: UserSettings.instance.textColor,
+                color: UserSettings.I.textColor,
               );
             },
           );

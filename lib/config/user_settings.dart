@@ -25,7 +25,7 @@ class UserSettings {
 
   static UserSettings? _instance;
 
-  static UserSettings get instance {
+  static UserSettings get I {
     return _instance!;
   }
 

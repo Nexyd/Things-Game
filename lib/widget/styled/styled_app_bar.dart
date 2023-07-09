@@ -41,7 +41,7 @@ class _StyledAppBarState extends State<StyledAppBar> {
 
   void _initNotifiers() {
     widget.colorNotifier ??= ValueNotifier<Color>(
-      UserSettings.instance.primaryColor,
+      UserSettings.I.primaryColor,
     );
 
     widget.colorNotifier!.addListener(() {

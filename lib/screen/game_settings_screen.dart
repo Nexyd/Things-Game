@@ -15,7 +15,7 @@ class GameSettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: StyledAppBar("Game settings".i18n),
       body: Container(
-        color: UserSettings.instance.backgroundColor,
+        color: UserSettings.I.backgroundColor,
         child: GameSettings(
           notifier: notifier,
         ),

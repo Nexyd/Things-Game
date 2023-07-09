@@ -9,8 +9,8 @@ class AvatarIcon extends StatelessWidget {
     const double size = 30;
     String initial = "";
 
-    if (UserSettings.instance.name.isNotEmpty) {
-      initial = UserSettings.instance.name.substring(0, 1);
+    if (UserSettings.I.name.isNotEmpty) {
+      initial = UserSettings.I.name.substring(0, 1);
     }
 
     return Container(

@@ -32,18 +32,18 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return Scaffold(
       appBar: appBar,
       body: Container(
-        color: UserSettings.instance.backgroundColor,
+        color: UserSettings.I.backgroundColor,
         child: _getContent(),
       ),
     );
   }
 
   void _setup() {
-    if (UserSettings.instance.avatar is! AvatarIcon) {
+    if (UserSettings.I.avatar is! AvatarIcon) {
       isImagePicked = true;
     }
 
-    switch (UserSettings.instance.language.languageCode) {
+    switch (UserSettings.I.language.languageCode) {
       case "en":
         localeStr = "English".i18n;
         break;
@@ -61,7 +61,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           print("### avatar saved! ###");
         });
       },
-      child: isImagePicked ? UserSettings.instance.avatar : const AvatarIcon(),
+      child: isImagePicked ? UserSettings.I.avatar : const AvatarIcon(),
     );
 
     final cells = [
@@ -95,7 +95,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
   Widget _getTextField() {
     TextEditingController controller = TextEditingController();
-    controller.text = UserSettings.instance.name;
+    controller.text = UserSettings.I.name;
 
     return StyledTextField(
       hint: 'Enter user name',
@@ -121,7 +121,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       child: ColorPickerWrapper(
         colorTag: tag,
         callback: () => setState(() {
-          appBar.colorNotifier?.value = UserSettings.instance.primaryColor;
+          appBar.colorNotifier?.value = UserSettings.I.primaryColor;
         }),
       ),
     );
@@ -130,13 +130,13 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   Color _getColor(String colorTag) {
     switch (colorTag) {
       case PRIMARY_COLOR:
-        return UserSettings.instance.primaryColor;
+        return UserSettings.I.primaryColor;
 
       case TEXT_COLOR:
-        return UserSettings.instance.textColor;
+        return UserSettings.I.textColor;
 
       case BACKGROUND_COLOR:
-        return UserSettings.instance.backgroundColor.shade();
+        return UserSettings.I.backgroundColor.shade();
     }
 
     return Colors.transparent;
@@ -145,8 +145,8 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   Widget _getDropdown() {
     return DropdownButton<String>(
       alignment: Alignment.centerRight,
-      dropdownColor: UserSettings.instance.backgroundColor,
-      focusColor: UserSettings.instance.primaryColor,
+      dropdownColor: UserSettings.I.backgroundColor,
+      focusColor: UserSettings.I.primaryColor,
       underline: Container(),
       items: [
         DropdownMenuItem(
@@ -171,28 +171,28 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       case "Spanish":
         const locale = Locale("es", "ES");
         I18n.of(context).locale = locale;
-        UserSettings.instance.language = locale;
+        UserSettings.I.language = locale;
         _saveToPrefs(LANGUAGE, "es_ES");
         break;
 
       case "Español":
         const locale = Locale("es", "ES");
         I18n.of(context).locale = locale;
-        UserSettings.instance.language = locale;
+        UserSettings.I.language = locale;
         _saveToPrefs(LANGUAGE, "es_ES");
         break;
 
       case "English":
         const locale = Locale("en", "GB");
         I18n.of(context).locale = locale;
-        UserSettings.instance.language = locale;
+        UserSettings.I.language = locale;
         _saveToPrefs(LANGUAGE, "en_GB");
         break;
 
       case "Inglés":
         const locale = Locale("en", "GB");
         I18n.of(context).locale = locale;
-        UserSettings.instance.language = locale;
+        UserSettings.I.language = locale;
         _saveToPrefs(LANGUAGE, "en_GB");
         break;
 
@@ -235,7 +235,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       }
     }
 
-    UserSettings.instance.avatar = baseAvatar;
+    UserSettings.I.avatar = baseAvatar;
     return baseAvatar;
   }
 }

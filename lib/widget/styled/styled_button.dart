@@ -34,7 +34,7 @@ class StyledButton extends StatelessWidget {
       width: 140,
       child: MaterialButton(
         onPressed: onPressed,
-        color: UserSettings.instance.primaryColor,
+        color: UserSettings.I.primaryColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(
             Radius.circular(20.0),
@@ -53,7 +53,7 @@ class StyledButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           side: BorderSide(
             width: 2.0,
-            color: UserSettings.instance.primaryColor,
+            color: UserSettings.I.primaryColor,
           ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(
@@ -74,7 +74,7 @@ class StyledButton extends StatelessWidget {
       return TextButton(
         style: TextButton.styleFrom(
           textStyle: TextStyle(
-            color: UserSettings.instance.primaryColor,
+            color: UserSettings.I.primaryColor,
             fontSize: 18,
           ),
         ),

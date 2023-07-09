@@ -29,19 +29,19 @@ class StyledTextField extends StatelessWidget {
         });
       },
       style: TextStyle(
-        color: UserSettings.instance.textColor,
+        color: UserSettings.I.textColor,
       ),
       decoration: InputDecoration(
         border: UnderlineInputBorder(
           borderSide: BorderSide(
-            color: UserSettings.instance.textColor,
+            color: UserSettings.I.textColor,
           ),
         ),
         hintText: hint,
         // TODO: this gets called only once.
         errorText: _getErrorText(),
         hintStyle: TextStyle(
-          color: UserSettings.instance.textColor,
+          color: UserSettings.I.textColor,
         ),
       ),
     );

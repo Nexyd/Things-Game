@@ -50,7 +50,7 @@ class CreateRoomScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: StyledAppBar("Create a room".i18n),
-      backgroundColor: UserSettings.instance.backgroundColor,
+      backgroundColor: UserSettings.I.backgroundColor,
       body: Column(
         children: [
           GameSettings(

@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: UserSettings.instance.backgroundColor,
+      backgroundColor: UserSettings.I.backgroundColor,
       body: Container(
         padding: const EdgeInsets.symmetric(horizontal: 5.0),
         decoration: _getDecoration(
@@ -125,7 +125,7 @@ class _MainScreenState extends State<MainScreen> {
       image: DecorationImage(
         image: AssetImage(asset),
         colorFilter: ColorFilter.mode(
-          UserSettings.instance.primaryColor,
+          UserSettings.I.primaryColor,
           BlendMode.srcIn,
         ),
         fit: BoxFit.fill,

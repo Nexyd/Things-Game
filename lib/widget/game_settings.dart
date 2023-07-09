@@ -36,7 +36,7 @@ class GameSettingsState extends State<GameSettings> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      color: UserSettings.instance.backgroundColor,
+      color: UserSettings.I.backgroundColor,
       child: _getContent(),
     );
   }
@@ -136,7 +136,7 @@ class GameSettingsState extends State<GameSettings> {
   Widget _getSwitch() {
     return Switch(
       value: light,
-      activeColor: UserSettings.instance.primaryColor,
+      activeColor: UserSettings.I.primaryColor,
       onChanged: (bool value) {
         setState(() {
           light = value;

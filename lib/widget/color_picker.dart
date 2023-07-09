@@ -38,12 +38,12 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const StyledText('Pick a color!'),
-          backgroundColor: UserSettings.instance.backgroundColor,
+          backgroundColor: UserSettings.I.backgroundColor,
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: pickerColor!,
               labelTextStyle: TextStyle(
-                color: UserSettings.instance.textColor,
+                color: UserSettings.I.textColor,
               ),
               onColorChanged: (color) {
                 setState(() => pickerColor = color);
@@ -99,15 +99,15 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
 
     switch (widget.colorTag) {
       case PRIMARY_COLOR:
-        UserSettings.instance.primaryColor = color;
+        UserSettings.I.primaryColor = color;
         break;
 
       case TEXT_COLOR:
-        UserSettings.instance.textColor = color;
+        UserSettings.I.textColor = color;
         break;
 
       case BACKGROUND_COLOR:
-        UserSettings.instance.backgroundColor = color;
+        UserSettings.I.backgroundColor = color;
         break;
     }
   }
@@ -115,13 +115,13 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
   Color _getColorFromSettings() {
     switch (widget.colorTag) {
       case PRIMARY_COLOR:
-        return UserSettings.instance.primaryColor;
+        return UserSettings.I.primaryColor;
 
       case TEXT_COLOR:
-        return UserSettings.instance.textColor;
+        return UserSettings.I.textColor;
 
       case BACKGROUND_COLOR:
-        return UserSettings.instance.backgroundColor;
+        return UserSettings.I.backgroundColor;
 
       default:
         return Colors.red;

@@ -19,9 +19,9 @@ class StyledText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = UserSettings.instance.textColor;
+    Color textColor = UserSettings.I.textColor;
     if (isDestructive) {
-      textColor = UserSettings.instance.primaryColor;
+      textColor = UserSettings.I.primaryColor;
     }
 
     return Text(
