@@ -33,12 +33,11 @@ class CreateRoomScreen extends StatelessWidget {
             buttonMessage: "Aceptar"
           ).show(context);
         } else if (state is GameRoomCreated) {
-          print("### navigating to lobby... ###");
-          // Navigator.of(context).push(
-          //   MaterialPageRoute(
-          //     builder: (context) => LobbyScreen(room: state.room),
-          //   ),
-          // );
+          Navigator.of(context).push(
+            MaterialPageRoute(
+              builder: (context) => LobbyScreen(room: state.room),
+            ),
+          );
         }
       },
     );
@@ -53,6 +52,7 @@ class CreateRoomScreen extends StatelessWidget {
       backgroundColor: UserSettings.I.backgroundColor,
       body: Column(
         children: [
+          // FIXME: fix error 'numPlayers must be greater than 0'
           GameSettings(
             key: key,
             notifier: notifier,

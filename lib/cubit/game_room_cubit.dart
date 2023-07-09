@@ -21,9 +21,10 @@ class GameRoomCubit extends Cubit<GameRoomState> {
       isPrivate: data.isPrivate,
     );
 
-    final result = await repo.createRoom(
-      actualGame.toJson().toString(),
-    );
+    const result = "https://pastebin.com/BjYFu9CW";
+    // final result = await repo.createRoom(
+    //   actualGame.toJson().toString(),
+    // );
 
     if (result.startsWith("error")) {
       emit(GameRoomError(error: result));

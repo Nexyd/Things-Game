@@ -12,6 +12,7 @@ class GameSettingsScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final notifier = ValueNotifier<ConfigurationData>(data);
+    // FIXME: not appearing on fullscreen.
     return Scaffold(
       appBar: StyledAppBar("Game settings".i18n),
       body: Container(
