@@ -25,13 +25,14 @@ class GameRoomCubit extends Cubit<GameRoomState> {
       actualGame.toJson().toString(),
     );
 
-    print("### result: $result ###");
     if (result.startsWith("error")) {
-      emit(GameRoomError());
+      emit(GameRoomError(error: result));
     } else {
       actualGame.id = result.substring(
         result.lastIndexOf("/") + 1,
       );
+
+      emit(GameRoomCreated(room: actualGame));
     }
   }
 

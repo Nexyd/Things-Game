@@ -1,8 +1,10 @@
+import 'dart:io';
+
 import 'package:flutter/material.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
 
-enum ButtonType { constructive, destructive }
+enum ButtonType { constructive, destructive, text }
 
 class StyledButton extends StatelessWidget {
   final VoidCallback onPressed;
@@ -20,8 +22,10 @@ class StyledButton extends StatelessWidget {
   Widget build(BuildContext context) {
     if (type == ButtonType.constructive) {
       return _getConstructiveButton();
-    } else {
+    } else if (type == ButtonType.destructive) {
       return _getDestructiveButton();
+    } else {
+      return _getTextButton();
     }
   }
 
@@ -60,6 +64,40 @@ class StyledButton extends StatelessWidget {
         child: StyledText(
           text,
           isDestructive: true,
+        ),
+      ),
+    );
+  }
+
+  Widget _getTextButton() {
+    if (Platform.isIOS) {
+      return TextButton(
+        style: TextButton.styleFrom(
+          textStyle: TextStyle(
+            color: UserSettings.instance.primaryColor,
+            fontSize: 18,
+          ),
+        ),
+        onPressed: onPressed,
+        child: StyledText(
+          text,
+          isDestructive: true,
+        ),
+      );
+    }
+
+    return Padding(
+      padding: const EdgeInsets.only(
+        right: 8.0,
+        bottom: 8.0,
+      ),
+      child: InkWell(
+        onTap: onPressed,
+        splashFactory: NoSplash.splashFactory,
+        child: StyledText(
+          text,
+          isDestructive: true,
+          fontSize: 18,
         ),
       ),
     );

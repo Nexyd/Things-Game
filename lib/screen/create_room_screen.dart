@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/screen/lobby_screen.dart';
 import 'package:things_game/translations/game_settings_screen.i18n.dart';
 import 'package:things_game/widget/game_settings.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/cubit/game_room_cubit.dart';
+
+import '../cubit/state/game_room_state.dart';
+import '../widget/alert_dialog.dart';
 
 class CreateRoomScreen extends StatelessWidget {
   final ConfigurationData data = ConfigurationData();
@@ -15,6 +19,32 @@ class CreateRoomScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final cubit = BlocProvider.of<GameRoomCubit>(context);
+    return BlocConsumer<GameRoomCubit, GameRoomState>(
+      bloc: cubit,
+      builder: (context, state) => _getContent(cubit),
+      listenWhen: (previousState, state) {
+        return state is GameRoomCreated || state is GameRoomError;
+      },
+      listener: (context, state) {
+        if (state is GameRoomError) {
+          BasicDialog(
+            title: "Error",
+            content: "Ha ocurrido un error",
+            buttonMessage: "Aceptar"
+          ).show(context);
+        } else if (state is GameRoomCreated) {
+          print("### navigating to lobby... ###");
+          // Navigator.of(context).push(
+          //   MaterialPageRoute(
+          //     builder: (context) => LobbyScreen(room: state.room),
+          //   ),
+          // );
+        }
+      },
+    );
+  }
+
+  Widget _getContent(GameRoomCubit cubit) {
     final notifier = ValueNotifier<ConfigurationData>(data);
     final key = GlobalKey<GameSettingsState>();
 
@@ -39,19 +69,5 @@ class CreateRoomScreen extends StatelessWidget {
         ],
       ),
     );
-
-    // TODO: this will be useful for posterior screens (lobby / game)
-    // return BlocConsumer<GameRoomCubit, GameRoomState>(
-    //     //bloc: userRegisterCubit,
-    //     builder: (context, state) => Container(),
-    //     listenWhen: (previousState, state) {
-    //       return state is UserRegisterSuccess;
-    //     },
-    //     listener: (context, state) {
-    //       if (state is UserRegisterSuccess) {
-    //         Navigator.of(context).pop();
-    //       }
-    //     },
-    // );
   }
 }
