@@ -27,11 +27,7 @@ class CreateRoomScreen extends StatelessWidget {
       },
       listener: (context, state) {
         if (state is GameRoomError) {
-          BasicDialog(
-            title: "Error",
-            content: "Ha ocurrido un error",
-            buttonMessage: "Aceptar"
-          ).show(context);
+          ErrorDialog(context).show();
         } else if (state is GameRoomCreated) {
           Navigator.of(context).pushNamed(
             "/lobby",

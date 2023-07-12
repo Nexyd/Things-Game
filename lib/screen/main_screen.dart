@@ -5,6 +5,8 @@ import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 
+import '../widget/alert_dialog.dart';
+
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
 
@@ -15,15 +17,21 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: UserSettings.I.backgroundColor,
-      body: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-        decoration: _getDecoration(
-          "assets/background_main.png",
-        ),
-        child: SafeArea(
-          child: _getContent(context),
+    return WillPopScope(
+      onWillPop: () async {
+        ExitAppDialog(context).show();
+        return false;
+      },
+      child: Scaffold(
+        backgroundColor: UserSettings.I.backgroundColor,
+        body: Container(
+          padding: const EdgeInsets.symmetric(horizontal: 5.0),
+          decoration: _getDecoration(
+            "assets/background_main.png",
+          ),
+          child: SafeArea(
+            child: _getContent(context),
+          ),
         ),
       ),
     );
