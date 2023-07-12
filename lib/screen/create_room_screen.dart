@@ -33,10 +33,9 @@ class CreateRoomScreen extends StatelessWidget {
             buttonMessage: "Aceptar"
           ).show(context);
         } else if (state is GameRoomCreated) {
-          Navigator.of(context).push(
-            MaterialPageRoute(
-              builder: (context) => LobbyScreen(room: state.room),
-            ),
+          Navigator.of(context).pushNamed(
+            "/lobby",
+            arguments: LobbyScreenArguments(state.room),
           );
         }
       },

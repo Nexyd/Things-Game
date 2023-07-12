@@ -2,9 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/screen/create_room_screen.dart';
-import 'package:things_game/screen/search_room_screen.dart';
-import 'package:things_game/screen/user_settings_screen.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 
@@ -50,11 +47,7 @@ class _MainScreenState extends State<MainScreen> {
               highlightColor: Colors.transparent,
               splashFactory: NoSplash.splashFactory,
               onTap: () {
-                Navigator.of(context).push(
-                  MaterialPageRoute(
-                    builder: (context) => const UserSettingsScreen(),
-                  ),
-                ).then(
+                Navigator.of(context).pushNamed("/preferences").then(
                   (value) {
                     setState(() {});
                   },
@@ -95,26 +88,14 @@ class _MainScreenState extends State<MainScreen> {
           padding: const EdgeInsets.only(bottom: 20.0),
           child: StyledButton(
             text: "Create game".i18n,
-            onPressed: () {
-              Navigator.of(context).push(
-                MaterialPageRoute(
-                  builder: (context) => CreateRoomScreen(),
-                ),
-              );
-            },
+            onPressed: () => Navigator.of(context).pushNamed("/create"),
           ),
         ),
 
         // Join game button
         StyledButton(
           text: "Join game".i18n,
-          onPressed: () {
-            Navigator.of(context).push(
-              MaterialPageRoute(
-                builder: (context) => const SearchRoomScreen(),
-              ),
-            );
-          },
+          onPressed: () => Navigator.of(context).pushNamed("/search"),
         ),
       ],
     );

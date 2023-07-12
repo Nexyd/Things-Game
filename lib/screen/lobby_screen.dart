@@ -11,12 +11,18 @@ import '../config/user_settings.dart';
 import '../cubit/game_room_cubit.dart';
 import '../cubit/state/game_room_state.dart';
 
-class LobbyScreen extends StatefulWidget {
+class LobbyScreenArguments {
   final GameRoom room;
 
-  const LobbyScreen({
+  LobbyScreenArguments(this.room);
+}
+
+class LobbyScreen extends StatefulWidget {
+  final LobbyScreenArguments args;
+
+  const LobbyScreen(
+    this.args, {
     super.key,
-    required this.room,
   });
 
   @override
@@ -72,7 +78,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
               padding: const EdgeInsets.only(top: 15.0),
               child: StyledButton(
                 text: "Leave room".i18n,
-                onPressed: () => cubit.backToMain(),
+                onPressed: () => cubit.backToMain(context),
                 type: ButtonType.destructive,
               ),
             ),
@@ -95,7 +101,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
         children: [
           const Spacer(flex: 2),
           StyledText(
-            "$title: \n${widget.room.id}",
+            "$title: \n${widget.args.room.id}",
             fontSize: 30,
           ),
           const Spacer(),
@@ -188,12 +194,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
     switch (tag) {
       case "rounds":
         title = "Rounds".i18n;
-        value = widget.room.numRounds.toString();
+        value = widget.args.room.numRounds.toString();
         break;
 
       case "points":
         title = "Max. points".i18n;
-        value = widget.room.maxPoints.toString();
+        value = widget.args.room.maxPoints.toString();
         break;
 
       default:

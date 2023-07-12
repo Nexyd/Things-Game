@@ -23,11 +23,7 @@ class _SplashScreenState extends State<SplashScreen> {
         I18n.of(context).locale = UserSettings.I.language;
         print("### Language: ${UserSettings.I.language} ###");
 
-        Navigator.of(context).push(
-          MaterialPageRoute(
-            builder: (context) => const MainScreen(),
-          ),
-        );
+        Navigator.of(context).pushNamed("/main");
       });
     });
 
