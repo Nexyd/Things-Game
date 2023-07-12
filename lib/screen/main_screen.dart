@@ -111,7 +111,7 @@ class _MainScreenState extends State<MainScreen> {
           onPressed: () {
             Navigator.of(context).push(
               MaterialPageRoute(
-                builder: (context) => SearchRoomScreen(),
+                builder: (context) => const SearchRoomScreen(),
               ),
             );
           },

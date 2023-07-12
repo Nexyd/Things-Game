@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/screen/game_settings_screen.dart';
 import 'package:things_game/screen/user_settings_screen.dart';
@@ -7,6 +8,8 @@ import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 
 import '../config/user_settings.dart';
+import '../cubit/game_room_cubit.dart';
+import '../cubit/state/game_room_state.dart';
 
 class LobbyScreen extends StatefulWidget {
   final GameRoom room;
@@ -21,8 +24,36 @@ class LobbyScreen extends StatefulWidget {
 }
 
 class _LobbyScreenState extends State<LobbyScreen> {
+  List<Map<String, Widget>> playerList = [];
+
   @override
   Widget build(BuildContext context) {
+    final cubit = BlocProvider.of<GameRoomCubit>(context);
+    return BlocConsumer<GameRoomCubit, GameRoomState>(
+      bloc: cubit,
+      builder: (context, state) => _getContent(cubit),
+      listenWhen: (previousState, state) {
+        return state is PlayerJoined;
+      },
+      listener: (context, state) {
+        state as PlayerJoined;
+        final player = playerList.firstWhere(
+          (element) => element.keys.first.startsWith("Player"),
+        );
+
+        setState(() {
+          playerList.remove(player);
+          playerList.insert(1, {
+            state.playerName: _getIcon(true),
+          });
+        });
+      },
+    );
+  }
+
+  Widget _getContent(GameRoomCubit cubit) {
+    final width = MediaQuery.of(context).size.width / 100 * 90;
+
     return Scaffold(
       backgroundColor: UserSettings.I.backgroundColor,
       body: SafeArea(
@@ -30,15 +61,18 @@ class _LobbyScreenState extends State<LobbyScreen> {
           children: [
             _getHeader(),
             _getListView(context),
+            _getIndicatorBar(width),
+            _getListTile("rounds"),
+            _getListTile("points"),
             StyledButton(
               text: "Start/Ready".i18n,
-              onPressed: () => print("### Game Started! ###"),
+              onPressed: () => cubit.startGame(),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: StyledButton(
                 text: "Leave room".i18n,
-                onPressed: () => print("### Leaving room... ###"),
+                onPressed: () => cubit.backToMain(),
                 type: ButtonType.destructive,
               ),
             ),
@@ -49,75 +83,27 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   Widget _getHeader() {
-    // TODO: center row with button on right.
     final title = "Lobby id".i18n;
-    return Row(
-      children: [
-        StyledText(
-          "$title: \n${widget.room.id}",
-          fontSize: 30,
-        ),
-        Align(
-          alignment: Alignment.centerRight,
-          child: _getConfigButton(context),
-        ),
-      ],
-    );
-  }
-
-  Widget _getListView(BuildContext context) {
-    final cells = [
-      UserSettings.I.name,
-      "Player 1",
-      "Player 2",
-      "Player 3",
-      "Rounds".i18n,
-      "Max. points".i18n,
-    ];
-
-    // TODO: maybe separate listView players from rounds + maxpoints??
     return Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: SizedBox(
-        height: 400,
-        width: MediaQuery.of(context).size.width,
-        child: Center(
-          child: ListView.separated(
-            shrinkWrap: true,
-            itemCount: cells.length,
-            itemBuilder: (BuildContext context, int index) {
-              if (index < cells.length - 2) {
-                return ListTile(
-                  leading: UserSettings.I.avatar,
-                  title: StyledText(cells[index]),
-                );
-              }
-
-              if (index == cells.length - 2) {
-                return ListTile(
-                  title: StyledText("Rounds".i18n),
-                  trailing: StyledText(widget.room.numRounds.toString()),
-                );
-              }
-
-              if (index == cells.length - 1) {
-                return ListTile(
-                  title: StyledText("Max. points".i18n),
-                  trailing: StyledText(widget.room.maxPoints.toString()),
-                );
-              }
-
-              return null;
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              if (index == cells.length - 2) {
-                return const Divider(height: 1);
-              }
-
-              return const Divider(height: 0);
-            },
+      padding: const EdgeInsets.only(
+        top: 10.0,
+        left: 20.0,
+        right: 20.0,
+      ),
+      child: Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          const Spacer(flex: 2),
+          StyledText(
+            "$title: \n${widget.room.id}",
+            fontSize: 30,
           ),
-        ),
+          const Spacer(),
+          Align(
+            alignment: Alignment.centerRight,
+            child: _getConfigButton(context),
+          ),
+        ],
       ),
     );
   }
@@ -146,6 +132,87 @@ class _LobbyScreenState extends State<LobbyScreen> {
         ),
       ),
     );
+  }
+
+  Widget _getListView(BuildContext context) {
+    if (playerList.isEmpty) {
+      playerList
+        ..add({UserSettings.I.name: _getIcon()})
+        ..add({"Player 1": _getIcon()})
+        ..add({"Player 2": _getIcon()})
+        ..add({"Player 3": _getIcon()});
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: SizedBox(
+        height: 250,
+        width: MediaQuery.of(context).size.width,
+        child: Center(
+          child: ListView.builder(
+            shrinkWrap: true,
+            itemCount: playerList.length,
+            itemBuilder: (BuildContext context, int index) {
+              return ListTile(
+                leading: UserSettings.I.avatar,
+                title: StyledText(playerList[index].keys.first),
+                trailing: playerList[index].values.first,
+              );
+            },
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getIndicatorBar(double width) {
+    return Center(
+      child: Padding(
+        padding: const EdgeInsets.all(5.0),
+        child: Container(
+          height: 1,
+          width: width,
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(0.5),
+            color: Colors.grey,
+          ),
+        ),
+      ),
+    );
+  }
+
+  Widget _getListTile(String tag) {
+    String title = "";
+    String value = "";
+
+    switch (tag) {
+      case "rounds":
+        title = "Rounds".i18n;
+        value = widget.room.numRounds.toString();
+        break;
+
+      case "points":
+        title = "Max. points".i18n;
+        value = widget.room.maxPoints.toString();
+        break;
+
+      default:
+        break;
+    }
+
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 15.0),
+      child: ListTile(
+        title: StyledText(title),
+        trailing: StyledText(value),
+      ),
+    );
+  }
+
+  Widget _getIcon([bool isReady = false]) {
+    return isReady
+        ? const Icon(Icons.done, color: Colors.green)
+        : const Icon(Icons.close, color: Colors.red);
   }
 
   BoxDecoration _getDecoration(String asset) {

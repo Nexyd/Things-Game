@@ -48,6 +48,14 @@ class GameRoomCubit extends Cubit<GameRoomState> {
     return 0;
   }
 
+  void startGame() {
+    print("### cubit Game Started! ###");
+  }
+
+  void backToMain() {
+    print("### cubit back to main screen ###");
+  }
+
   int sendMessage() {
     print("### cubit send message ###");
     return 0;

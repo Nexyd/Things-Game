@@ -9,6 +9,7 @@ class GameRoomInitial extends GameRoomState {}
 
 class GameRoomError extends GameRoomState {
   final String error;
+
   GameRoomError({
     required this.error,
   });
@@ -16,6 +17,7 @@ class GameRoomError extends GameRoomState {
 
 class GameRoomCreated extends GameRoomState {
   final GameRoom room;
+
   GameRoomCreated({
     required this.room,
   });
@@ -29,7 +31,15 @@ class GameListLoaded extends GameRoomState {
   // GameListLoaded({required this.gameList});
 }
 
-class PlayerJoined extends GameRoomState {}
+class PlayerJoined extends GameRoomState {
+  final String playerName;
+  final Image? playerAvatar;
+
+  PlayerJoined({
+    required this.playerName,
+    this.playerAvatar,
+  });
+}
 
 class PlayerAnswerSent extends GameRoomState {}
 
