@@ -3,20 +3,7 @@ import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/translations/game_settings.i18n.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
-
-class ConfigurationData {
-  int players;
-  int rounds;
-  int maxPoints;
-  bool isPrivate;
-
-  ConfigurationData({
-    this.players = 0,
-    this.rounds = 0,
-    this.maxPoints = 0,
-    this.isPrivate = true,
-  });
-}
+import 'package:things_game/widget/model/configuration_data.dart';
 
 class GameSettings extends StatefulWidget {
   final ValueNotifier<ConfigurationData> notifier;

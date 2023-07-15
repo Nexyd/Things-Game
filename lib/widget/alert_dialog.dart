@@ -48,13 +48,10 @@ abstract class BasicDialog {
         content: contentWidget ?? StyledText(content!),
         actions: actions ??
             <Widget>[
-              Align(
-                alignment: Alignment.bottomRight,
-                child: StyledButton(
-                  text: buttonMessage,
-                  type: ButtonType.text,
-                  onPressed: () => Navigator.pop(context),
-                ),
+              StyledButton(
+                text: buttonMessage,
+                type: ButtonType.text,
+                onPressed: () => Navigator.pop(context),
               ),
             ],
       ),

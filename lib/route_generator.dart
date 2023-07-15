@@ -50,7 +50,9 @@ class RouteGenerator {
 
       case "/gameSettings":
         return MaterialPageRoute(
-          builder: (_) => GameSettingsScreen(),
+          builder: (_) => GameSettingsScreen(
+            args as GameSettingsScreenArgs,
+          ),
           settings: settings,
         );
     }

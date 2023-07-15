@@ -7,9 +7,9 @@ import 'package:things_game/widget/game_settings.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/cubit/game_room_cubit.dart';
-
-import '../cubit/state/game_room_state.dart';
-import '../widget/alert_dialog.dart';
+import 'package:things_game/cubit/state/game_room_state.dart';
+import 'package:things_game/widget/alert_dialog.dart';
+import 'package:things_game/widget/model/configuration_data.dart';
 
 class CreateRoomScreen extends StatelessWidget {
   final ConfigurationData data = ConfigurationData();

@@ -4,7 +4,7 @@ import 'package:things_game/cubit/model/assignment.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/repository/game_room_repository.dart';
 import 'package:things_game/cubit/state/game_room_state.dart';
-import 'package:things_game/widget/game_settings.dart';
+import 'package:things_game/widget/model/configuration_data.dart';
 
 class GameRoomCubit extends Cubit<GameRoomState> {
   GameRoom actualGame = GameRoom.empty();

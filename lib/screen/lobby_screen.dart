@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
-import 'package:things_game/screen/game_settings_screen.dart';
-import 'package:things_game/screen/user_settings_screen.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
+import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
+import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/cubit/game_room_cubit.dart';
+import 'package:things_game/cubit/state/game_room_state.dart';
 
-import '../config/user_settings.dart';
-import '../cubit/game_room_cubit.dart';
-import '../cubit/state/game_room_state.dart';
+import 'game_settings_screen.dart';
 
 class LobbyScreenArguments {
   final GameRoom room;
@@ -119,16 +119,18 @@ class _LobbyScreenState extends State<LobbyScreen> {
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       onTap: () {
-        // TODO: uncomment when game_settings_screen's fixme is done.
-        // Navigator.of(context)
-        //     .push(
-        //       MaterialPageRoute(
-        //         builder: (context) => GameSettingsScreen(),
-        //       ),
-        //     )
-        //     .then(
-        //       (value) => setState(() {}),
-        //     );
+        // TODO: Pass key to get back the new settings value.
+        // TODO: remove or add players to the list according to new settings.
+        final configData = ConfigurationData().copyWith(
+          room: widget.args.room,
+        );
+
+        Navigator.of(context)
+            .pushNamed(
+              "/gameSettings",
+              arguments: GameSettingsScreenArgs(configData),
+            )
+            .then((value) => setState(() {}));
       },
       child: Container(
         width: 45,

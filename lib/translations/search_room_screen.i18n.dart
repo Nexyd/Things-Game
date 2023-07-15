@@ -17,6 +17,10 @@ extension Localization on String {
       {
         "en_gb": "No games available",
         "es_es": "No hay partidas disponibles",
+      } +
+      {
+        "en_gb": "Retry",
+        "es_es": "Intentar de nuevo",
       };
 
   String get i18n => localize(this, _t);
