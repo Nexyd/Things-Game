@@ -6,13 +6,18 @@ import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
 class GameSettingsScreenArgs {
+  final GlobalKey? key;
   final ConfigurationData data;
 
-  GameSettingsScreenArgs(this.data);
+  GameSettingsScreenArgs({
+    this.key,
+    required this.data,
+  });
 }
 
 class GameSettingsScreen extends StatelessWidget {
   final GameSettingsScreenArgs args;
+
   const GameSettingsScreen(
     this.args, {
     super.key,
@@ -28,6 +33,8 @@ class GameSettingsScreen extends StatelessWidget {
         children: [
           GameSettings(
             notifier: notifier,
+            key: args.key,
+            isPlayersFieldEnabled: false,
           ),
         ],
       ),

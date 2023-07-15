@@ -7,10 +7,12 @@ import 'package:things_game/widget/model/configuration_data.dart';
 
 class GameSettings extends StatefulWidget {
   final ValueNotifier<ConfigurationData> notifier;
+  final bool isPlayersFieldEnabled;
 
   const GameSettings({
     super.key,
     required this.notifier,
+    this.isPlayersFieldEnabled = true,
   });
 
   @override
@@ -61,11 +63,13 @@ class GameSettingsState extends State<GameSettings> {
   Widget _getTextField(String field) {
     TextEditingController controller = TextEditingController();
     controller.text = _setInitialValue(field);
+    bool isEnabled = field == "players" ? widget.isPlayersFieldEnabled : true;
 
     return StyledTextField(
       hint: '',
       controller: controller,
       type: TextInputType.number,
+      enabled: isEnabled,
       onChanged: (value) {
         _updateField(
           field,

@@ -8,6 +8,7 @@ class StyledTextField extends StatelessWidget {
   final TextInputType? type;
   final Function(String)? onChanged;
   final String? Function()? onError;
+  final bool enabled;
 
   const StyledTextField({
     super.key,
@@ -16,6 +17,7 @@ class StyledTextField extends StatelessWidget {
     this.type,
     this.onChanged,
     this.onError,
+    this.enabled = true
   });
 
   @override
@@ -24,6 +26,7 @@ class StyledTextField extends StatelessWidget {
     return TextField(
       controller: controller ?? TextEditingController(),
       keyboardType: type,
+      enabled: enabled,
       onChanged: (text) {
         debouncer.run(() {
           if (onChanged != null) {

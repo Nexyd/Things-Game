@@ -8,13 +8,13 @@ import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/cubit/game_room_cubit.dart';
 import 'package:things_game/cubit/state/game_room_state.dart';
-
+import 'package:things_game/widget/game_settings.dart';
 import 'game_settings_screen.dart';
 
 class LobbyScreenArguments {
-  final GameRoom room;
+  final GameRoom initialRoom;
 
-  LobbyScreenArguments(this.room);
+  LobbyScreenArguments(this.initialRoom);
 }
 
 class LobbyScreen extends StatefulWidget {
@@ -30,10 +30,15 @@ class LobbyScreen extends StatefulWidget {
 }
 
 class _LobbyScreenState extends State<LobbyScreen> {
+  GameRoom room = GameRoom.empty();
   List<Map<String, Widget>> playerList = [];
 
   @override
   Widget build(BuildContext context) {
+    if (room == GameRoom.empty()) {
+      room = widget.args.initialRoom;
+    }
+
     final cubit = BlocProvider.of<GameRoomCubit>(context);
     return BlocConsumer<GameRoomCubit, GameRoomState>(
       bloc: cubit,
@@ -101,7 +106,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
         children: [
           const Spacer(flex: 2),
           StyledText(
-            "$title: \n${widget.args.room.id}",
+            "$title: \n${room.id}",
             fontSize: 30,
           ),
           const Spacer(),
@@ -119,18 +124,20 @@ class _LobbyScreenState extends State<LobbyScreen> {
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       onTap: () {
-        // TODO: Pass key to get back the new settings value.
-        // TODO: remove or add players to the list according to new settings.
+        final key = GlobalKey<GameSettingsState>();
         final configData = ConfigurationData().copyWith(
-          room: widget.args.room,
+          room: room,
         );
 
         Navigator.of(context)
             .pushNamed(
               "/gameSettings",
-              arguments: GameSettingsScreenArgs(configData),
+              arguments: GameSettingsScreenArgs(
+                data: configData,
+                key: key,
+              ),
             )
-            .then((value) => setState(() {}));
+            .then((value) => refreshData(key));
       },
       child: Container(
         width: 45,
@@ -196,12 +203,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
     switch (tag) {
       case "rounds":
         title = "Rounds".i18n;
-        value = widget.args.room.numRounds.toString();
+        value = room.numRounds.toString();
         break;
 
       case "points":
         title = "Max. points".i18n;
-        value = widget.args.room.maxPoints.toString();
+        value = room.maxPoints.toString();
         break;
 
       default:
@@ -234,5 +241,21 @@ class _LobbyScreenState extends State<LobbyScreen> {
         fit: BoxFit.fill,
       ),
     );
+  }
+
+  void refreshData(GlobalKey<GameSettingsState> key) {
+    setState(() {
+      // TODO: remove or add players to the list according to new settings.
+      if (key.currentState?.validateFields() == true) {
+        final data = key.currentState?.widget.notifier.value;
+        room = widget.args.initialRoom.copyWith(
+          name: data?.name,
+          //numPlayers: data?.players,
+          numRounds: data?.rounds,
+          maxPoints: data?.maxPoints,
+          isPrivate: data?.isPrivate,
+        );
+      }
+    });
   }
 }

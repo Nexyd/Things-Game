@@ -100,6 +100,7 @@ class GameRoom {
 
   Map<String, dynamic> toJson() {
     return {
+      "name": name,
       "numPlayers": numPlayers,
       "numRounds": numRounds,
       "maxPoints": maxPoints,
@@ -114,4 +115,19 @@ class GameRoom {
       ),
     };
   }
+
+  @override
+  bool operator ==(Object other) {
+    if (other is! GameRoom) return false;
+    return name == other.name &&
+        numPlayers == other.numPlayers &&
+        numRounds == other.numRounds &&
+        maxPoints == other.maxPoints &&
+        isPrivate == other.isPrivate;
+
+    //other is GameRoom && runtimeType == other.runtimeType;
+  }
+
+  @override
+  int get hashCode => 0;
 }
