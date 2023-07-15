@@ -32,6 +32,7 @@ class GameSettings extends StatefulWidget {
 
 class GameSettingsState extends State<GameSettings> {
   bool light = true;
+  bool isFirstCheck = true;
 
   @override
   Widget build(BuildContext context) {
@@ -77,6 +78,7 @@ class GameSettingsState extends State<GameSettings> {
     return StyledTextField(
       hint: '',
       controller: controller,
+      type: TextInputType.number,
       onChanged: (value) {
         _updateField(
           field,
@@ -84,7 +86,7 @@ class GameSettingsState extends State<GameSettings> {
         );
       },
       onError: () => _validate(
-        int.parse(controller.value.text),
+        int.tryParse(controller.value.text),
         field == "players",
       ),
     );
@@ -110,7 +112,11 @@ class GameSettingsState extends State<GameSettings> {
         break;
     }
 
-    return result;
+    if (isFirstCheck) {
+      return result == "0" ? "" : result;
+    } else {
+      return result;
+    }
   }
 
   void _updateField(String field, int value) {
@@ -131,6 +137,8 @@ class GameSettingsState extends State<GameSettings> {
         print("### Incorrect field data ###");
         break;
     }
+
+    isFirstCheck = false;
   }
 
   Widget _getSwitch() {
@@ -146,7 +154,12 @@ class GameSettingsState extends State<GameSettings> {
     );
   }
 
-  String? _validate(int value, [isNumPlayers = false]) {
+  String? _validate(int? value, [isNumPlayers = false]) {
+    if (isFirstCheck) return null;
+    if (value == null) {
+      return 'This field is mandatory'.i18n;
+    }
+
     if (isNumPlayers && value < 3) {
       return 'The number of players must be greater than 2'.i18n;
     }
@@ -159,6 +172,7 @@ class GameSettingsState extends State<GameSettings> {
   }
 
   bool validateFields() {
+    isFirstCheck = false;
     if (_validate(widget.notifier.value.players, true) != null) {
       return false;
     }

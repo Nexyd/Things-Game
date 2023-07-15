@@ -27,6 +27,10 @@ extension Localization on String {
       {
         "en_gb": "The value must be greater than 0",
         "es_es": "El valor debe ser superior a 0",
+      } +
+      {
+        "en_gb": "This field is mandatory",
+        "es_es": "Este campo es obligatorio",
       };
 
   String get i18n => localize(this, _t);

@@ -4,15 +4,17 @@ import 'package:things_game/util/debouncer.dart';
 
 class StyledTextField extends StatelessWidget {
   final String hint;
-  final Function(String)? onChanged;
   final TextEditingController? controller;
+  final TextInputType? type;
+  final Function(String)? onChanged;
   final String? Function()? onError;
 
   const StyledTextField({
     super.key,
     required this.hint,
-    this.onChanged,
     this.controller,
+    this.type,
+    this.onChanged,
     this.onError,
   });
 
@@ -21,6 +23,7 @@ class StyledTextField extends StatelessWidget {
     final debouncer = Debouncer(milliseconds: 500);
     return TextField(
       controller: controller ?? TextEditingController(),
+      keyboardType: type,
       onChanged: (text) {
         debouncer.run(() {
           if (onChanged != null) {
@@ -38,7 +41,6 @@ class StyledTextField extends StatelessWidget {
           ),
         ),
         hintText: hint,
-        // TODO: this gets called only once.
         errorText: _getErrorText(),
         hintStyle: TextStyle(
           color: UserSettings.I.textColor,

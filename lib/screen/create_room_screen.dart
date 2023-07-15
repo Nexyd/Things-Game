@@ -47,7 +47,6 @@ class CreateRoomScreen extends StatelessWidget {
       backgroundColor: UserSettings.I.backgroundColor,
       body: Column(
         children: [
-          // FIXME: fix error 'numPlayers must be greater than 0'
           GameSettings(
             key: key,
             notifier: notifier,
