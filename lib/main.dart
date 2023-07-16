@@ -7,6 +7,7 @@ import 'package:things_game/route_generator.dart';
 import 'package:things_game/screen/splash_screen.dart';
 
 import 'cubit/game_room_cubit.dart';
+import 'cubit/game_settings_cubit.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -24,8 +25,15 @@ class ThingsGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return BlocProvider(
-      create: (context) => GameRoomCubit(),
+    return MultiBlocProvider(
+      providers: [
+        BlocProvider(
+          create: (context) => GameSettingsCubit(),
+        ),
+        BlocProvider(
+          create: (context) => GameSettingsCubit(),
+        ),
+      ],
       child: const ThingsGameView(),
     );
   }

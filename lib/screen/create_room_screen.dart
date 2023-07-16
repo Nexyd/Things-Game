@@ -6,10 +6,12 @@ import 'package:things_game/translations/game_settings_screen.i18n.dart';
 import 'package:things_game/widget/game_settings.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
-import 'package:things_game/cubit/game_room_cubit.dart';
+import 'package:things_game/cubit/game_settings_cubit.dart';
 import 'package:things_game/cubit/state/game_room_state.dart';
 import 'package:things_game/widget/alert_dialog.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
+
+import '../cubit/state/game_settings_state.dart';
 
 class CreateRoomScreen extends StatelessWidget {
   final ConfigurationData data = ConfigurationData();
@@ -18,17 +20,17 @@ class CreateRoomScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<GameRoomCubit>(context);
-    return BlocConsumer<GameRoomCubit, GameRoomState>(
+    final cubit = BlocProvider.of<GameSettingsCubit>(context);
+    return BlocConsumer<GameSettingsCubit, GameSettingsState>(
       bloc: cubit,
       builder: (context, state) => _getContent(cubit),
       listenWhen: (previousState, state) {
-        return state is GameRoomCreated || state is GameRoomError;
+        return state is RoomCreated || state is GameRoomError;
       },
       listener: (context, state) {
         if (state is GameRoomError) {
           ErrorDialog(context).show();
-        } else if (state is GameRoomCreated) {
+        } else if (state is RoomCreated) {
           Navigator.of(context).pushNamed(
             "/lobby",
             arguments: LobbyScreenArguments(state.room),
@@ -38,9 +40,9 @@ class CreateRoomScreen extends StatelessWidget {
     );
   }
 
-  Widget _getContent(GameRoomCubit cubit) {
+  Widget _getContent(GameSettingsCubit cubit) {
     final notifier = ValueNotifier<ConfigurationData>(data);
-    final key = GlobalKey<GameSettingsState>();
+    final key = GlobalKey<GameSettingsWidgetState>();
 
     return Scaffold(
       appBar: StyledAppBar("Create a room".i18n),

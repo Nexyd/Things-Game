@@ -2,16 +2,17 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/cubit/state/game_room_state.dart';
+import 'package:things_game/cubit/state/game_settings_state.dart';
 import 'package:things_game/translations/search_room_screen.i18n.dart';
 import 'package:things_game/util/color_utils.dart';
 import 'package:things_game/widget/alert_dialog.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/cubit/game_room_cubit.dart';
+import 'package:things_game/cubit/game_settings_cubit.dart';
+import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/util/debouncer.dart';
 
-import '../cubit/model/game_room.dart';
 
 class SearchRoomScreen extends StatefulWidget {
   const SearchRoomScreen({super.key});
@@ -23,11 +24,7 @@ class SearchRoomScreen extends StatefulWidget {
 class _SearchRoomScreenState extends State<SearchRoomScreen> {
   bool isListInitialized = false;
   List<GameRoom> gameList = [];
-  final List<GameRoom> fullList = [
-    GameRoom.sample(),
-    GameRoom.sample(),
-    GameRoom.sample(),
-  ];
+  final List<GameRoom> fullList = [];
 
   @override
   Widget build(BuildContext context) {
@@ -83,12 +80,12 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
   }
 
   Widget _getListGames(BuildContext context) {
-    final cubit = BlocProvider.of<GameRoomCubit>(context);
+    final cubit = BlocProvider.of<GameSettingsCubit>(context);
     if (!isListInitialized) {
       cubit.getOpenRooms();
     }
 
-    return BlocBuilder<GameRoomCubit, GameRoomState>(
+    return BlocBuilder<GameSettingsCubit, GameSettingsState>(
       bloc: cubit,
       builder: (context, state) {
         if (state is GameRoomError) {
@@ -108,7 +105,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
         if (state is GameListLoaded) {
           if (!isListInitialized) {
             // TODO: get real room list.
-            // fullList.addAll(state.gameList);
+            fullList.addAll(state.gameList);
             gameList = fullList;
             isListInitialized = true;
           }

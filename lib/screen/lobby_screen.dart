@@ -6,10 +6,10 @@ import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/cubit/game_room_cubit.dart';
-import 'package:things_game/cubit/state/game_room_state.dart';
+import 'package:things_game/cubit/game_settings_cubit.dart';
+import 'package:things_game/cubit/state/game_settings_state.dart';
 import 'package:things_game/widget/game_settings.dart';
-import 'game_settings_screen.dart';
+import 'package:things_game/screen/game_settings_screen.dart';
 
 class LobbyScreenArguments {
   final GameRoom initialRoom;
@@ -39,8 +39,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
       room = widget.args.initialRoom;
     }
 
-    final cubit = BlocProvider.of<GameRoomCubit>(context);
-    return BlocConsumer<GameRoomCubit, GameRoomState>(
+    final cubit = BlocProvider.of<GameSettingsCubit>(context);
+    return BlocConsumer<GameSettingsCubit, GameSettingsState>(
       bloc: cubit,
       builder: (context, state) => _getContent(cubit),
       listenWhen: (previousState, state) {
@@ -62,7 +62,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  Widget _getContent(GameRoomCubit cubit) {
+  Widget _getContent(GameSettingsCubit cubit) {
     final width = MediaQuery.of(context).size.width / 100 * 90;
 
     return Scaffold(
@@ -124,7 +124,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       onTap: () {
-        final key = GlobalKey<GameSettingsState>();
+        final key = GlobalKey<GameSettingsWidgetState>();
         final configData = ConfigurationData().copyWith(
           room: room,
         );
@@ -243,7 +243,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  void refreshData(GlobalKey<GameSettingsState> key) {
+  void refreshData(GlobalKey<GameSettingsWidgetState> key) {
     setState(() {
       // TODO: remove or add players to the list according to new settings.
       if (key.currentState?.validateFields() == true) {

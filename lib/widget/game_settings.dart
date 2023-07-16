@@ -16,10 +16,10 @@ class GameSettings extends StatefulWidget {
   });
 
   @override
-  State<GameSettings> createState() => GameSettingsState();
+  State<GameSettings> createState() => GameSettingsWidgetState();
 }
 
-class GameSettingsState extends State<GameSettings> {
+class GameSettingsWidgetState extends State<GameSettings> {
   bool light = true;
   bool isFirstCheck = true;
 
