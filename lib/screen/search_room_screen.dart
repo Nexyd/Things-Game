@@ -13,6 +13,8 @@ import 'package:things_game/cubit/game_settings_cubit.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/util/debouncer.dart';
 
+import 'lobby_screen.dart';
+
 
 class SearchRoomScreen extends StatefulWidget {
   const SearchRoomScreen({super.key});
@@ -126,6 +128,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
             itemCount: gameList.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
+                onTap: () => navigateToLobby(gameList[index]),
                 title: StyledText(
                   gameList[index].name,
                   fontSize: 20,
@@ -161,5 +164,12 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
       setState(() {});
     });
+  }
+
+  void navigateToLobby(GameRoom room) {
+    Navigator.of(context).pushNamed(
+      "/lobby",
+      arguments: LobbyScreenArguments(room),
+    );
   }
 }
