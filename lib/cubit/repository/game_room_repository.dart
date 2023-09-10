@@ -6,7 +6,7 @@ import 'package:things_game/constants.dart';
 
 class GameRoomRepository {
   late Dio client;
-  final String userKey = "9bf04d6fed8c18ff03d257a0ba6864e0";
+  final userKey = "9bf04d6fed8c18ff03d257a0ba6864e0";
   final pastebin = withSingleApiDevKey(
     apiDevKey: "KMyCYinFCWJDdNlTQRYhYBDz2kLog4vB",
   );
@@ -19,7 +19,7 @@ class GameRoomRepository {
     String roomJson, [
     bool isPrivate = false,
   ]) async {
-    final result = await pastebin.paste(
+    final response = await pastebin.paste(
       pasteText: roomJson,
       options: PasteOptions(
         apiUserKey: userKey,
@@ -28,25 +28,37 @@ class GameRoomRepository {
       ),
     );
 
-    String resultString = "";
-    result.fold(
-      (error) => resultString = "error: $error",
-      (value) => resultString = value.toString(),
+    String result = "";
+    response.fold(
+      (error) => result = "error: $error",
+      (value) => result = value.toString(),
     );
 
-    return resultString;
+    return result;
   }
 
   Future<String> updatePlayers(
     String id,
     List<String> playerList,
   ) async {
-    final response = await client.put(
-      id,
-      data: jsonEncode(<String, dynamic>{
-        PLAYER_LIST: playerList,
-      }),
-    );
+    print("### repo update players ###");
+
+    try {
+      final response = await client.put(
+        id,
+        data: jsonEncode(<String, dynamic>{
+          PLAYER_LIST: playerList,
+        }),
+      );
+
+      print("### response: $response ###");
+    } on DioError catch (error) {
+      print("### DioError: $error ###");
+      return Future.error(error);
+    } catch (error) {
+      print("### Error: $error ###");
+      return Future.error(error);
+    }
 
     // TODO: parse response.data
     return "";
@@ -56,19 +68,19 @@ class GameRoomRepository {
     String id,
     String boardJson,
   ) async {
-    final response = await client.put(
-      id,
-      data: jsonEncode(<String, dynamic>{
-        QUESTION_BOARD: boardJson,
-      }),
-    );
+    // final response = await client.put(
+    //   id,
+    //   data: jsonEncode(<String, dynamic>{
+    //     QUESTION_BOARD: boardJson,
+    //   }),
+    // );
 
     // TODO: parse response.
     return "";
   }
 
   Future<String> deleteRoom(String id) async {
-    final response = await client.delete(id);
+    //final response = await client.delete(id);
 
     // TODO: parse response.
     return "";

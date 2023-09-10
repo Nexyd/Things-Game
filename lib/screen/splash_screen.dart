@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 
-import 'package:things_game/screen/main_screen.dart';
 import 'package:things_game/config/user_settings.dart';
 
 class SplashScreen extends StatefulWidget {

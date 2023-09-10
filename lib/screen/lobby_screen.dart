@@ -129,14 +129,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
           room: room,
         );
 
+        final args = GameSettingsScreenArgs(data: configData, key: key);
         Navigator.of(context)
-            .pushNamed(
-              "/gameSettings",
-              arguments: GameSettingsScreenArgs(
-                data: configData,
-                key: key,
-              ),
-            )
+            .pushNamed("/gameSettings", arguments: args)
             .then((value) => refreshData(key));
       },
       child: Container(

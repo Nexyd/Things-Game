@@ -1,3 +1,5 @@
+// ignore_for_file: constant_identifier_names
+
 // Shared Preferences Entries
 const String NAME = "name";
 const String AVATAR = "avatar";

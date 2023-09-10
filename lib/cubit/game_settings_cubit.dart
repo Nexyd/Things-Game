@@ -11,9 +11,7 @@ class GameSettingsCubit extends Cubit<GameSettingsState> {
 
   GameSettingsCubit() : super(GameSettingsInitial());
 
-  void createRoom(
-    ConfigurationData data,
-  ) async {
+  Future<void> createRoom(ConfigurationData data) async {
     actualGame = actualGame.copyWith(
       numPlayers: data.players,
       numRounds: data.rounds,
@@ -28,16 +26,17 @@ class GameSettingsCubit extends Cubit<GameSettingsState> {
 
     if (result.startsWith("error")) {
       emit(GameSettingsError(error: result));
-    } else {
-      actualGame.id = result.substring(
-        result.lastIndexOf("/") + 1,
-      );
-
-      emit(RoomCreated(room: actualGame));
+      return;
     }
+
+    actualGame.id = result.substring(
+      result.lastIndexOf("/") + 1,
+    );
+
+    emit(RoomCreated(room: actualGame));
   }
 
-  void getOpenRooms() {
+  Future<void> getOpenRooms() async {
     emit(LoadingGameList());
     print("### cubit get open rooms ###");
 
@@ -50,21 +49,28 @@ class GameSettingsCubit extends Cubit<GameSettingsState> {
     ));
   }
 
-  bool addPlayer(String name) {
+  Future<bool> addPlayer(String name) async {
     print("### cubit add player ###");
+    final result = await repo.updatePlayers(
+      actualGame.id,
+      actualGame.playerList,
+    );
+
+    print("### cubit add player result: $result ###");
     return false;
   }
 
-  bool removePlayer(String name) {
+  Future<bool> removePlayer(String name) async {
     print("### cubit remove player ###");
     return false;
   }
 
   void startGame() {
+    addPlayer("foo");
     print("### cubit Game Started! ###");
   }
 
-  bool deleteRoom() {
+  Future<bool> deleteRoom() async {
     print("### cubit delete room ###");
     return false;
   }

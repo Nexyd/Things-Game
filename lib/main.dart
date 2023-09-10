@@ -6,7 +6,6 @@ import 'package:i18n_extension/i18n_widget.dart';
 import 'package:things_game/route_generator.dart';
 import 'package:things_game/screen/splash_screen.dart';
 
-import 'cubit/game_room_cubit.dart';
 import 'cubit/game_settings_cubit.dart';
 
 void main() {

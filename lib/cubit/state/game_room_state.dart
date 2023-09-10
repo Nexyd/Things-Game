@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 
-import '../model/game_room.dart';
-
 @immutable
 abstract class GameRoomState {}
 
