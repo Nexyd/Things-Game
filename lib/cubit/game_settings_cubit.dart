@@ -38,7 +38,9 @@ class GameSettingsCubit extends Cubit<GameSettingsState> {
 
   Future<void> getOpenRooms() async {
     emit(LoadingGameList());
-    print("### cubit get open rooms ###");
+
+    final result = await repo.getRooms();
+    print("### open rooms: $result ###");
 
     emit(GameListLoaded(
       gameList: [

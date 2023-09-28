@@ -179,7 +179,5 @@ class GameSettingsWidgetState extends State<GameSettings> {
     return true;
   }
 
-  void refresh() {
-    setState(() {});
-  }
+  void refresh() => setState(() {});
 }

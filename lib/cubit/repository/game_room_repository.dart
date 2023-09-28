@@ -37,6 +37,20 @@ class GameRoomRepository {
     return result;
   }
 
+  Future<List<String>> getRooms() async {
+    final response = await pastebin.pastes(userKey: userKey);
+    List<String> result = [];
+
+    response.fold(
+      (error) => result.add("error: $error"),
+      (value) => result = value.map((e) => e.url.toString()).toList(),
+    );
+
+    // TODO: call dio.get for each url
+
+    return result;
+  }
+
   Future<String> updatePlayers(
     String id,
     List<String> playerList,

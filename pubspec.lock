@@ -368,10 +368,11 @@ packages:
   pastebin:
     dependency: "direct main"
     description:
-      name: pastebin
-      sha256: "0098de7a6c82a26cc374c94c4e3ba0cd4eb7f313374fbfdf8a2abc783b3752cd"
-      url: "https://pub.dev"
-    source: hosted
+      path: "."
+      ref: "v1.0.0"
+      resolved-ref: c8d126ae628d15fa11db36081e54aa2cfdfbeba3
+      url: "git@github.com:Nexyd/pastebin-flutter.git"
+    source: git
     version: "1.0.1"
   path:
     dependency: transitive

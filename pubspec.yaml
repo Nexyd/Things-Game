@@ -33,6 +33,11 @@ dependencies:
   flutter_localizations:
     sdk: flutter
 
+  pastebin:
+    git:
+      url: git@github.com:Nexyd/pastebin-flutter.git
+      ref: v1.0.0
+
   i18n_extension: ^9.0.0
 
   # The following adds the Cupertino Icons font to your application.
@@ -45,7 +50,6 @@ dependencies:
   flutter_native_splash: ^2.2.19
   flutter_launcher_icons: ^0.12.0
   loggy: ^2.0.3
-  pastebin: ^1.0.1
 
   # Dio
   dio: ^4.0.6
