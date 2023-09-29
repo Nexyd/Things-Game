@@ -15,7 +15,6 @@ import 'package:things_game/util/debouncer.dart';
 
 import 'lobby_screen.dart';
 
-
 class SearchRoomScreen extends StatefulWidget {
   const SearchRoomScreen({super.key});
 
@@ -106,7 +105,6 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
         if (state is GameListLoaded) {
           if (!isListInitialized) {
-            // TODO: get real room list.
             fullList.addAll(state.gameList);
             gameList = fullList;
             isListInitialized = true;
@@ -154,9 +152,18 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
     debouncer.run(() {
       gameList = fullList.where((element) {
         bool result = true;
-        for (var character in value.characters) {
-          result = element.name.indexOf(character) > 0;
-          if (!result) return false;
+        bool foundById = false;
+
+        if (element.id == value) {
+          foundById = true;
+          return true;
+        }
+
+        if (!foundById) {
+          for (var character in value.characters) {
+            result = element.name.indexOf(character) > 0;
+            if (!result) return false;
+          }
         }
 
         return result;

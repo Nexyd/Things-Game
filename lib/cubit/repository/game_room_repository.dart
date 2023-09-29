@@ -6,6 +6,8 @@ import 'package:things_game/constants.dart';
 
 class GameRoomRepository {
   late Dio client;
+  final baseUrl = "https://pastebin.com";
+  final rawBaseUrl = "https://pastebin.com/raw";
   final userKey = "9bf04d6fed8c18ff03d257a0ba6864e0";
   final pastebin = withSingleApiDevKey(
     apiDevKey: "KMyCYinFCWJDdNlTQRYhYBDz2kLog4vB",
@@ -38,17 +40,21 @@ class GameRoomRepository {
   }
 
   Future<List<String>> getRooms() async {
+    // TODO: filter room privacity.
     final response = await pastebin.pastes(userKey: userKey);
-    List<String> result = [];
+    List<String> roomUrls = [];
 
     response.fold(
-      (error) => result.add("error: $error"),
-      (value) => result = value.map((e) => e.url.toString()).toList(),
+      (error) => roomUrls.add("error: $error"),
+      (value) => roomUrls = value.map((e) => e.url.toString()).toList(),
+      // (value) => value.map((e) async => await getRawJson(e.url.toString()))
     );
 
-    // TODO: call dio.get for each url
+    if (roomUrls.isNotEmpty && roomUrls.first.startsWith("error")) {
+      return roomUrls;
+    }
 
-    return result;
+    return _getJsonList(roomUrls);
   }
 
   Future<String> updatePlayers(
@@ -98,6 +104,35 @@ class GameRoomRepository {
 
     // TODO: parse response.
     return "";
+  }
+
+  Future<String> _getRawJson(String url) async {
+    final response = await client.get(url);
+    return response.data;
+  }
+
+  String _addIdToJson(String id, String json) {
+    String result = json.substring(0, json.length-1);
+    result = "$result,\"id\": \"$id\"}";
+
+    return result;
+  }
+
+  Future<List<String>> _getJsonList(List<String> roomUrls) async {
+    List<String> result = [];
+    for (String url in roomUrls) {
+      final rawUrl = url.replaceFirst(baseUrl, rawBaseUrl);
+      final id = url.substring(
+        url.lastIndexOf("/") + 1,
+      );
+
+      final response = await _getRawJson(rawUrl);
+      final json = _addIdToJson(id, response);
+
+      result.add(json);
+    }
+
+    return result;
   }
 
   Dio _getClient() {

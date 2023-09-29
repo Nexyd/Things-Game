@@ -36,7 +36,7 @@ dependencies:
   pastebin:
     git:
       url: git@github.com:Nexyd/pastebin-flutter.git
-      ref: v1.0.0
+      ref: v1.0.1
 
   i18n_extension: ^9.0.0
 

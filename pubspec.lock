@@ -369,8 +369,8 @@ packages:
     dependency: "direct main"
     description:
       path: "."
-      ref: "v1.0.0"
-      resolved-ref: c8d126ae628d15fa11db36081e54aa2cfdfbeba3
+      ref: "v1.0.1"
+      resolved-ref: "06c8b50a2c879c4cde2326b5b77c62656a5419b4"
       url: "git@github.com:Nexyd/pastebin-flutter.git"
     source: git
     version: "1.0.1"

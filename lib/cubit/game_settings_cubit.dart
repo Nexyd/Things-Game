@@ -40,15 +40,13 @@ class GameSettingsCubit extends Cubit<GameSettingsState> {
     emit(LoadingGameList());
 
     final result = await repo.getRooms();
-    print("### open rooms: $result ###");
+    if (result.isNotEmpty && result.first.startsWith("error")) {
+      emit(GameSettingsError(error: result.first));
+      return;
+    }
 
-    emit(GameListLoaded(
-      gameList: [
-        GameRoom.sample(),
-        GameRoom.sample(),
-        GameRoom.sample(),
-      ],
-    ));
+    List<GameRoom> rooms = result.map((e) => GameRoom.fromRawJson(e)).toList();
+    emit(GameListLoaded(gameList: rooms));
   }
 
   Future<bool> addPlayer(String name) async {

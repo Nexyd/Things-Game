@@ -7,10 +7,6 @@ import 'dart:math';
 
 import 'package:things_game/cubit/model/question_board.dart';
 
-GameRoom gameRoomFromJson(String str) => GameRoom.fromJson(json.decode(str));
-
-String gameRoomToJson(GameRoom data) => json.encode(data.toJson());
-
 class GameRoom {
   String id = "";
   String name;
@@ -23,6 +19,7 @@ class GameRoom {
 
   GameRoom({
     required this.name,
+    required this.id,
     required this.numPlayers,
     required this.numRounds,
     required this.maxPoints,
@@ -33,6 +30,7 @@ class GameRoom {
 
   GameRoom copyWith({
     String? name,
+    String? id,
     int? numPlayers,
     int? numRounds,
     int? maxPoints,
@@ -42,6 +40,7 @@ class GameRoom {
   }) {
     return GameRoom(
       name: name ?? this.name,
+      id: id ?? this.id,
       numPlayers: numPlayers ?? this.numPlayers,
       numRounds: numRounds ?? this.numRounds,
       maxPoints: maxPoints ?? this.maxPoints,
@@ -51,10 +50,14 @@ class GameRoom {
     );
   }
 
+  factory GameRoom.fromRawJson(String str) =>
+      GameRoom.fromJson(json.decode(str));
+
   factory GameRoom.fromJson(
     Map<String, dynamic> json,
   ) {
     return GameRoom(
+      id: json["id"],
       name: json["name"],
       numPlayers: json["numPlayers"],
       numRounds: json["numRounds"],
@@ -74,6 +77,7 @@ class GameRoom {
   factory GameRoom.empty() {
     return GameRoom(
       name: "",
+      id: "",
       numPlayers: 0,
       numRounds: 0,
       maxPoints: 0,
@@ -86,6 +90,7 @@ class GameRoom {
   factory GameRoom.sample() {
     var sample = GameRoom(
       name: "Game#${Random().nextInt(999)}",
+      id: "Id#${Random().nextInt(999)}",
       numPlayers: Random().nextInt(10),
       numRounds: Random().nextInt(10),
       maxPoints: Random().nextInt(70),
