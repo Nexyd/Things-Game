@@ -8,13 +8,29 @@ class GameRoomRepository {
   late Dio client;
   final baseUrl = "https://pastebin.com";
   final rawBaseUrl = "https://pastebin.com/raw";
-  final userKey = "9bf04d6fed8c18ff03d257a0ba6864e0";
+  //final userKey = "9bf04d6fed8c18ff03d257a0ba6864e0";
+  final userKey = "2d7a99b044ec751a72423a9ab2c9b4da";
   final pastebin = withSingleApiDevKey(
     apiDevKey: "KMyCYinFCWJDdNlTQRYhYBDz2kLog4vB",
   );
 
   GameRoomRepository() {
     client = _getClient();
+  }
+
+  Future<String> login() async {
+    String key = "";
+    final result = await pastebin.apiUserKey(
+      username: "Nexyd",
+      password: "AndusinTwilight12",
+    );
+
+    result.fold(
+      (error) => key = "error happened: $error",
+      (value) => key = value,
+    );
+
+    return key;
   }
 
   Future<String> createRoom(
@@ -40,7 +56,6 @@ class GameRoomRepository {
   }
 
   Future<List<String>> getRooms() async {
-    // TODO: filter room privacity.
     final response = await pastebin.pastes(userKey: userKey);
     List<String> roomUrls = [];
 
@@ -51,6 +66,7 @@ class GameRoomRepository {
     );
 
     if (roomUrls.isNotEmpty && roomUrls.first.startsWith("error")) {
+      // TODO: Add Loggy, and print error here.
       return roomUrls;
     }
 
@@ -112,7 +128,7 @@ class GameRoomRepository {
   }
 
   String _addIdToJson(String id, String json) {
-    String result = json.substring(0, json.length-1);
+    String result = json.substring(0, json.length - 1);
     result = "$result,\"id\": \"$id\"}";
 
     return result;

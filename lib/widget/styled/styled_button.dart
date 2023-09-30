@@ -30,8 +30,8 @@ class StyledButton extends StatelessWidget {
   }
 
   Widget _getConstructiveButton() {
-    return SizedBox(
-      width: 140,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 140),
       child: MaterialButton(
         onPressed: onPressed,
         color: UserSettings.I.primaryColor,

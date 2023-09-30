@@ -1,19 +1,17 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/cubit/state/game_room_state.dart';
-import 'package:things_game/cubit/state/game_settings_state.dart';
 import 'package:things_game/translations/search_room_screen.i18n.dart';
 import 'package:things_game/util/color_utils.dart';
 import 'package:things_game/widget/alert_dialog.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/cubit/game_settings_cubit.dart';
 import 'package:things_game/cubit/model/game_room.dart';
+import 'package:things_game/cubit/room_cubit.dart';
+import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/util/debouncer.dart';
-
-import 'lobby_screen.dart';
+import 'package:things_game/screen/lobby_screen.dart';
 
 class SearchRoomScreen extends StatefulWidget {
   const SearchRoomScreen({super.key});
@@ -81,16 +79,16 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
   }
 
   Widget _getListGames(BuildContext context) {
-    final cubit = BlocProvider.of<GameSettingsCubit>(context);
+    final cubit = BlocProvider.of<RoomCubit>(context);
     if (!isListInitialized) {
       cubit.getOpenRooms();
     }
 
-    return BlocBuilder<GameSettingsCubit, GameSettingsState>(
+    return BlocBuilder<RoomCubit, RoomState>(
       bloc: cubit,
       builder: (context, state) {
-        if (state is GameRoomError) {
-          ErrorDialog(context).show();
+        if (state is RoomError) {
+          //ErrorDialog(context).show();
           return Center(
             child: StyledButton(
               text: 'Retry'.i18n,
@@ -103,52 +101,48 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
           return const CircularProgressIndicator();
         }
 
-        if (state is GameListLoaded) {
-          if (!isListInitialized) {
-            fullList.addAll(state.gameList);
-            gameList = fullList;
-            isListInitialized = true;
-          }
+        if (state is RoomListLoaded && !isListInitialized) {
+          fullList.addAll(state.roomList);
+          gameList = fullList.where((e) => !e.isPrivate).toList();
+          isListInitialized = true;
+        }
 
-          if (gameList.isEmpty) {
-            return Padding(
-              padding: const EdgeInsets.only(top: 10.0),
-              child: StyledText(
-                "No games available".i18n,
-                fontSize: 20,
-                fontStyle: FontStyle.italic,
-              ),
-            );
-          }
-
-          return ListView.separated(
-            shrinkWrap: true,
-            itemCount: gameList.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                onTap: () => navigateToLobby(gameList[index]),
-                title: StyledText(
-                  gameList[index].name,
-                  fontSize: 20,
-                ),
-              );
-            },
-            separatorBuilder: (BuildContext context, int index) {
-              return Divider(
-                height: 1,
-                color: UserSettings.I.textColor,
-              );
-            },
+        if (gameList.isEmpty) {
+          return Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: StyledText(
+              "No games available".i18n,
+              fontSize: 20,
+              fontStyle: FontStyle.italic,
+            ),
           );
         }
 
-        return Container();
+        return ListView.separated(
+          shrinkWrap: true,
+          itemCount: gameList.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              onTap: () => navigateToLobby(gameList[index]),
+              title: StyledText(
+                gameList[index].name,
+                fontSize: 20,
+              ),
+            );
+          },
+          separatorBuilder: (BuildContext context, int index) {
+            return Divider(
+              height: 1,
+              color: UserSettings.I.textColor,
+            );
+          },
+        );
       },
     );
   }
 
   void _filterResultsBy(String value) {
-    final debouncer = Debouncer(milliseconds: 500);
+    final debouncer = Debouncer(milliseconds: 800);
     debouncer.run(() {
       gameList = fullList.where((element) {
         bool result = true;

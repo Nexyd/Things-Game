@@ -6,12 +6,11 @@ import 'package:things_game/translations/game_settings_screen.i18n.dart';
 import 'package:things_game/widget/game_settings.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
-import 'package:things_game/cubit/game_settings_cubit.dart';
-import 'package:things_game/cubit/state/game_room_state.dart';
 import 'package:things_game/widget/alert_dialog.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
-import '../cubit/state/game_settings_state.dart';
+import '../cubit/room_cubit.dart';
+import '../cubit/state/room_state.dart';
 
 class CreateRoomScreen extends StatelessWidget {
   final ConfigurationData data = ConfigurationData();
@@ -20,15 +19,15 @@ class CreateRoomScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<GameSettingsCubit>(context);
-    return BlocConsumer<GameSettingsCubit, GameSettingsState>(
+    final cubit = BlocProvider.of<RoomCubit>(context);
+    return BlocConsumer<RoomCubit, RoomState>(
       bloc: cubit,
       builder: (context, state) => _getContent(cubit),
       listenWhen: (previousState, state) {
-        return state is RoomCreated || state is GameRoomError;
+        return state is RoomCreated || state is RoomError;
       },
       listener: (context, state) {
-        if (state is GameRoomError) {
+        if (state is RoomError) {
           ErrorDialog(context).show();
         } else if (state is RoomCreated) {
           Navigator.of(context).pushNamed(
@@ -40,7 +39,8 @@ class CreateRoomScreen extends StatelessWidget {
     );
   }
 
-  Widget _getContent(GameSettingsCubit cubit) {
+  Widget _getContent(RoomCubit cubit) {
+    // TODO: change to cubit ??
     final notifier = ValueNotifier<ConfigurationData>(data);
     final key = GlobalKey<GameSettingsWidgetState>();
 

@@ -1,15 +1,15 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/repository/game_room_repository.dart';
-import 'package:things_game/cubit/state/game_room_state.dart';
+import 'package:things_game/cubit/state/game_state.dart';
 
 import 'model/assignment.dart';
 
-class GameRoomCubit extends Cubit<GameRoomState> {
+class GameCubit extends Cubit<GameState> {
   GameRoom actualGame = GameRoom.empty();
   final GameRoomRepository repo = GameRoomRepository();
 
-  GameRoomCubit() : super(GameRoomInitial());
+  GameCubit() : super(GameInitial());
 
   bool sendMessage() {
     print("### cubit send message ###");
@@ -26,7 +26,7 @@ class GameRoomCubit extends Cubit<GameRoomState> {
     return false;
   }
 
-  void deleteRoom() {
-    print("### cubit delete room ###");
+  void startGame() {
+    print("### cubit Game Started! ###");
   }
 }

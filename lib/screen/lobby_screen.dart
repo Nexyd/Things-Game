@@ -1,13 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:things_game/cubit/game_cubit.dart';
 import 'package:things_game/cubit/model/game_room.dart';
+import 'package:things_game/cubit/room_cubit.dart';
+import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/cubit/game_settings_cubit.dart';
-import 'package:things_game/cubit/state/game_settings_state.dart';
 import 'package:things_game/widget/game_settings.dart';
 import 'package:things_game/screen/game_settings_screen.dart';
 
@@ -39,8 +40,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
       room = widget.args.initialRoom;
     }
 
-    final cubit = BlocProvider.of<GameSettingsCubit>(context);
-    return BlocConsumer<GameSettingsCubit, GameSettingsState>(
+    final cubit = BlocProvider.of<RoomCubit>(context);
+    return BlocConsumer<RoomCubit, RoomState>(
       bloc: cubit,
       builder: (context, state) => _getContent(cubit),
       listenWhen: (previousState, state) {
@@ -62,7 +63,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  Widget _getContent(GameSettingsCubit cubit) {
+  Widget _getContent(RoomCubit cubit) {
     final width = MediaQuery.of(context).size.width / 100 * 90;
 
     return Scaffold(
@@ -77,7 +78,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
             _getListTile("points"),
             StyledButton(
               text: "Start/Ready".i18n,
-              onPressed: () => cubit.startGame(),
+              // onPressed: () => cubit.startGame(),
+              onPressed: () => BlocProvider.of<GameCubit>(context).startGame(),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
@@ -124,6 +126,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       onTap: () {
+        // TODO: update to cubit ??
         final key = GlobalKey<GameSettingsWidgetState>();
         final configData = ConfigurationData().copyWith(
           room: room,

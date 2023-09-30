@@ -2,14 +2,14 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/repository/game_room_repository.dart';
-import 'package:things_game/cubit/state/game_settings_state.dart';
+import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
-class GameSettingsCubit extends Cubit<GameSettingsState> {
+class RoomCubit extends Cubit<RoomState> {
   GameRoom actualGame = GameRoom.empty();
   final GameRoomRepository repo = GameRoomRepository();
 
-  GameSettingsCubit() : super(GameSettingsInitial());
+  RoomCubit() : super(RoomInitial());
 
   Future<void> createRoom(ConfigurationData data) async {
     actualGame = actualGame.copyWith(
@@ -25,7 +25,7 @@ class GameSettingsCubit extends Cubit<GameSettingsState> {
     // );
 
     if (result.startsWith("error")) {
-      emit(GameSettingsError(error: result));
+      emit(RoomError(error: result));
       return;
     }
 
@@ -39,14 +39,15 @@ class GameSettingsCubit extends Cubit<GameSettingsState> {
   Future<void> getOpenRooms() async {
     emit(LoadingGameList());
 
-    final result = await repo.getRooms();
+    //final result = await repo.getRooms();
+    final result = ["error, eres un desgraciao"];
     if (result.isNotEmpty && result.first.startsWith("error")) {
-      emit(GameSettingsError(error: result.first));
+      emit(RoomError(error: result.first));
       return;
     }
 
     List<GameRoom> rooms = result.map((e) => GameRoom.fromRawJson(e)).toList();
-    emit(GameListLoaded(gameList: rooms));
+    emit(RoomListLoaded(roomList: rooms));
   }
 
   Future<bool> addPlayer(String name) async {
@@ -63,11 +64,6 @@ class GameSettingsCubit extends Cubit<GameSettingsState> {
   Future<bool> removePlayer(String name) async {
     print("### cubit remove player ###");
     return false;
-  }
-
-  void startGame() {
-    addPlayer("foo");
-    print("### cubit Game Started! ###");
   }
 
   Future<bool> deleteRoom() async {
