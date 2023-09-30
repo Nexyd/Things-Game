@@ -18,21 +18,6 @@ class GameRoomRepository {
     client = _getClient();
   }
 
-  Future<String> login() async {
-    String key = "";
-    final result = await pastebin.apiUserKey(
-      username: "Nexyd",
-      password: "AndusinTwilight12",
-    );
-
-    result.fold(
-      (error) => key = "error happened: $error",
-      (value) => key = value,
-    );
-
-    return key;
-  }
-
   Future<String> createRoom(
     String roomJson, [
     bool isPrivate = false,

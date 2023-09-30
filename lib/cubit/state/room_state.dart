@@ -10,22 +10,20 @@ class RoomInitial extends RoomState {}
 class RoomError extends RoomState {
   final String error;
 
-  RoomError({
-    required this.error,
-  });
+  RoomError({required this.error});
 }
 
 class RoomCreated extends RoomState {
   final GameRoom room;
 
-  RoomCreated({
-    required this.room,
-  });
+  RoomCreated({required this.room});
 }
 
 class LoadingGameList extends RoomState {}
+
 class RoomListLoaded extends RoomState {
   final List<GameRoom> roomList;
+
   RoomListLoaded({required this.roomList});
 }
 
@@ -42,7 +40,5 @@ class PlayerJoined extends RoomState {
 class PlayerLeft extends RoomState {
   final String playerName;
 
-  PlayerLeft({
-    required this.playerName,
-  });
+  PlayerLeft({required this.playerName});
 }

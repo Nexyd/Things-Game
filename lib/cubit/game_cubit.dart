@@ -7,9 +7,14 @@ import 'model/assignment.dart';
 
 class GameCubit extends Cubit<GameState> {
   GameRoom actualGame = GameRoom.empty();
+  // TODO: change to GameRepository ??
   final GameRoomRepository repo = GameRoomRepository();
 
   GameCubit() : super(GameInitial());
+
+  void startGame() {
+    print("### cubit Game Started! ###");
+  }
 
   bool sendMessage() {
     print("### cubit send message ###");
@@ -24,9 +29,5 @@ class GameCubit extends Cubit<GameState> {
   bool sendAssignments(Assignment assignment) {
     print("### cubit send assignments ###");
     return false;
-  }
-
-  void startGame() {
-    print("### cubit Game Started! ###");
   }
 }

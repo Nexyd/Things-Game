@@ -4,12 +4,11 @@ import 'package:flutter/material.dart';
 abstract class GameState {}
 
 class GameInitial extends GameState {}
+
 class GameError extends GameState {
   final String error;
 
-  GameError({
-    required this.error,
-  });
+  GameError({required this.error});
 }
 
 class PlayerAnswerSent extends GameState {}
