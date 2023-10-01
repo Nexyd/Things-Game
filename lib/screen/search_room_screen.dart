@@ -47,6 +47,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
             // Game list
             Container(child: _getListGames(context))
+            // Expanded(child: _getListGames(context))
           ],
         ),
       ),
@@ -88,11 +89,17 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
       bloc: cubit,
       builder: (context, state) {
         if (state is RoomError) {
-          //ErrorDialog(context).show();
-          return Center(
-            child: StyledButton(
-              text: 'Retry'.i18n,
-              onPressed: () => cubit.getOpenRooms(),
+          Future.delayed(const Duration(milliseconds: 200)).then(
+            (value) => ErrorDialog(context).show(),
+          );
+
+          return Padding(
+            padding: const EdgeInsets.only(top: 10.0),
+            child: Center(
+              child: StyledButton(
+                text: 'Retry'.i18n,
+                onPressed: () => cubit.getOpenRooms(),
+              ),
             ),
           );
         }

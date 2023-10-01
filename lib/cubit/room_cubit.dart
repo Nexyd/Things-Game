@@ -19,10 +19,9 @@ class RoomCubit extends Cubit<RoomState> {
       isPrivate: data.isPrivate,
     );
 
-    const result = "https://pastebin.com/BjYFu9CW";
-    // final result = await repo.createRoom(
-    //   actualGame.toJson().toString(),
-    // );
+    final result = await repo.createRoom(
+      actualGame.toJson().toString(),
+    );
 
     if (result.startsWith("error")) {
       emit(RoomError(error: result));
@@ -39,8 +38,7 @@ class RoomCubit extends Cubit<RoomState> {
   Future<void> getOpenRooms() async {
     emit(LoadingGameList());
 
-    //final result = await repo.getRooms();
-    final result = ["error, eres un desgraciao"];
+    final result = await repo.getRooms();
     if (result.isNotEmpty && result.first.startsWith("error")) {
       emit(RoomError(error: result.first));
       return;
