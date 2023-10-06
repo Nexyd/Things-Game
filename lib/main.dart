@@ -8,16 +8,13 @@ import 'package:things_game/screen/splash_screen.dart';
 
 import 'cubit/game_cubit.dart';
 import 'cubit/room_cubit.dart';
+import 'logger.dart';
 
 void main() {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
-  FlutterNativeSplash.preserve(
-    widgetsBinding: widgetsBinding,
-  );
-
-  runApp(
-    I18n(child: const ThingsGame()),
-  );
+  FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
+  Logger.init(LoggerConfig(level: LoggerLevel.debug));
+  runApp(I18n(child: const ThingsGame()));
 }
 
 class ThingsGame extends StatelessWidget {

@@ -14,6 +14,8 @@ import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
 import 'package:things_game/util/color_utils.dart';
 
+import '../logger.dart';
+
 class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
 
@@ -58,7 +60,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     Widget icon = InkWell(
       onTap: () {
         _pickAvatar().then((value) {
-          print("### avatar saved! ###");
+          Logger.settings.info("avatar saved!");
         });
       },
       child: isImagePicked ? UserSettings.I.avatar : const AvatarIcon(),
@@ -159,10 +161,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         ),
       ],
       value: localeStr,
-      onChanged: (value) {
-        print("### Changed value to: $value ###");
-        _saveLanguage(value);
-      },
+      onChanged: (value) => _saveLanguage(value),
     );
   }
 
@@ -197,7 +196,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         break;
 
       default:
-        print("### Could not save language... ###");
+        Logger.settings.warning("Could not save language...");
     }
 
     setState(() {
@@ -207,7 +206,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   }
 
   Future<void> _saveToPrefs(String tag, String name) async {
-    print("### Saving \"$name\" in entry: \"$tag\"... ###");
     final prefs = await SharedPreferences.getInstance();
     prefs.setString(tag, name);
   }
@@ -231,7 +229,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
           isImagePicked = true;
         });
       } catch (error) {
-        print("### Error trying to parse image path: $path... ###");
+        Logger.settings.error("Error trying to parse image path: $path...");
       }
     }
 

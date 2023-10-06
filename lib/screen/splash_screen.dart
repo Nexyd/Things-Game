@@ -4,6 +4,8 @@ import 'package:i18n_extension/i18n_widget.dart';
 
 import 'package:things_game/config/user_settings.dart';
 
+import '../logger.dart';
+
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});
 
@@ -17,10 +19,10 @@ class _SplashScreenState extends State<SplashScreen> {
     UserSettings.init().then((value) {
       setState(() {
         FlutterNativeSplash.remove();
-        print("### UserSettings initialized ###");
+        Logger.settings.info("UserSettings initialized");
 
         I18n.of(context).locale = UserSettings.I.language;
-        print("### Language: ${UserSettings.I.language} ###");
+        Logger.settings.info("Language: ${UserSettings.I.language}");
 
         Navigator.of(context).pushNamed("/main");
       });
@@ -31,6 +33,7 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
+    // TODO: create a splash screen to replace color.
     return Scaffold(
       body: Container(
         color: const Color(0xFFff7171),

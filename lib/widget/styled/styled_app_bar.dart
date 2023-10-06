@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
 
+// TODO: think a way to make it immutable
 //ignore: must_be_immutable
 class StyledAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
@@ -40,19 +41,9 @@ class _StyledAppBarState extends State<StyledAppBar> {
   }
 
   void _initNotifiers() {
-    widget.colorNotifier ??= ValueNotifier<Color>(
-      UserSettings.I.primaryColor,
-    );
-
-    widget.colorNotifier!.addListener(() {
-      print("### Updating color on StyledAppBar... ###");
-      setState(() {});
-    });
-
+    widget.colorNotifier ??= ValueNotifier<Color>(UserSettings.I.primaryColor);
+    widget.colorNotifier!.addListener(() => setState(() {}));
     widget.titleNotifier ??= ValueNotifier<String>(widget.title);
-    widget.titleNotifier!.addListener(() {
-      print("### Updating title on StyledAppBar... ###");
-      setState(() {});
-    });
+    widget.titleNotifier!.addListener(() => setState(() {}));
   }
 }

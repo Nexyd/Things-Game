@@ -6,6 +6,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/constants.dart';
 import 'package:things_game/widget/avatar_icon.dart';
 
+import '../logger.dart';
+
 class UserSettings {
   String name;
   Widget avatar;
@@ -81,7 +83,7 @@ class UserSettings {
     try {
       return Color(int.parse(hexString ?? "", radix: 16));
     } on Exception catch (_) {
-      print("### Exception parsing hex color: $hexString ###");
+      Logger.settings.error("Exception parsing hex color: $hexString");
       return null;
     }
   }

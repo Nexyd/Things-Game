@@ -4,6 +4,8 @@ import 'package:dio/dio.dart';
 import 'package:pastebin/pastebin.dart';
 import 'package:things_game/constants.dart';
 
+import '../../logger.dart';
+
 class GameRoomRepository {
   late Dio client;
   final baseUrl = "https://pastebin.com";
@@ -74,10 +76,10 @@ class GameRoomRepository {
 
       print("### response: $response ###");
     } on DioError catch (error) {
-      print("### DioError: $error ###");
+      Logger.game.error("DioError: $error");
       return Future.error(error);
     } catch (error) {
-      print("### Error: $error ###");
+      Logger.game.error("Error: $error");
       return Future.error(error);
     }
 

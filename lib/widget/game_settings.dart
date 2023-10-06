@@ -5,6 +5,8 @@ import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
+import '../logger.dart';
+
 class GameSettings extends StatefulWidget {
   final ValueNotifier<ConfigurationData> notifier;
   final bool isPlayersFieldEnabled;
@@ -99,7 +101,7 @@ class GameSettingsWidgetState extends State<GameSettings> {
         break;
 
       default:
-        print("### Incorrect field data ###");
+        Logger.game.error("Incorrect field data");
         break;
     }
 
@@ -125,7 +127,7 @@ class GameSettingsWidgetState extends State<GameSettings> {
         break;
 
       default:
-        print("### Incorrect field data ###");
+        Logger.game.error("Incorrect field data");
         break;
     }
 
