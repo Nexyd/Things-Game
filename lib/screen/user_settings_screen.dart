@@ -161,48 +161,32 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         ),
       ],
       value: localeStr,
-      onChanged: (value) => _saveLanguage(value),
+      onChanged: (value) => _updateLanguage(value),
     );
   }
 
-  void _saveLanguage(String? language) {
+  void _updateLanguage(String? language) {
     switch (language) {
-      case "Spanish":
-        const locale = Locale("es", "ES");
-        I18n.of(context).locale = locale;
-        UserSettings.I.language = locale;
-        _saveToPrefs(LANGUAGE, "es_ES");
-        break;
+      case "Spanish": _saveLanguage("es_ES"); break;
+      case "Español": _saveLanguage("es_ES"); break;
+      case "English": _saveLanguage("en_GB"); break;
+      case "Inglés":  _saveLanguage("en_GB"); break;
 
-      case "Español":
-        const locale = Locale("es", "ES");
-        I18n.of(context).locale = locale;
-        UserSettings.I.language = locale;
-        _saveToPrefs(LANGUAGE, "es_ES");
-        break;
-
-      case "English":
-        const locale = Locale("en", "GB");
-        I18n.of(context).locale = locale;
-        UserSettings.I.language = locale;
-        _saveToPrefs(LANGUAGE, "en_GB");
-        break;
-
-      case "Inglés":
-        const locale = Locale("en", "GB");
-        I18n.of(context).locale = locale;
-        UserSettings.I.language = locale;
-        _saveToPrefs(LANGUAGE, "en_GB");
-        break;
-
-      default:
-        Logger.settings.warning("Could not save language...");
+      default: Logger.settings.warning("Could not save language...");
     }
 
     setState(() {
       localeStr = language;
       appBar.titleNotifier?.value = "User settings".i18n;
     });
+  }
+
+  void _saveLanguage(String localeStr) {
+    final splitLocale = localeStr.split("_");
+    final locale = Locale(splitLocale[0], splitLocale[1]);
+    I18n.of(context).locale = locale;
+    UserSettings.I.language = locale;
+    _saveToPrefs(LANGUAGE, localeStr);
   }
 
   Future<void> _saveToPrefs(String tag, String name) async {
