@@ -1,24 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/translations/game_settings_screen.i18n.dart';
-import 'package:things_game/widget/game_settings.dart';
+import 'package:things_game/translations/room_settings_screen.i18n.dart';
+import 'package:things_game/widget/room_settings.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
-class GameSettingsScreenArgs {
+class RoomSettingsScreenArgs {
   final GlobalKey? key;
   final ConfigurationData data;
 
-  GameSettingsScreenArgs({
+  RoomSettingsScreenArgs({
     this.key,
     required this.data,
   });
 }
 
-class GameSettingsScreen extends StatelessWidget {
-  final GameSettingsScreenArgs args;
+class RoomSettingsScreen extends StatelessWidget {
+  final RoomSettingsScreenArgs args;
 
-  const GameSettingsScreen(
+  const RoomSettingsScreen(
     this.args, {
     super.key,
   });
@@ -31,7 +31,7 @@ class GameSettingsScreen extends StatelessWidget {
       backgroundColor: UserSettings.I.backgroundColor,
       body: Column(
         children: [
-          GameSettings(
+          RoomSettings(
             notifier: notifier,
             key: args.key,
             isPlayersFieldEnabled: false,

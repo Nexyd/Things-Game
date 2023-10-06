@@ -1,27 +1,27 @@
 import 'package:flutter/material.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/translations/game_settings.i18n.dart';
+import 'package:things_game/translations/room_settings.i18n.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
 import '../logger.dart';
 
-class GameSettings extends StatefulWidget {
+class RoomSettings extends StatefulWidget {
   final ValueNotifier<ConfigurationData> notifier;
   final bool isPlayersFieldEnabled;
 
-  const GameSettings({
+  const RoomSettings({
     super.key,
     required this.notifier,
     this.isPlayersFieldEnabled = true,
   });
 
   @override
-  State<GameSettings> createState() => GameSettingsWidgetState();
+  State<RoomSettings> createState() => RoomSettingsWidgetState();
 }
 
-class GameSettingsWidgetState extends State<GameSettings> {
+class RoomSettingsWidgetState extends State<RoomSettings> {
   bool light = true;
   bool isFirstCheck = true;
 

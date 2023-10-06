@@ -11,6 +11,10 @@ class RoomCubit extends Cubit<RoomState> {
 
   RoomCubit() : super(RoomInitial());
 
+  void updateConfiguration(ConfigurationData data) {
+
+  }
+
   Future<void> createRoom(ConfigurationData data) async {
     actualGame = actualGame.copyWith(
       numPlayers: data.players,

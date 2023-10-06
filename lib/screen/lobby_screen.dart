@@ -9,8 +9,8 @@ import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/widget/game_settings.dart';
-import 'package:things_game/screen/game_settings_screen.dart';
+import 'package:things_game/widget/room_settings.dart';
+import 'package:things_game/screen/room_settings_screen.dart';
 
 class LobbyScreenArguments {
   final GameRoom initialRoom;
@@ -127,12 +127,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
       splashFactory: NoSplash.splashFactory,
       onTap: () {
         // TODO: update to cubit ??
-        final key = GlobalKey<GameSettingsWidgetState>();
+        final key = GlobalKey<RoomSettingsWidgetState>();
         final configData = ConfigurationData().copyWith(
           room: room,
         );
 
-        final args = GameSettingsScreenArgs(data: configData, key: key);
+        final args = RoomSettingsScreenArgs(data: configData, key: key);
         Navigator.of(context)
             .pushNamed("/gameSettings", arguments: args)
             .then((value) => refreshData(key));
@@ -241,7 +241,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  void refreshData(GlobalKey<GameSettingsWidgetState> key) {
+  void refreshData(GlobalKey<RoomSettingsWidgetState> key) {
     setState(() {
       // TODO: remove or add players to the list according to new settings.
       if (key.currentState?.validateFields() == true) {

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:things_game/screen/create_room_screen.dart';
-import 'package:things_game/screen/game_settings_screen.dart';
+import 'package:things_game/screen/room_settings_screen.dart';
 import 'package:things_game/screen/lobby_screen.dart';
 import 'package:things_game/screen/main_screen.dart';
 import 'package:things_game/screen/search_room_screen.dart';
@@ -50,8 +50,8 @@ class RouteGenerator {
 
       case "/gameSettings":
         return MaterialPageRoute(
-          builder: (_) => GameSettingsScreen(
-            args as GameSettingsScreenArgs,
+          builder: (_) => RoomSettingsScreen(
+            args as RoomSettingsScreenArgs,
           ),
           settings: settings,
         );

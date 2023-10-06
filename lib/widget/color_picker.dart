@@ -42,6 +42,7 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: pickerColor!,
+              // TODO: deprecated, but necessary, search other options if available
               labelTextStyle: TextStyle(
                 color: UserSettings.I.textColor,
               ),

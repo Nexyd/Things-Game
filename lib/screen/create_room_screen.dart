@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/screen/lobby_screen.dart';
-import 'package:things_game/translations/game_settings_screen.i18n.dart';
-import 'package:things_game/widget/game_settings.dart';
+import 'package:things_game/translations/room_settings_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/alert_dialog.dart';
@@ -11,6 +10,7 @@ import 'package:things_game/widget/model/configuration_data.dart';
 
 import '../cubit/room_cubit.dart';
 import '../cubit/state/room_state.dart';
+import '../widget/room_settings.dart';
 
 class CreateRoomScreen extends StatelessWidget {
   final ConfigurationData data = ConfigurationData();
@@ -42,14 +42,15 @@ class CreateRoomScreen extends StatelessWidget {
   Widget _getContent(RoomCubit cubit) {
     // TODO: change to cubit ??
     final notifier = ValueNotifier<ConfigurationData>(data);
-    final key = GlobalKey<GameSettingsWidgetState>();
+    final key = GlobalKey<RoomSettingsWidgetState>();
 
     return Scaffold(
       appBar: StyledAppBar("Create a room".i18n),
       backgroundColor: UserSettings.I.backgroundColor,
+      // TODO: replace with BlocConsumer with RoomConfigUpdatedState ??
       body: Column(
         children: [
-          GameSettings(
+          RoomSettings(
             key: key,
             notifier: notifier,
           ),
