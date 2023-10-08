@@ -31,9 +31,7 @@ class _StyledAppBarState extends State<StyledAppBar> {
       backgroundColor: widget.colorNotifier!.value,
       leading: IconButton(
         highlightColor: Colors.transparent,
-        onPressed: () {
-          Navigator.of(context).pop();
-        },
+        onPressed: () => Navigator.of(context).pop(),
         icon: const Icon(Icons.arrow_back),
       ),
       title: StyledText(widget.titleNotifier!.value),
