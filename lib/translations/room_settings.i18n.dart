@@ -18,6 +18,10 @@ extension Localization on String {
         "en_gb": "Private",
         "es_es": "Privada",
       } +
+      {
+        "en_gb": "Create",
+        "es_es": "Crear",
+      } +
 
       // Validation Errors
       {

@@ -5,11 +5,9 @@ import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
-import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/widget/room_settings.dart';
 import 'package:things_game/screen/room_settings_screen.dart';
 
 class LobbyScreenArguments {
@@ -21,10 +19,7 @@ class LobbyScreenArguments {
 class LobbyScreen extends StatefulWidget {
   final LobbyScreenArguments args;
 
-  const LobbyScreen(
-    this.args, {
-    super.key,
-  });
+  const LobbyScreen(this.args, {super.key});
 
   @override
   State<StatefulWidget> createState() => _LobbyScreenState();
@@ -33,21 +28,27 @@ class LobbyScreen extends StatefulWidget {
 class _LobbyScreenState extends State<LobbyScreen> {
   GameRoom room = GameRoom.empty();
   List<Map<String, Widget>> playerList = [];
+  late RoomCubit cubit;
 
   @override
   Widget build(BuildContext context) {
+    cubit = BlocProvider.of<RoomCubit>(context);
     if (room == GameRoom.empty()) {
       room = widget.args.initialRoom;
     }
 
-    final cubit = BlocProvider.of<RoomCubit>(context);
     return BlocConsumer<RoomCubit, RoomState>(
       bloc: cubit,
-      builder: (context, state) => _getContent(cubit),
+      builder: (context, state) => _getContent(context, cubit),
       listenWhen: (previousState, state) {
-        return state is PlayerJoined;
+        return state is PlayerJoined || state is RoomConfigUpdated;
       },
       listener: (context, state) {
+        if (state is RoomConfigUpdated) {
+          room = room.copyWith(config: state.config);
+          return;
+        }
+
         state as PlayerJoined;
         final player = playerList.firstWhere(
           (element) => element.keys.first.startsWith("Player"),
@@ -63,9 +64,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  Widget _getContent(RoomCubit cubit) {
+  Widget _getContent(BuildContext context, RoomCubit cubit) {
     final width = MediaQuery.of(context).size.width / 100 * 90;
-
     return Scaffold(
       backgroundColor: UserSettings.I.backgroundColor,
       body: SafeArea(
@@ -78,14 +78,19 @@ class _LobbyScreenState extends State<LobbyScreen> {
             _getListTile("points"),
             StyledButton(
               text: "Start/Ready".i18n,
-              // onPressed: () => cubit.startGame(),
               onPressed: () => BlocProvider.of<GameCubit>(context).startGame(),
             ),
             Padding(
               padding: const EdgeInsets.only(top: 15.0),
               child: StyledButton(
                 text: "Leave room".i18n,
-                onPressed: () => cubit.backToMain(context),
+                onPressed: () {
+                  if (playerList.isEmpty) {
+                    cubit.deleteRoom();
+                  }
+
+                  cubit.backToMain(context);
+                },
                 type: ButtonType.destructive,
               ),
             ),
@@ -126,34 +131,28 @@ class _LobbyScreenState extends State<LobbyScreen> {
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       onTap: () {
-        // TODO: update to cubit ??
-        final key = GlobalKey<RoomSettingsWidgetState>();
-        final configData = ConfigurationData().copyWith(
-          room: room,
-        );
-
-        final args = RoomSettingsScreenArgs(data: configData, key: key);
+        final args = RoomSettingsScreenArgs(data: room.config);
         Navigator.of(context)
-            .pushNamed("/gameSettings", arguments: args)
-            .then((value) => refreshData(key));
+            .pushNamed("/roomSettings", arguments: args)
+            .then((value) => setState((){}));
       },
       child: Container(
         width: 45,
         height: 45,
-        decoration: _getDecoration(
-          "assets/config.png",
-        ),
+        decoration: _getDecoration("assets/config.png"),
       ),
     );
   }
 
   Widget _getListView(BuildContext context) {
     if (playerList.isEmpty) {
-      playerList
-        ..add({UserSettings.I.name: _getIcon()})
-        ..add({"Player 1": _getIcon()})
-        ..add({"Player 2": _getIcon()})
-        ..add({"Player 3": _getIcon()});
+      final list = List.generate(
+        room.config.players - 1,
+        (index) => {"Player ${index+2}": _getIcon()},
+      );
+
+      playerList.add({UserSettings.I.name: _getIcon()});
+      playerList.addAll(list);
     }
 
     return Padding(
@@ -201,12 +200,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
     switch (tag) {
       case "rounds":
         title = "Rounds".i18n;
-        value = room.numRounds.toString();
+        value = room.config.rounds.toString();
         break;
 
       case "points":
         title = "Max. points".i18n;
-        value = room.maxPoints.toString();
+        value = room.config.maxPoints.toString();
         break;
 
       default:
@@ -239,21 +238,5 @@ class _LobbyScreenState extends State<LobbyScreen> {
         fit: BoxFit.fill,
       ),
     );
-  }
-
-  void refreshData(GlobalKey<RoomSettingsWidgetState> key) {
-    setState(() {
-      // TODO: remove or add players to the list according to new settings.
-      if (key.currentState?.validateFields() == true) {
-        final data = key.currentState?.widget.notifier.value;
-        room = widget.args.initialRoom.copyWith(
-          name: data?.name,
-          //numPlayers: data?.players,
-          numRounds: data?.rounds,
-          maxPoints: data?.maxPoints,
-          isPrivate: data?.isPrivate,
-        );
-      }
-    });
   }
 }

@@ -8,10 +8,6 @@ extension Localization on String {
       } + {
         "en_gb": "Create a room",
         "es_es": "Crear sala",
-      } +
-      {
-        "en_gb": "Create",
-        "es_es": "Crear",
       };
 
   String get i18n => localize(this, _t);

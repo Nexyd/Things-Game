@@ -2,21 +2,21 @@ import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/util/debouncer.dart';
 
-class StyledTextField extends StatelessWidget {
+class StyledTextForm extends StatelessWidget {
   final String hint;
-  final TextEditingController? controller;
+  final String? initialValue;
   final TextInputType? type;
   final Function(String)? onChanged;
-  final String? Function()? onError;
+  final String? Function(String)? validator;
   final bool enabled;
 
-  const StyledTextField({
+  const StyledTextForm({
     super.key,
     required this.hint,
-    this.controller,
+    this.initialValue,
     this.type,
     this.onChanged,
-    this.onError,
+    this.validator,
     this.enabled = true,
   });
 
@@ -25,17 +25,18 @@ class StyledTextField extends StatelessWidget {
     final debouncer = Debouncer(milliseconds: 500);
     final border = BorderSide(color: UserSettings.I.textColor);
 
-    return TextField(
-      controller: controller ?? TextEditingController(),
+    return TextFormField(
+      initialValue: initialValue,
       keyboardType: type,
       enabled: enabled,
+      autovalidateMode: AutovalidateMode.onUserInteraction,
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       onChanged: (text) => debouncer.run(() => onChanged?.call(text)),
+      validator: (text) => validator?.call(text ?? ""),
       style: TextStyle(color: UserSettings.I.textColor),
       decoration: InputDecoration(
         border: UnderlineInputBorder(borderSide: border),
         hintText: hint,
-        errorText: onError?.call(),
         hintStyle: TextStyle(color: UserSettings.I.textColor),
       ),
     );

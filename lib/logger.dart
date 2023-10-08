@@ -63,6 +63,7 @@ class Logger {
       filters.add(WhitelistFilter(whitelist));
     }
 
+    // TODO: add colored log printer.
     Loggy.initLoggy(
       logOptions: LogOptions(level),
       filters: filters,

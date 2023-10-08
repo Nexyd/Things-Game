@@ -12,20 +12,18 @@ class RoomCubit extends Cubit<RoomState> {
   RoomCubit() : super(RoomInitial());
 
   void updateConfiguration(ConfigurationData data) {
-
+    actualGame = actualGame.copyWith(config: data);
+    emit(RoomConfigUpdated(config: actualGame.config));
   }
 
-  Future<void> createRoom(ConfigurationData data) async {
-    actualGame = actualGame.copyWith(
-      numPlayers: data.players,
-      numRounds: data.rounds,
-      maxPoints: data.maxPoints,
-      isPrivate: data.isPrivate,
-    );
+  //Future<void> createRoom(ConfigurationData data) async {
+  Future<void> createRoom() async {
+    if (actualGame == GameRoom.empty()) return;
 
-    final result = await repo.createRoom(
-      actualGame.toJson().toString(),
-    );
+    const result = "QcKEDJi8";
+    // final result = await repo.createRoom(
+    //   actualGame.toJson().toString(),
+    // );
 
     if (result.startsWith("error")) {
       emit(RoomError(error: result));

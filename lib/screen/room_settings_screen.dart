@@ -6,37 +6,24 @@ import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
 class RoomSettingsScreenArgs {
-  final GlobalKey? key;
   final ConfigurationData data;
 
-  RoomSettingsScreenArgs({
-    this.key,
-    required this.data,
-  });
+  RoomSettingsScreenArgs({required this.data});
 }
 
 class RoomSettingsScreen extends StatelessWidget {
   final RoomSettingsScreenArgs args;
 
-  const RoomSettingsScreen(
-    this.args, {
-    super.key,
-  });
+  const RoomSettingsScreen(this.args, {super.key});
 
   @override
   Widget build(BuildContext context) {
-    final notifier = ValueNotifier<ConfigurationData>(args.data);
     return Scaffold(
       appBar: StyledAppBar("Game settings".i18n),
       backgroundColor: UserSettings.I.backgroundColor,
-      body: Column(
-        children: [
-          RoomSettings(
-            notifier: notifier,
-            key: args.key,
-            isPlayersFieldEnabled: false,
-          ),
-        ],
+      body: RoomSettings(
+        config: args.data,
+        isPlayersFieldEnabled: false,
       ),
     );
   }

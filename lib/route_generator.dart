@@ -48,7 +48,7 @@ class RouteGenerator {
           settings: settings,
         );
 
-      case "/gameSettings":
+      case "/roomSettings":
         return MaterialPageRoute(
           builder: (_) => RoomSettingsScreen(
             args as RoomSettingsScreenArgs,

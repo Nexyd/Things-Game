@@ -6,45 +6,30 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:things_game/cubit/model/question_board.dart';
+import 'package:things_game/widget/model/configuration_data.dart';
 
 class GameRoom {
   String id = "";
-  String name;
-  int numPlayers;
-  int numRounds;
-  int maxPoints;
-  bool isPrivate;
+  ConfigurationData config;
   List<String> playerList;
   List<QuestionBoard> questionBoard;
 
   GameRoom({
-    required this.name,
     required this.id,
-    required this.numPlayers,
-    required this.numRounds,
-    required this.maxPoints,
-    required this.isPrivate,
+    required this.config,
     required this.playerList,
     required this.questionBoard,
   });
 
   GameRoom copyWith({
-    String? name,
     String? id,
-    int? numPlayers,
-    int? numRounds,
-    int? maxPoints,
-    bool? isPrivate,
+    ConfigurationData? config,
     List<String>? playerList,
     List<QuestionBoard>? questionBoard,
   }) {
     return GameRoom(
-      name: name ?? this.name,
       id: id ?? this.id,
-      numPlayers: numPlayers ?? this.numPlayers,
-      numRounds: numRounds ?? this.numRounds,
-      maxPoints: maxPoints ?? this.maxPoints,
-      isPrivate: isPrivate ?? this.isPrivate,
+      config: config ?? this.config,
       playerList: playerList ?? this.playerList,
       questionBoard: questionBoard ?? this.questionBoard,
     );
@@ -53,16 +38,10 @@ class GameRoom {
   factory GameRoom.fromRawJson(String str) =>
       GameRoom.fromJson(json.decode(str));
 
-  factory GameRoom.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory GameRoom.fromJson(Map<String, dynamic> json) {
     return GameRoom(
       id: json["id"],
-      name: json["name"],
-      numPlayers: json["numPlayers"],
-      numRounds: json["numRounds"],
-      maxPoints: json["maxPoints"],
-      isPrivate: json["isPrivate"],
+      config: ConfigurationData.fromJson(json),
       playerList: List<String>.from(
         json["playerList"].map((x) => x),
       ),
@@ -76,40 +55,31 @@ class GameRoom {
 
   factory GameRoom.empty() {
     return GameRoom(
-      name: "",
       id: "",
-      numPlayers: 0,
-      numRounds: 0,
-      maxPoints: 0,
-      isPrivate: true,
+      config: ConfigurationData(),
       playerList: [],
       questionBoard: [],
     );
   }
 
   factory GameRoom.sample() {
-    var sample = GameRoom(
-      name: "Game#${Random().nextInt(999)}",
+    return GameRoom(
       id: "Id#${Random().nextInt(999)}",
-      numPlayers: Random().nextInt(10),
-      numRounds: Random().nextInt(10),
-      maxPoints: Random().nextInt(70),
-      isPrivate: Random().nextBool(),
+      config: ConfigurationData(
+        name: "Game#${Random().nextInt(999)}",
+        players: Random().nextInt(10),
+        rounds: Random().nextInt(10),
+        maxPoints: Random().nextInt(70),
+        isPrivate: Random().nextBool(),
+      ),
       playerList: [],
       questionBoard: [],
     );
-
-    sample.id = "${Random().nextInt(9999)}";
-    return sample;
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "name": name,
-      "numPlayers": numPlayers,
-      "numRounds": numRounds,
-      "maxPoints": maxPoints,
-      "isPrivate": isPrivate,
+      "config": config.toJson(),
       "playerList": List<dynamic>.from(
         playerList.map((x) => x),
       ),
@@ -124,15 +94,9 @@ class GameRoom {
   @override
   bool operator ==(Object other) {
     if (other is! GameRoom) return false;
-    return name == other.name &&
-        numPlayers == other.numPlayers &&
-        numRounds == other.numRounds &&
-        maxPoints == other.maxPoints &&
-        isPrivate == other.isPrivate;
-
-    //other is GameRoom && runtimeType == other.runtimeType;
+    return config == other.config;
   }
 
   @override
-  int get hashCode => 0;
+  int get hashCode => id.hashCode;
 }

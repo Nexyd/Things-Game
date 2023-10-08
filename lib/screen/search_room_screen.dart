@@ -110,7 +110,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
         if (state is RoomListLoaded && !isListInitialized) {
           fullList.addAll(state.roomList);
-          gameList = fullList.where((e) => !e.isPrivate).toList();
+          gameList = fullList.where((e) => !e.config.isPrivate).toList();
           isListInitialized = true;
         }
 
@@ -132,7 +132,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
             return ListTile(
               onTap: () => navigateToLobby(gameList[index]),
               title: StyledText(
-                gameList[index].name,
+                gameList[index].config.name,
                 fontSize: 20,
               ),
             );
@@ -162,7 +162,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
         if (!foundById) {
           for (var character in value.characters) {
-            result = element.name.indexOf(character) > 0;
+            result = element.config.name.indexOf(character) > 0;
             if (!result) return false;
           }
         }
