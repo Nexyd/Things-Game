@@ -26,7 +26,7 @@ class RouteGenerator {
 
       case "/create":
         return MaterialPageRoute(
-          builder: (_) => CreateRoomScreen(),
+          builder: (_) => const CreateRoomScreen(),
           settings: settings,
         );
 

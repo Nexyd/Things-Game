@@ -39,7 +39,10 @@ class CreateRoomScreen extends StatelessWidget {
     return Scaffold(
       appBar: StyledAppBar("Create a room".i18n),
       backgroundColor: UserSettings.I.backgroundColor,
-      body: const RoomSettings(formSubmittable: true),
+      body: RoomSettings(
+        config: ConfigurationData(),
+        formSubmittable: true,
+      ),
     );
   }
 }

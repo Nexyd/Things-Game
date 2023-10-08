@@ -64,7 +64,7 @@ extension ValidateConfig on ConfigurationData {
       return 'The number of players must be greater than 2'.i18n;
     }
 
-    if (value < 0) {
+    if (value <= 0) {
       return 'The value must be greater than 0'.i18n;
     }
 

@@ -4,47 +4,37 @@ import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
+import 'package:things_game/widget/styled/styled_switch.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/translations/room_settings.i18n.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/widget/styled/styled_text_form_field.dart';
 import 'package:things_game/logger.dart';
 
-class RoomSettings extends StatefulWidget {
+class RoomSettings extends StatelessWidget {
+  final ConfigurationData config;
   final bool isPlayersFieldEnabled;
-  final ConfigurationData? config;
   final bool formSubmittable;
 
   const RoomSettings({
     super.key,
-    this.config,
+    required this.config,
     this.formSubmittable = false,
     this.isPlayersFieldEnabled = true,
   });
 
   @override
-  State<RoomSettings> createState() => RoomSettingsWidgetState();
-}
-
-class RoomSettingsWidgetState extends State<RoomSettings> {
-  bool light = true;
-  bool isFirstCheck = true;
-  ConfigurationData config = ConfigurationData();
-  late RoomCubit cubit;
-
-  @override
   Widget build(BuildContext context) {
-    cubit = BlocProvider.of<RoomCubit>(context);
-    if (widget.config != null) {
-      config = widget.config!;
-    }
-
     return Form(
       child: BlocBuilder<RoomCubit, RoomState>(
-        bloc: cubit,
+        bloc: BlocProvider.of<RoomCubit>(context),
         builder: (context, state) {
           if (state is RoomConfigUpdated) {
-            config = state.config;
+            config.name = state.config.name;
+            config.players = state.config.players;
+            config.rounds = state.config.rounds;
+            config.maxPoints = state.config.maxPoints;
+            config.isPrivate = state.config.isPrivate;
           }
 
           return Container(
@@ -57,18 +47,24 @@ class RoomSettingsWidgetState extends State<RoomSettings> {
   }
 
   Widget _getContent(BuildContext context) {
+    final switchButton = StyledSwitch(
+      value: config.isPrivate,
+      onChanged: (value) => config.isPrivate = value,
+    );
+
     final cells = [
-      {"Players".i18n: _getTextForm("players")},
-      {"Rounds".i18n: _getTextForm("rounds")},
-      {"Max. points".i18n: _getTextForm("maxPoints")},
-      {"Private".i18n: _getSwitch()},
+      {"Room name".i18n: _getTextForm("name", context)},
+      {"Players".i18n: _getTextForm("players", context)},
+      {"Rounds".i18n: _getTextForm("rounds", context)},
+      {"Max. points".i18n: _getTextForm("maxPoints", context)},
+      {"Private".i18n: switchButton},
     ];
 
     final submitButton = StyledButton(
       text: "Create".i18n,
       onPressed: () {
         if (Form.of(context).validate()) {
-          cubit.createRoom();
+          BlocProvider.of<RoomCubit>(context).createRoom();
         }
       },
     );
@@ -94,45 +90,64 @@ class RoomSettingsWidgetState extends State<RoomSettings> {
             }
           },
         ),
-        if (widget.formSubmittable)
-          submitButton,
+        if (formSubmittable) submitButton,
       ],
     );
   }
 
-  Widget _getTextForm(String field) {
-    bool isEnabled = field == "players" ? widget.isPlayersFieldEnabled : true;
-    return StyledTextForm(
-      hint: '',
-      initialValue: _getInitialValue(field),
-      type: TextInputType.number,
-      enabled: isEnabled,
-      onChanged: (value) {
+  Widget _getTextForm(String field, BuildContext context) {
+    callback(String value) {
+      if (field == "name") {
+        config.name = value;
+      } else {
         _updateField(
           field,
           int.parse(value),
         );
+      }
+
+      BlocProvider.of<RoomCubit>(context).updateConfiguration(config);
+    }
+
+    return StyledTextForm(
+      hint: '',
+      initialValue: _getInitialValue(field),
+      type: TextInputType.number,
+      enabled: field == "players" ? isPlayersFieldEnabled : true,
+      onChanged: callback,
+      validator: (text) {
+        if (field == "name") {
+          return null;
+        }
+
+        return config.validate(
+          int.tryParse(text),
+          field == "players",
+        );
       },
-      validator: (text) => config.validate(
-        int.tryParse(text),
-        field == "players",
-      ),
     );
   }
 
   String _getInitialValue(String field) {
     String result = "";
     switch (field) {
+      case "name":
+        result = config.name;
+        break;
+
       case "players":
-        result = config.players.toString();
+        final players = config.players.toString();
+        result = players == "0" ? "" : players;
         break;
 
       case "rounds":
-        result = config.rounds.toString();
+        final rounds = config.rounds.toString();
+        result = rounds == "0" ? "" : rounds;
         break;
 
       case "maxPoints":
-        result = config.maxPoints.toString();
+        final maxPoints = config.maxPoints.toString();
+        result = maxPoints == "0" ? "" : maxPoints;
         break;
 
       default:
@@ -140,11 +155,7 @@ class RoomSettingsWidgetState extends State<RoomSettings> {
         break;
     }
 
-    if (isFirstCheck) {
-      return result == "0" ? "" : result;
-    } else {
-      return result;
-    }
+    return result;
   }
 
   void _updateField(String field, int value) {
@@ -165,20 +176,5 @@ class RoomSettingsWidgetState extends State<RoomSettings> {
         Logger.game.error("Incorrect field data");
         break;
     }
-
-    cubit.updateConfiguration(config);
-  }
-
-  Widget _getSwitch() {
-    return Switch(
-      value: light,
-      activeColor: UserSettings.I.primaryColor,
-      onChanged: (value) {
-        setState(() {
-          light = value;
-          config.isPrivate = value;
-        });
-      },
-    );
   }
 }
