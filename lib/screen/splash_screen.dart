@@ -4,7 +4,7 @@ import 'package:i18n_extension/i18n_widget.dart';
 
 import 'package:things_game/config/user_settings.dart';
 
-import '../logger.dart';
+import '../support/logger.dart';
 
 class SplashScreen extends StatefulWidget {
   const SplashScreen({super.key});

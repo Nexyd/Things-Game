@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_colorpicker/flutter_colorpicker.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/constants.dart';
+import 'package:things_game/support/constants.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 
 class ColorPickerWrapper extends StatefulWidget {

@@ -2,9 +2,9 @@ import 'dart:convert';
 
 import 'package:dio/dio.dart';
 import 'package:pastebin/pastebin.dart';
-import 'package:things_game/constants.dart';
+import 'package:things_game/support/constants.dart';
 
-import '../../logger.dart';
+import '../../support/logger.dart';
 import 'dio_repository.dart';
 
 class GameRoomRepository extends DioRepository {

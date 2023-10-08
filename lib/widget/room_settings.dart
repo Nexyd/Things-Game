@@ -9,7 +9,7 @@ import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/translations/room_settings.i18n.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/widget/styled/styled_text_form_field.dart';
-import 'package:things_game/logger.dart';
+import 'package:things_game/support/logger.dart';
 
 class RoomSettings extends StatelessWidget {
   final ConfigurationData config;

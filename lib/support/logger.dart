@@ -66,6 +66,7 @@ class Logger {
     // TODO: add colored log printer.
     Loggy.initLoggy(
       logOptions: LogOptions(level),
+      logPrinter: const PrettyPrinter(showColors: true),
       filters: filters,
     );
   }
