@@ -16,8 +16,7 @@ class GameRoomRepository extends DioRepository {
       pasteText: roomJson,
       options: PasteOptions(
         apiUserKey: userKey,
-        pasteVisiblity: isPrivate ? Visibility.private : Visibility.unlisted,
-        //pasteVisiblity: Visibility.unlisted,
+        pasteVisiblity: Visibility.unlisted,
       ),
     );
 

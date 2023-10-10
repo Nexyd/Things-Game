@@ -26,6 +26,7 @@ class UserSettings {
   });
 
   static UserSettings? _instance;
+
   static UserSettings get I => _instance!;
 
   static Future<void> init() async {

@@ -1,4 +1,3 @@
-
 Flutter - ThingsGame (El juego de las cosas)
 --------------------------------------------
 Views: https://www.figma.com/file/Of4FF491F4x9f6jjLCzHLB/Untitled?node-id=47909%3A2&t=pnBYki6pR3l5JXM6-1
