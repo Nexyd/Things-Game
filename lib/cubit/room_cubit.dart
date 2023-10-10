@@ -16,7 +16,6 @@ class RoomCubit extends Cubit<RoomState> {
     emit(RoomConfigUpdated(config: actualGame.config));
   }
 
-  //Future<void> createRoom(ConfigurationData data) async {
   Future<void> createRoom() async {
     if (actualGame == GameRoom.empty()) return;
 

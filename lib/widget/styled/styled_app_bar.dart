@@ -9,10 +9,8 @@ class StyledAppBar extends StatefulWidget implements PreferredSizeWidget {
   ValueNotifier<Color>? colorNotifier;
   ValueNotifier<String>? titleNotifier;
 
-  StyledAppBar(
-    this.title, {
-    super.key,
-  })  : preferredSize = const Size.fromHeight(kToolbarHeight),
+  StyledAppBar(this.title, {super.key})
+      : preferredSize = const Size.fromHeight(kToolbarHeight),
         super();
 
   @override

@@ -26,9 +26,7 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
 
   @override
   Widget build(BuildContext context) {
-    return InkWell(
-      onTap: () => raiseDialog(context),
-    );
+    return InkWell(onTap: () => raiseDialog(context));
   }
 
   void raiseDialog(BuildContext context) {
@@ -43,12 +41,8 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
             child: ColorPicker(
               pickerColor: pickerColor!,
               // TODO: deprecated, but necessary, search other options if available
-              labelTextStyle: TextStyle(
-                color: UserSettings.I.textColor,
-              ),
-              onColorChanged: (color) {
-                setState(() => pickerColor = color);
-              },
+              labelTextStyle: TextStyle(color: UserSettings.I.textColor),
+              onColorChanged: (color) => setState(() => pickerColor = color),
             ),
           ),
           actionsAlignment: MainAxisAlignment.spaceBetween,
@@ -58,9 +52,7 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
           ],
         );
       },
-    ).whenComplete(
-      () => widget.callback(),
-    );
+    ).whenComplete(() => widget.callback());
   }
 
   Widget _getButton(_DialogButtonType type) {

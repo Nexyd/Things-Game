@@ -34,10 +34,6 @@ class _SplashScreenState extends State<SplashScreen> {
   @override
   Widget build(BuildContext context) {
     // TODO: create a splash screen to replace color.
-    return Scaffold(
-      body: Container(
-        color: const Color(0xFFff7171),
-      ),
-    );
+    return Scaffold(body: Container(color: const Color(0xFFff7171)));
   }
 }

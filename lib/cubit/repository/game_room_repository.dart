@@ -47,10 +47,7 @@ class GameRoomRepository extends DioRepository {
     return _getJsonList(roomUrls);
   }
 
-  Future<String> updatePlayers(
-    String id,
-    List<String> playerList,
-  ) async {
+  Future<String> updatePlayers(String id, List<String> playerList) async {
     print("### repo update players ###");
 
     try {
@@ -74,10 +71,7 @@ class GameRoomRepository extends DioRepository {
     return "";
   }
 
-  Future<String> updateBoard(
-    String id,
-    String boardJson,
-  ) async {
+  Future<String> updateBoard(String id, String boardJson) async {
     // final response = await client.put(
     //   id,
     //   data: jsonEncode(<String, dynamic>{

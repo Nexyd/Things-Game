@@ -96,14 +96,11 @@ class RoomSettings extends StatelessWidget {
   }
 
   Widget _getTextForm(String field, BuildContext context) {
-    callback(String value) {
+    onChanged(String value) {
       if (field == "name") {
         config.name = value;
       } else {
-        _updateField(
-          field,
-          int.parse(value),
-        );
+        _updateField(field, int.parse(value));
       }
 
       BlocProvider.of<RoomCubit>(context).updateConfiguration(config);
@@ -114,16 +111,10 @@ class RoomSettings extends StatelessWidget {
       initialValue: _getInitialValue(field),
       type: TextInputType.number,
       enabled: field == "players" ? isPlayersFieldEnabled : true,
-      onChanged: callback,
+      onChanged: onChanged,
       validator: (text) {
-        if (field == "name") {
-          return null;
-        }
-
-        return config.validate(
-          int.tryParse(text),
-          field == "players",
-        );
+        if (field == "name") return null;
+        return config.validate(int.tryParse(text), field == "players");
       },
     );
   }

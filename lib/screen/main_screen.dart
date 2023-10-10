@@ -26,12 +26,8 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: UserSettings.I.backgroundColor,
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          decoration: _getDecoration(
-            "assets/background_main.png",
-          ),
-          child: SafeArea(
-            child: _getContent(context),
-          ),
+          decoration: _getDecoration("assets/background_main.png"),
+          child: SafeArea(child: _getContent(context)),
         ),
       ),
     );
@@ -55,18 +51,14 @@ class _MainScreenState extends State<MainScreen> {
               highlightColor: Colors.transparent,
               splashFactory: NoSplash.splashFactory,
               onTap: () {
-                Navigator.of(context).pushNamed("/preferences").then(
-                  (value) {
-                    setState(() {});
-                  },
-                );
+                Navigator.of(context)
+                    .pushNamed("/preferences")
+                    .then((value) => setState(() {}));
               },
               child: Container(
                 width: 45,
                 height: 45,
-                decoration: _getDecoration(
-                  "assets/config.png",
-                ),
+                decoration: _getDecoration("assets/config.png"),
               ),
             ),
           ),
@@ -78,10 +70,7 @@ class _MainScreenState extends State<MainScreen> {
           width: screenSize.width,
           child: Align(
             alignment: Alignment.bottomCenter,
-            child: Image.asset(
-              "assets/logo.png",
-              scale: 3,
-            ),
+            child: Image.asset("assets/logo.png", scale: 3),
           ),
         ),
 

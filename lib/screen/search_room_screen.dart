@@ -47,7 +47,6 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
             // Game list
             Container(child: _getListGames(context))
-            // Expanded(child: _getListGames(context))
           ],
         ),
       ),
@@ -58,9 +57,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
     return SearchBar(
       hintText: "Room id".i18n,
       textStyle: MaterialStateProperty.all(
-        TextStyle(
-          color: UserSettings.I.textColor,
-        ),
+        TextStyle(color: UserSettings.I.textColor),
       ),
       leading: Icon(
         Icons.menu,
@@ -70,7 +67,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
         Icon(
           Icons.search,
           color: UserSettings.I.textColor,
-        )
+        ),
       ],
       backgroundColor: MaterialStateProperty.all(
         UserSettings.I.backgroundColor.shade(20),

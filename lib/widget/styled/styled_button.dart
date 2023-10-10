@@ -24,9 +24,9 @@ class StyledButton extends StatelessWidget {
       return _getConstructiveButton();
     } else if (type == ButtonType.destructive) {
       return _getDestructiveButton();
-    } else {
-      return _getTextButton();
     }
+
+    return _getTextButton();
   }
 
   Widget _getConstructiveButton() {
@@ -36,9 +36,7 @@ class StyledButton extends StatelessWidget {
         onPressed: onPressed,
         color: UserSettings.I.primaryColor,
         shape: const RoundedRectangleBorder(
-          borderRadius: BorderRadius.all(
-            Radius.circular(20.0),
-          ),
+          borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
         child: StyledText(text),
       ),
@@ -56,15 +54,10 @@ class StyledButton extends StatelessWidget {
             color: UserSettings.I.primaryColor,
           ),
           shape: const RoundedRectangleBorder(
-            borderRadius: BorderRadius.all(
-              Radius.circular(20.0),
-            ),
+            borderRadius: BorderRadius.all(Radius.circular(20.0)),
           ),
         ),
-        child: StyledText(
-          text,
-          isDestructive: true,
-        ),
+        child: StyledText(text, isDestructive: true),
       ),
     );
   }
@@ -79,18 +72,12 @@ class StyledButton extends StatelessWidget {
           ),
         ),
         onPressed: onPressed,
-        child: StyledText(
-          text,
-          isDestructive: true,
-        ),
+        child: StyledText(text, isDestructive: true),
       );
     }
 
     return Padding(
-      padding: const EdgeInsets.only(
-        right: 8.0,
-        bottom: 8.0,
-      ),
+      padding: const EdgeInsets.only(right: 8.0, bottom: 8.0),
       child: InkWell(
         onTap: onPressed,
         splashFactory: NoSplash.splashFactory,

@@ -13,24 +13,15 @@ class AvatarIcon extends StatelessWidget {
       initial = UserSettings.I.name.substring(0, 1);
     }
 
+    const textStyle = TextStyle(color: Colors.black, fontSize: 17);
     return Container(
       width: size,
       height: size,
       decoration: BoxDecoration(
-        //color: UserSettings.instance.primaryColor,
         color: Colors.grey.shade500,
         borderRadius: BorderRadius.circular(size / 2),
       ),
-      child: Center(
-        child: Text(
-          initial,
-          style: const TextStyle(
-            color: Colors.black,
-            // fontWeight: FontWeight.bold,
-            fontSize: 17,
-          ),
-        ),
-      ),
+      child: Center(child: Text(initial, style: textStyle)),
     );
   }
 }

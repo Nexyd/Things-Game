@@ -114,9 +114,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return Container(
       decoration: BoxDecoration(
         color: _getColor(tag),
-        borderRadius: BorderRadius.circular(
-          iconSize / 2,
-        ),
+        borderRadius: BorderRadius.circular(iconSize / 2),
       ),
       width: iconSize,
       height: iconSize,
@@ -168,12 +166,21 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
   void _updateLanguage(String? language) {
     switch (language) {
-      case "Spanish": _saveLanguage("es_ES"); break;
-      case "Español": _saveLanguage("es_ES"); break;
-      case "English": _saveLanguage("en_GB"); break;
-      case "Inglés":  _saveLanguage("en_GB"); break;
+      case "Spanish":
+        _saveLanguage("es_ES");
+        break;
+      case "Español":
+        _saveLanguage("es_ES");
+        break;
+      case "English":
+        _saveLanguage("en_GB");
+        break;
+      case "Inglés":
+        _saveLanguage("en_GB");
+        break;
 
-      default: Logger.settings.warning("Could not save language...");
+      default:
+        Logger.settings.warning("Could not save language...");
     }
 
     setState(() {
@@ -211,9 +218,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
         );
 
         _saveToPrefs(AVATAR, path);
-        setState(() {
-          isImagePicked = true;
-        });
+        setState(() => isImagePicked = true);
       } catch (error) {
         Logger.settings.error("Error trying to parse image path: $path...");
       }

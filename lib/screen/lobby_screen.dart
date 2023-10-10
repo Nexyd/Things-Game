@@ -112,10 +112,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 2),
-          StyledText(
-            "$title: \n${room.id}",
-            fontSize: 30,
-          ),
+          StyledText("$title: \n${room.id}", fontSize: 30),
           const Spacer(),
           Align(
             alignment: Alignment.centerRight,
@@ -134,7 +131,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
         final args = RoomSettingsScreenArgs(data: room.config);
         Navigator.of(context)
             .pushNamed("/roomSettings", arguments: args)
-            .then((value) => setState((){}));
+            .then((value) => setState(() {}));
       },
       child: Container(
         width: 45,
@@ -148,7 +145,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     if (playerList.isEmpty) {
       final list = List.generate(
         room.config.players - 1,
-        (index) => {"Player ${index+2}": _getIcon()},
+        (index) => {"Player ${index + 2}": _getIcon()},
       );
 
       playerList.add({UserSettings.I.name: _getIcon()});

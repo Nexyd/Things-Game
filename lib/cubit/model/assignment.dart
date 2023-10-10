@@ -7,9 +7,7 @@ class Assignment {
     required this.playerAssignment,
   });
 
-  factory Assignment.fromJson(
-    Map<String, dynamic> json,
-  ) {
+  factory Assignment.fromJson(Map<String, dynamic> json) {
     return Assignment(
       playerName: json["playerName"],
       playerAssignment: List<String>.from(

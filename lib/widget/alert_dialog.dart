@@ -66,16 +66,12 @@ abstract class BasicDialog {
         title: icon ??
             Text(
               title!,
-              style: const TextStyle(
-                color: Colors.black,
-              ),
+              style: const TextStyle(color: Colors.black),
             ),
         content: contentWidget ??
             Text(
               content!,
-              style: const TextStyle(
-                color: Colors.black54,
-              ),
+              style: const TextStyle(color: Colors.black54),
             ),
         actions: <Widget>[
           Center(

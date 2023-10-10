@@ -65,6 +65,7 @@ class Logger {
 
     Loggy.initLoggy(
       logOptions: LogOptions(level),
+      logPrinter: const DefaultPrinter(),
       filters: filters,
     );
   }

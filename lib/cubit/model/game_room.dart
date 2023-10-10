@@ -80,13 +80,9 @@ class GameRoom {
   Map<String, dynamic> toJson() {
     return {
       "config": config.toJson(),
-      "playerList": List<dynamic>.from(
-        playerList.map((x) => x),
-      ),
+      "playerList": List<dynamic>.from(playerList.map((x) => x)),
       "questionBoard": List<dynamic>.from(
-        questionBoard.map(
-          (x) => x.toJson(),
-        ),
+        questionBoard.map((x) => x.toJson()),
       ),
     };
   }
@@ -94,7 +90,7 @@ class GameRoom {
   @override
   bool operator ==(Object other) {
     if (other is! GameRoom) return false;
-    return config == other.config;
+    return id == other.id;
   }
 
   @override
