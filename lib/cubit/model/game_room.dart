@@ -41,7 +41,7 @@ class GameRoom {
   factory GameRoom.fromJson(Map<String, dynamic> json) {
     return GameRoom(
       id: json["id"],
-      config: ConfigurationData.fromJson(json),
+      config: ConfigurationData.fromJson(json["config"]),
       playerList: List<String>.from(
         json["playerList"].map((x) => x),
       ),
@@ -87,10 +87,12 @@ class GameRoom {
     };
   }
 
+  String toRawJson() => jsonEncode(toJson());
+
   @override
   bool operator ==(Object other) {
     if (other is! GameRoom) return false;
-    return id == other.id;
+    return config == other.config;
   }
 
   @override

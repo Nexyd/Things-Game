@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:things_game/translations/room_settings.i18n.dart';
 
 class ConfigurationData {
@@ -32,13 +34,26 @@ class ConfigurationData {
   }
 
   factory ConfigurationData.fromJson(Map<String, dynamic> json) {
-    return ConfigurationData();
+    return ConfigurationData(
+      name: json["name"],
+      players: json["players"],
+      rounds: json["rounds"],
+      maxPoints: json["maxPoints"],
+      isPrivate: json["isPrivate"],
+    );
   }
 
-  String toJson() {
-    return "{ \"name\": $name, \"players\": $players, \"rounds\": $rounds, "
-        "\"maxPoints\": $maxPoints, \"isPrivate\": $isPrivate, }";
+  Map<String, dynamic> toJson() {
+    return {
+      "name": name,
+      "players": players,
+      "rounds": rounds,
+      "maxPoints": maxPoints,
+      "isPrivate": isPrivate,
+    };
   }
+
+  String toRawJson() => jsonEncode(toJson());
 
   @override
   bool operator ==(Object other) {
@@ -55,7 +70,15 @@ class ConfigurationData {
 }
 
 extension ValidateConfig on ConfigurationData {
-  String? validate(int? value, [isNumPlayers = false]) {
+  String? validateString(String? value) {
+    if (value == null || value.isEmpty) {
+      return 'This field is mandatory'.i18n;
+    }
+
+    return null;
+  }
+
+  String? validateInt(int? value, [isNumPlayers = false]) {
     if (value == null) {
       return 'This field is mandatory'.i18n;
     }

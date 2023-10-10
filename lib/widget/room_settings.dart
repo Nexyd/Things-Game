@@ -49,7 +49,11 @@ class RoomSettings extends StatelessWidget {
   Widget _getContent(BuildContext context) {
     final switchButton = StyledSwitch(
       value: config.isPrivate,
-      onChanged: (value) => config.isPrivate = value,
+      // onChanged: (value) => config.isPrivate = value,
+      onChanged: (value) {
+        config.isPrivate = value;
+        BlocProvider.of<RoomCubit>(context).updateConfiguration(config);
+      },
     );
 
     final cells = [
@@ -113,8 +117,8 @@ class RoomSettings extends StatelessWidget {
       enabled: field == "players" ? isPlayersFieldEnabled : true,
       onChanged: onChanged,
       validator: (text) {
-        if (field == "name") return null;
-        return config.validate(int.tryParse(text), field == "players");
+        if (field == "name") return config.validateString(text);
+        return config.validateInt(int.tryParse(text), field == "players");
       },
     );
   }

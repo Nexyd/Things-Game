@@ -1,9 +1,11 @@
 {
 	"name": "Game#241",
-	"players": 4,
-	"rounds": 7,
-	"maxPoints": 30,
-	"isPrivate": true,
+	"config": {
+		"players": 4,
+		"rounds": 7,
+		"maxPoints": 30,
+		"isPrivate": true
+	},
 	"playerList": [
 		"player1",
 		"player2",

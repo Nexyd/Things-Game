@@ -18,21 +18,15 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> createRoom() async {
     if (actualGame == GameRoom.empty()) return;
-
     const result = "QcKEDJi8";
-    // final result = await repo.createRoom(
-    //   actualGame.toJson().toString(),
-    // );
 
+    // final result = await repo.createRoom(actualGame.toRawJson());
     if (result.startsWith("error")) {
       emit(RoomError(error: result));
       return;
     }
 
-    actualGame.id = result.substring(
-      result.lastIndexOf("/") + 1,
-    );
-
+    actualGame.id = result.substring(result.lastIndexOf("/") + 1);
     emit(RoomCreated(room: actualGame));
   }
 
