@@ -51,7 +51,7 @@ class GameRoomRepository extends DioRepository {
 
     try {
       final response = await client.put(
-        id,
+        "E2ShwDNR", //id,
         data: jsonEncode(<String, dynamic>{
           PLAYER_LIST: playerList,
         }),
@@ -83,7 +83,7 @@ class GameRoomRepository extends DioRepository {
   }
 
   Future<String> deleteRoom(String id) async {
-    //final response = await client.delete(id);
+    //final response = await pastebin.delete(id);
 
     // TODO: parse response.
     return "";

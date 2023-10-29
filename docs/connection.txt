@@ -23,3 +23,8 @@ Flutter - ThingsGame (El juego de las cosas)
 
 4 - conexion directa (movil a movil)
 	...
+
+
+Error: Pastebin no permite editar pastes?
+Buscar alternativas para crear claves de sala
+Buscar servicio de json

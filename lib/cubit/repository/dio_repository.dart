@@ -22,7 +22,7 @@ class DioRepository {
   Dio _getClient() {
     client = Dio(
       BaseOptions(
-        baseUrl: 'https://pastebin.com/raw/',
+        baseUrl: rawBaseUrl,
         receiveDataWhenStatusError: true,
         headers: <String, String>{
           'Accept': 'application/json',
