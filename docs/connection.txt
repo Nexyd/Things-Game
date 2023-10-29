@@ -4,8 +4,8 @@ Flutter - ThingsGame (El juego de las cosas)
 
 1 - pastebin
 	- crear partida desde la api
-	- clave de sala = codigo pastebin
-	- 
+	- clave de sala = coódigo pastebin
+	- ...
 
 2 - firebase
 	...
@@ -14,17 +14,22 @@ Flutter - ThingsGame (El juego de las cosas)
 3 - pastebin + firebase
 	pastebin
 	- crear partida desde la api
-	- clave de sala = codigo pastebin
-	- formato json *game.json*
+	- clave de sala = código pastebin
+	- formato json *old_game_json_example.json*
 
 	firebase
-	- comprobacion de jugadores listos
-	- comprobacion de mensajes enviados
+	- comprobación de jugadores listos
+	- comprobación de mensajes enviados
 
-4 - conexion directa (movil a movil)
+4 - conexión directa (móvil a móvil)
 	...
 
 
-Error: Pastebin no permite editar pastes?
+Error: Pastebin no permite editar pastes
 Buscar alternativas para crear claves de sala
-Buscar servicio de json
+Buscar servicio de json (https://www.npmjs.com/package/json-server ??)
+
+
+Alternativa #1:
+    - Configuración (game_config_json_example.json) en pastebin.
+    - Con la clave de sala crear json de partida en servidor json (game_board_json_example).
