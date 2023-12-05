@@ -102,10 +102,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return StyledTextField(
       hint: 'Enter user name',
       controller: controller,
-      onChanged: (value) {
-        final name = controller.value.text;
-        _saveToPrefs(NAME, name);
-      },
+      onChanged: (value) => _saveToPrefs(NAME, controller.value.text),
     );
   }
 
@@ -121,7 +118,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       child: ColorPickerWrapper(
         colorTag: tag,
         callback: () => setState(() {
-          // TODO: change to global key.
           appBar.colorNotifier?.value = UserSettings.I.primaryColor;
         }),
       ),
@@ -185,7 +181,6 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
     setState(() {
       localeStr = language;
-      // TODO: change to global key.
       appBar.titleNotifier?.value = "User settings".i18n;
     });
   }

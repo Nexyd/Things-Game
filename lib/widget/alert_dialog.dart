@@ -88,9 +88,8 @@ abstract class BasicDialog {
 }
 
 class ErrorDialog extends BasicDialog {
-  ErrorDialog(BuildContext context)
+  ErrorDialog(super.context)
       : super(
-          context,
           title: "Error".i18n,
           content: "An error has occurred".i18n,
           buttonMessage: "Accept".i18n,
@@ -98,9 +97,8 @@ class ErrorDialog extends BasicDialog {
 }
 
 class ExitAppDialog extends BasicDialog {
-  ExitAppDialog(BuildContext context)
+  ExitAppDialog(super.context)
       : super(
-          context,
           title: "Exit app?".i18n,
           content: "",
           buttonMessage: "Accept".i18n,

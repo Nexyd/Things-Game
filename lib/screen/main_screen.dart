@@ -1,12 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 
-import '../cubit/room_cubit.dart';
 import '../widget/alert_dialog.dart';
 
 class MainScreen extends StatefulWidget {
@@ -19,11 +17,9 @@ class MainScreen extends StatefulWidget {
 class _MainScreenState extends State<MainScreen> {
   @override
   Widget build(BuildContext context) {
-    return WillPopScope(
-      onWillPop: () async {
-        ExitAppDialog(context).show();
-        return false;
-      },
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (bool didPop) => ExitAppDialog(context).show(),
       child: Scaffold(
         backgroundColor: UserSettings.I.backgroundColor,
         body: Container(
@@ -88,8 +84,7 @@ class _MainScreenState extends State<MainScreen> {
           padding: const EdgeInsets.only(bottom: 20.0),
           child: StyledButton(
             text: "Create game".i18n,
-            // onPressed: () => Navigator.of(context).pushNamed("/create"),
-            onPressed: () => BlocProvider.of<RoomCubit>(context).addPlayer("manel"),
+            onPressed: () => Navigator.of(context).pushNamed("/create"),
           ),
         ),
 

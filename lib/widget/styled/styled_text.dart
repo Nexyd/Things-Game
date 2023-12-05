@@ -28,8 +28,8 @@ class StyledText extends StatelessWidget {
       text,
       style: TextStyle(
         color: textColor,
-        fontWeight: fontWeight,
-        fontSize: fontSize,
+        fontWeight: fontWeight ?? FontWeight.normal,
+        fontSize: fontSize ?? 16,
         fontStyle: fontStyle,
       ),
     );
