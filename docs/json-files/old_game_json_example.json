@@ -16,28 +16,28 @@
 		{
 			"id": 1,
 			"question": "Lorem impsum?",
-			"answers": [
-				"player1: Lorem lorem",
-				"player2: No tan lorem",
-				"player3: Un poco lorem",
-				"player4: Lorem impsum"
-			],
+			"answers": {
+				"player1": "Lorem lorem",
+				"player2": "No tan lorem",
+				"player3": "Un poco lorem",
+				"player4": "Lorem impsum"
+			},
 			"assignments": [
 				{
 					"playerName": "player1",
-					"playerAssignment": [
-						"player4: No tan lorem",
-						"player2: Un poco lorem",
-						"player3: Lorem impsum"
-					]
+					"playerAssignment": {
+						"player4": "No tan lorem",
+						"player2": "Un poco lorem",
+						"player3": "Lorem impsum"
+					}
 				},
 				{
 					"playerName": "player2",
-					"playerAssignment": [
-						"player3: No tan lorem",
-						"player4: Lorem lorem",
-						"player1: Lorem impsum"
-					]
+					"playerAssignment": {
+						"player3": "No tan lorem",
+						"player4": "Lorem lorem",
+						"player1": "Lorem impsum"
+					}
 				}
 			]
 		}

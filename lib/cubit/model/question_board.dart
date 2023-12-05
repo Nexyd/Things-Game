@@ -2,7 +2,7 @@ import 'assignment.dart';
 
 class QuestionBoard {
   String question;
-  List<String> answers;
+  Map<String, String> answers;
   List<Assignment> assignments;
 
   QuestionBoard({
@@ -14,7 +14,7 @@ class QuestionBoard {
   factory QuestionBoard.fromJson(Map<String, dynamic> json) {
     return QuestionBoard(
       question: json["question"],
-      answers: List<String>.from(json["answers"].map((x) => x)),
+      answers: json["answers"],
       assignments: List<Assignment>.from(
         json["assignments"].map((x) => Assignment.fromJson(x)),
       ),
@@ -24,7 +24,7 @@ class QuestionBoard {
   Map<String, dynamic> toJson() {
     return {
       "question": question,
-      "answers": List<dynamic>.from(answers.map((x) => x)),
+      "answers": answers,
       "assignments": List<dynamic>.from(
         assignments.map((x) => x.toJson()),
       ),

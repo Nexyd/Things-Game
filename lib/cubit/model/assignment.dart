@@ -1,6 +1,6 @@
 class Assignment {
   String playerName;
-  List<String> playerAssignment;
+  Map<String, String> playerAssignment;
 
   Assignment({
     required this.playerName,
@@ -10,18 +10,14 @@ class Assignment {
   factory Assignment.fromJson(Map<String, dynamic> json) {
     return Assignment(
       playerName: json["playerName"],
-      playerAssignment: List<String>.from(
-        json["playerAssignment"].map((x) => x),
-      ),
+      playerAssignment: json["playerAssignment"],
     );
   }
 
   Map<String, dynamic> toJson() {
     return {
       "playerName": playerName,
-      "playerAssignment": List<dynamic>.from(
-        playerAssignment.map((x) => x),
-      ),
+      "playerAssignment": playerAssignment
     };
   }
 }
