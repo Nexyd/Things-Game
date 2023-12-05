@@ -1,14 +1,9 @@
 import 'package:dio/dio.dart';
-import 'package:pastebin/pastebin.dart';
 
 class DioRepository {
   late Dio client;
-  final baseUrl = "https://pastebin.com";
-  final rawBaseUrl = "https://pastebin.com/raw";
-  final userKey = "2d7a99b044ec751a72423a9ab2c9b4da";
-  final pastebin = withSingleApiDevKey(
-    apiDevKey: "KMyCYinFCWJDdNlTQRYhYBDz2kLog4vB",
-  );
+  final baseUrl = "";
+  final rawBaseUrl = "";
 
   DioRepository() {
     client = _getClient();
