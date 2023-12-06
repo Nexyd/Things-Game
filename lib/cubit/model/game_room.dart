@@ -1,7 +1,3 @@
-// To parse this JSON data, do
-//
-//     final gameRoom = gameRoomFromJson(jsonString);
-
 import 'dart:convert';
 import 'dart:math';
 

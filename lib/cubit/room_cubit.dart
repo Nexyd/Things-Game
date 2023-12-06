@@ -18,9 +18,9 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> createRoom() async {
     if (actualGame == GameRoom.empty()) return;
-    const result = "QcKEDJi8";
+    //const result = "QcKEDJi8";
 
-    // final result = await repo.createRoom(actualGame.toRawJson());
+    final result = await repo.createRoom(actualGame.toJson());
     if (result.startsWith("error")) {
       emit(RoomError(error: result));
       return;
