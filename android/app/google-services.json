@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "689626236602",
+    "project_id": "thingsgame-e0474",
+    "storage_bucket": "thingsgame-e0474.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:689626236602:android:53d1f05280072e2b252483",
+        "android_client_info": {
+          "package_name": "com.dani.flutter.project"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAMZm2Q0C0OgNhH7OzQfOcDqB1M_WrY60w"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

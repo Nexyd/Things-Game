@@ -5,15 +5,21 @@ import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:things_game/support/route_generator.dart';
 import 'package:things_game/screen/splash_screen.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'firebase_options.dart';
 
 import 'cubit/game_cubit.dart';
 import 'cubit/room_cubit.dart';
 import 'support/logger.dart';
 
-void main() {
+Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Logger.init(LoggerConfig(level: LoggerLevel.debug));
+  await Firebase.initializeApp(
+    options: DefaultFirebaseOptions.currentPlatform,
+  );
+
   runApp(I18n(child: const ThingsGame()));
 }
 
