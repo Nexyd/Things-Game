@@ -18,15 +18,15 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> createRoom() async {
     if (actualGame == GameRoom.empty()) return;
-    //const result = "QcKEDJi8";
-
     final result = await repo.createRoom(actualGame.toJson());
+
     if (result.startsWith("error")) {
       emit(RoomError(error: result));
       return;
     }
 
-    actualGame.id = result.substring(result.lastIndexOf("/") + 1);
+    //actualGame.id = result.substring(result.lastIndexOf("/") + 1);
+    actualGame.id = result;
     emit(RoomCreated(room: actualGame));
   }
 
@@ -34,12 +34,12 @@ class RoomCubit extends Cubit<RoomState> {
     emit(LoadingGameList());
 
     final result = await repo.getRooms();
-    if (result.isNotEmpty && result.first.startsWith("error")) {
-      emit(RoomError(error: result.first));
-      return;
-    }
+    // if (result.isNotEmpty && result.first.startsWith("error")) {
+    //   emit(RoomError(error: result.first));
+    //   return;
+    // }
 
-    List<GameRoom> rooms = result.map((e) => GameRoom.fromRawJson(e)).toList();
+    List<GameRoom> rooms = result.map((e) => GameRoom.fromJson(e)).toList();
     emit(RoomListLoaded(roomList: rooms));
   }
 
@@ -59,9 +59,13 @@ class RoomCubit extends Cubit<RoomState> {
     return false;
   }
 
-  Future<bool> deleteRoom() async {
+  Future<void> deleteRoom() async {
     print("### cubit delete room ###");
-    return false;
+    // final result = await repo.deleteRoom(actualGame.id);
+    // if (result != null) {
+    //   emit(RoomError(error: result));
+    //   return;
+    // }
   }
 
   void backToMain(BuildContext context) {

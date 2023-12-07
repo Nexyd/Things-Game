@@ -1,6 +1,6 @@
 {
-	"name": "Game#241",
 	"config": {
+		"name": "Game#241",
 		"players": 4,
 		"rounds": 7,
 		"maxPoints": 30,

@@ -1,28 +1,20 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
+typedef Json = Map<String, dynamic>;
+
 class GameRoomRepository {
-  final db = FirebaseFirestore.instance;
+  final roomsDb = FirebaseFirestore.instance.collection("rooms");
 
-  Future<String> createRoom(
-    Map<String, dynamic> roomJson, [
-    bool isPrivate = false,
-  ]) async {
-    // Add a new document with a generated ID
-    db.collection("rooms").add(roomJson).then(
-      (doc) => print('DocumentSnapshot added with ID: ${doc.id}'),
-    );
-
-    return "";
+  Future<String> createRoom(Json roomJson) async {
+    final result = await roomsDb.add(roomJson);
+    return result.id;
   }
 
-  Future<List<String>> getRooms() async {
-    final List<String> roomList = [];
-    await db.collection("rooms").get().then((event) {
+  Future<List<Json>> getRooms() async {
+    final List<Json> roomList = [];
+    await roomsDb.get().then((event) {
       for (var doc in event.docs) {
-        // TODO: convert to parseable string
-        // {playerList: [player1, player2, player3, player4], name: Game#241, ...
-        // {"playerList": ["player1", "player2", "player3", "player4"], "name": "Game#241", ...
-        roomList.add(doc.data().toString());
+        roomList.add(doc.data());
       }
     });
 
@@ -37,7 +29,13 @@ class GameRoomRepository {
     return "";
   }
 
-  Future<String> deleteRoom(String id) async {
-    return "";
+  Future<String?> deleteRoom(String id) async {
+    try {
+      await roomsDb.doc(id).delete();
+    } catch (error) {
+      return "Error: $error";
+    }
+
+    return null;
   }
 }

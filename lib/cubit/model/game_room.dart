@@ -5,7 +5,7 @@ import 'package:things_game/cubit/model/question_board.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
 class GameRoom {
-  String id = "";
+  String id;
   ConfigurationData config;
   List<String> playerList;
   List<QuestionBoard> questionBoard;
@@ -36,11 +36,9 @@ class GameRoom {
 
   factory GameRoom.fromJson(Map<String, dynamic> json) {
     return GameRoom(
-      id: json["id"],
+      id: json["id"] ?? "",
       config: ConfigurationData.fromJson(json["config"]),
-      playerList: List<String>.from(
-        json["playerList"].map((x) => x),
-      ),
+      playerList: List<String>.from(json["playerList"] as List),
       questionBoard: List<QuestionBoard>.from(
         json["questionBoard"].map(
           (x) => QuestionBoard.fromJson(x),
@@ -75,6 +73,7 @@ class GameRoom {
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "config": config.toJson(),
       "playerList": List<dynamic>.from(playerList.map((x) => x)),
       "questionBoard": List<dynamic>.from(

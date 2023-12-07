@@ -2,7 +2,7 @@ import 'assignment.dart';
 
 class QuestionBoard {
   String question;
-  Map<String, String> answers;
+  Map<String, dynamic> answers;
   List<Assignment> assignments;
 
   QuestionBoard({

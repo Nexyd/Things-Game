@@ -1,6 +1,6 @@
 class Assignment {
   String playerName;
-  Map<String, String> playerAssignment;
+  Map<String, dynamic> playerAssignment;
 
   Assignment({
     required this.playerName,
