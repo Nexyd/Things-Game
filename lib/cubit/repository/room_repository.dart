@@ -2,12 +2,22 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 
 typedef Json = Map<String, dynamic>;
 
-class GameRoomRepository {
+class RoomRepository {
   final roomsDb = FirebaseFirestore.instance.collection("rooms");
 
   Future<String> createRoom(Json roomJson) async {
     final result = await roomsDb.add(roomJson);
     return result.id;
+  }
+
+  Future<String> createFooRoom(Json roomJson) async {
+    String result = "";
+    await roomsDb
+        .add(roomJson)
+        .then((value) => result = value.id)
+        .catchError((error) => result = "Error: $error");
+
+    return result;
   }
 
   Future<List<Json>> getRooms() async {
@@ -16,17 +26,22 @@ class GameRoomRepository {
       for (var doc in event.docs) {
         roomList.add(doc.data());
       }
+    }).catchError((error) {
+      roomList.add({"error": error});
     });
 
     return roomList;
   }
 
   Future<String> updatePlayers(String id, List<String> playerList) async {
-    return "";
-  }
+    String result = "";
+    await roomsDb
+        .doc(id)
+        .update({"playerList": playerList})
+        .then((value) => result = "OK")
+        .catchError((error) => result = "Error: $error");
 
-  Future<String> updateBoard(String id, String boardJson) async {
-    return "";
+    return result;
   }
 
   Future<String?> deleteRoom(String id) async {

@@ -1,13 +1,13 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
-import 'package:things_game/cubit/repository/game_room_repository.dart';
+import 'package:things_game/cubit/repository/room_repository.dart';
 import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
 class RoomCubit extends Cubit<RoomState> {
   GameRoom actualGame = GameRoom.empty();
-  final GameRoomRepository repo = GameRoomRepository();
+  final RoomRepository repo = RoomRepository();
 
   RoomCubit() : super(RoomInitial());
 
@@ -25,7 +25,6 @@ class RoomCubit extends Cubit<RoomState> {
       return;
     }
 
-    //actualGame.id = result.substring(result.lastIndexOf("/") + 1);
     actualGame.id = result;
     emit(RoomCreated(room: actualGame));
   }
@@ -34,10 +33,10 @@ class RoomCubit extends Cubit<RoomState> {
     emit(LoadingGameList());
 
     final result = await repo.getRooms();
-    // if (result.isNotEmpty && result.first.startsWith("error")) {
-    //   emit(RoomError(error: result.first));
-    //   return;
-    // }
+    if (result.isNotEmpty && result.first.containsKey("error")) {
+      emit(RoomError(error: result.first.entries.first.value));
+      return;
+    }
 
     List<GameRoom> rooms = result.map((e) => GameRoom.fromJson(e)).toList();
     emit(RoomListLoaded(roomList: rooms));
@@ -51,7 +50,12 @@ class RoomCubit extends Cubit<RoomState> {
     );
 
     print("### cubit add player result: $result ###");
-    return false;
+    if (result.startsWith("error")) {
+      emit(RoomError(error: result));
+      return false;
+    }
+
+    return true;
   }
 
   Future<bool> removePlayer(String name) async {
@@ -60,12 +64,11 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> deleteRoom() async {
-    print("### cubit delete room ###");
-    // final result = await repo.deleteRoom(actualGame.id);
-    // if (result != null) {
-    //   emit(RoomError(error: result));
-    //   return;
-    // }
+    final result = await repo.deleteRoom(actualGame.id);
+    if (result != null) {
+      emit(RoomError(error: result));
+      return;
+    }
   }
 
   void backToMain(BuildContext context) {

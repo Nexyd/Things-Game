@@ -13,6 +13,7 @@ class GameCubit extends Cubit<GameState> {
 
   void startGame() {
     print("### cubit Game Started! ###");
+    // TODO: create board in firestore
   }
 
   bool sendMessage() {

@@ -1,17 +1,13 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:things_game/cubit/repository/dio_repository.dart';
 
 class GameRepository extends DioRepository {
+  final boardsDb = FirebaseFirestore.instance.collection("boards");
+
   Future<bool> sendMessage(
     String id,
     List<String> playerList,
   ) async {
-    // final response = await client.put(
-    //   id,
-    //   data: jsonEncode(<String, dynamic>{
-    //     QUESTION_BOARD: boardJson,
-    //   }),
-    // );
-
     return false;
   }
 
@@ -19,14 +15,6 @@ class GameRepository extends DioRepository {
     String id,
     String boardJson,
   ) async {
-    // final response = await client.put(
-    //   id,
-    //   data: jsonEncode(<String, dynamic>{
-    //     QUESTION_BOARD: boardJson,
-    //   }),
-    // );
-
-    // TODO: parse response.
     return false;
   }
 
@@ -34,14 +22,6 @@ class GameRepository extends DioRepository {
     String playerName,
     List<String> playerAssignment,
   ) async {
-    // final response = await client.post(
-    //   id,
-    //   data: jsonEncode(<String, dynamic>{
-    //     QUESTION_BOARD: boardJson,
-    //   }),
-    // );
-
-    // TODO: parse response.
     return false;
   }
 }
