@@ -1,8 +1,12 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:things_game/cubit/repository/dio_repository.dart';
+import 'package:things_game/cubit/repository/room_repository.dart';
 
-class GameRepository extends DioRepository {
+class GameRepository {
   final boardsDb = FirebaseFirestore.instance.collection("boards");
+
+  Future<String> createBoard(Json roomJson) async {
+    return "";
+  }
 
   Future<bool> sendMessage(
     String id,
