@@ -11,23 +11,23 @@ class GameCubit extends Cubit<GameState> {
 
   GameCubit() : super(GameInitial());
 
-  void startGame() {
-    print("### cubit Game Started! ###");
+  Future<void> startGame() async {
+    print("### game cubit Game Started! ###");
     // TODO: create board in firestore
   }
 
-  bool sendMessage() {
-    print("### cubit send message ###");
+  Future<bool> sendMessage() async {
+    print("### game cubit send message ###");
     return false;
   }
 
-  List<String> announceAnswers() {
-    print("### cubit announce answers ###");
+  Future<List<String>> announceAnswers() async {
+    print("### game cubit announce answers ###");
     return [];
   }
 
-  bool sendAssignments(Assignment assignment) {
-    print("### cubit send assignments ###");
+  Future<bool> sendAssignments(Assignment assignment) async {
+    print("### game cubit send assignments ###");
     return false;
   }
 }
