@@ -38,10 +38,7 @@ class PlayerJoined extends RoomState {
   final String playerName;
   final Image? playerAvatar;
 
-  PlayerJoined({
-    required this.playerName,
-    this.playerAvatar,
-  });
+  PlayerJoined({required this.playerName, this.playerAvatar});
 }
 
 class PlayerLeft extends RoomState {

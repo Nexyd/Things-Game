@@ -5,11 +5,11 @@ import '../../support/constants.dart';
 typedef Json = Map<String, dynamic>;
 
 class RoomRepository {
-  final roomsDb = FirebaseFirestore.instance.collection("rooms");
+  final _roomsDb = FirebaseFirestore.instance.collection("rooms");
 
   Future<String> createRoom(Json roomJson) async {
     String result = "";
-    await roomsDb
+    await _roomsDb
         .add(roomJson)
         .then((value) => result = value.id)
         .catchError((error) => result = "Error: $error");
@@ -19,7 +19,7 @@ class RoomRepository {
 
   Future<List<Json>> getRooms() async {
     final List<Json> roomList = [];
-    await roomsDb.get().then((event) {
+    await _roomsDb.get().then((event) {
       for (var doc in event.docs) {
         roomList.add(doc.data());
       }
@@ -33,7 +33,7 @@ class RoomRepository {
   Future<String> updatePlayers(String id, List<String> playerList) async {
     print("### room repository update players ###");
     String result = "";
-    await roomsDb
+    await _roomsDb
         .doc(id)
         .update({PLAYER_LIST: playerList})
         .then((value) => result = "OK")
@@ -44,7 +44,7 @@ class RoomRepository {
 
   Future<String?> deleteRoom(String id) async {
     try {
-      await roomsDb.doc(id).delete();
+      await _roomsDb.doc(id).delete();
     } catch (error) {
       return "Error: $error";
     }

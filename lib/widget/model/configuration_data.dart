@@ -17,6 +17,16 @@ class ConfigurationData {
     this.isPrivate = true,
   });
 
+  factory ConfigurationData.fromJson(Map<String, dynamic> json) {
+    return ConfigurationData(
+      name: json["name"],
+      players: json["players"],
+      rounds: json["rounds"],
+      maxPoints: json["maxPoints"],
+      isPrivate: json["isPrivate"],
+    );
+  }
+
   ConfigurationData copyWith({
     String? name,
     int? players,
@@ -30,16 +40,6 @@ class ConfigurationData {
       rounds: rounds ?? this.rounds,
       maxPoints: maxPoints ?? this.maxPoints,
       isPrivate: isPrivate ?? this.isPrivate,
-    );
-  }
-
-  factory ConfigurationData.fromJson(Map<String, dynamic> json) {
-    return ConfigurationData(
-      name: json["name"],
-      players: json["players"],
-      rounds: json["rounds"],
-      maxPoints: json["maxPoints"],
-      isPrivate: json["isPrivate"],
     );
   }
 

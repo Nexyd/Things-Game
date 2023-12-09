@@ -1,33 +1,27 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:things_game/cubit/model/question_board.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
 class GameRoom {
   String id;
   ConfigurationData config;
   List<String> playerList;
-  List<QuestionBoard> questionBoard;
 
   GameRoom({
     required this.id,
     required this.config,
     required this.playerList,
-    required this.questionBoard,
   });
 
   GameRoom copyWith({
-    String? id,
     ConfigurationData? config,
     List<String>? playerList,
-    List<QuestionBoard>? questionBoard,
   }) {
     return GameRoom(
-      id: id ?? this.id,
+      id: id,
       config: config ?? this.config,
       playerList: playerList ?? this.playerList,
-      questionBoard: questionBoard ?? this.questionBoard,
     );
   }
 
@@ -39,11 +33,6 @@ class GameRoom {
       id: json["id"] ?? "",
       config: ConfigurationData.fromJson(json["config"]),
       playerList: List<String>.from(json["playerList"] as List),
-      questionBoard: List<QuestionBoard>.from(
-        json["questionBoard"].map(
-          (x) => QuestionBoard.fromJson(x),
-        ),
-      ),
     );
   }
 
@@ -52,7 +41,6 @@ class GameRoom {
       id: "",
       config: ConfigurationData(),
       playerList: [],
-      questionBoard: [],
     );
   }
 
@@ -67,7 +55,6 @@ class GameRoom {
         isPrivate: Random().nextBool(),
       ),
       playerList: [],
-      questionBoard: [],
     );
   }
 
@@ -76,9 +63,6 @@ class GameRoom {
       "id": id,
       "config": config.toJson(),
       "playerList": List<dynamic>.from(playerList.map((x) => x)),
-      "questionBoard": List<dynamic>.from(
-        questionBoard.map((x) => x.toJson()),
-      ),
     };
   }
 
