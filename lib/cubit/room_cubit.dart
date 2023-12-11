@@ -1,13 +1,17 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/repository/room_repository.dart';
 import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
+import '../streams/firestore_room_controller.dart';
+
 class RoomCubit extends Cubit<RoomState> {
   GameRoom actualGame = GameRoom.empty();
   final RoomRepository repo = RoomRepository();
+  FirestoreRoomController? controller;
 
   RoomCubit() : super(RoomInitial());
 
@@ -18,6 +22,7 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> createRoom() async {
     if (actualGame == GameRoom.empty()) return;
+    actualGame.playerList.add(UserSettings.I.name);
     final result = await repo.createRoom(actualGame.toJson());
 
     if (result.startsWith("error")) {
@@ -26,6 +31,7 @@ class RoomCubit extends Cubit<RoomState> {
     }
 
     actualGame.id = result;
+    controller = FirestoreRoomController(room: actualGame);
     emit(RoomCreated(room: actualGame));
   }
 
@@ -64,7 +70,10 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> deleteRoom() async {
+    controller?.dispose();
     final result = await repo.deleteRoom(actualGame.id);
+    actualGame = GameRoom.empty();
+
     if (result != null) {
       emit(RoomError(error: result));
       return;

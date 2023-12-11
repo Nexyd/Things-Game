@@ -1,9 +1,11 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:flutter/foundation.dart';
+import 'package:things_game/streams/streamable_mixin.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
-class GameRoom {
+class GameRoom with Streamable<GameRoom> {
   String id;
   ConfigurationData config;
   List<String> playerList;
@@ -60,7 +62,6 @@ class GameRoom {
 
   Map<String, dynamic> toJson() {
     return {
-      "id": id,
       "config": config.toJson(),
       "playerList": List<dynamic>.from(playerList.map((x) => x)),
     };
@@ -71,7 +72,7 @@ class GameRoom {
   @override
   bool operator ==(Object other) {
     if (other is! GameRoom) return false;
-    return config == other.config;
+    return config == other.config && listEquals(playerList, other.playerList);
   }
 
   @override

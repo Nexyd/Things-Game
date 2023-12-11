@@ -3,13 +3,17 @@ import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/repository/game_repository.dart';
 import 'package:things_game/cubit/state/game_state.dart';
 
+import '../streams/firestore_room_controller.dart';
 import 'model/assignment.dart';
 
 class GameCubit extends Cubit<GameState> {
   GameRoom actualGame = GameRoom.empty();
   final GameRepository repo = GameRepository();
+  late final FirestoreRoomController controller;
 
-  GameCubit() : super(GameInitial());
+  GameCubit() : super(GameInitial()) {
+    controller = FirestoreRoomController(room: actualGame);
+  }
 
   Future<void> startGame() async {
     print("### game cubit Game Started! ###");

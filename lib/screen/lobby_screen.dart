@@ -1,9 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:things_game/cubit/game_cubit.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/room_cubit.dart';
-import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
@@ -37,65 +35,51 @@ class _LobbyScreenState extends State<LobbyScreen> {
       room = widget.args.initialRoom;
     }
 
-    return BlocConsumer<RoomCubit, RoomState>(
-      bloc: cubit,
-      builder: (context, state) => _getContent(context, cubit),
-      listenWhen: (previousState, state) {
-        return state is PlayerJoined || state is RoomConfigUpdated;
-      },
-      listener: (context, state) {
-        if (state is RoomConfigUpdated) {
-          room = room.copyWith(config: state.config);
-          return;
-        }
-
-        state as PlayerJoined;
-        final player = playerList.firstWhere(
-          (element) => element.keys.first.startsWith("Player"),
-        );
-
-        setState(() {
-          playerList.remove(player);
-          playerList.insert(1, {
-            state.playerName: _getIcon(true),
-          });
-        });
-      },
-    );
+    // TODO: Add StreamBuilder
+    return _getContent(context, cubit);
   }
 
   Widget _getContent(BuildContext context, RoomCubit cubit) {
     final width = MediaQuery.of(context).size.width / 100 * 90;
+    // TODO: fix navigation back in iOS (add button)
     return Scaffold(
       backgroundColor: UserSettings.I.backgroundColor,
       body: SafeArea(
-        child: Column(
-          children: [
-            _getHeader(),
-            _getListView(context),
-            _getIndicatorBar(width),
-            _getListTile("rounds"),
-            _getListTile("points"),
-            StyledButton(
-              text: "Start/Ready".i18n,
-              onPressed: () => BlocProvider.of<GameCubit>(context).startGame(),
-            ),
-            Padding(
-              padding: const EdgeInsets.only(top: 15.0),
-              child: StyledButton(
-                text: "Leave room".i18n,
-                onPressed: () {
-                  if (playerList.isEmpty) {
-                    cubit.deleteRoom();
-                  }
+        child: StreamBuilder<GameRoom>(
+            stream: room.allChanges,
+            builder: (context, snapshot) {
+              return Column(
+                children: [
+                  _getHeader(),
+                  _getListView(context),
+                  _getIndicatorBar(width),
+                  _getListTile("rounds"),
+                  _getListTile("points"),
+                  StyledButton(
+                    text: "Start/Ready".i18n,
+                    onPressed: () => setState(() {}),
+                    // onPressed: () =>
+                    //     BlocProvider.of<GameCubit>(context).startGame(),
+                    //onPressed: () => gameCubit.startGame(),
+                  ),
+                  Padding(
+                    padding: const EdgeInsets.only(top: 15.0),
+                    // TODO: fix button size in iOS
+                    child: StyledButton(
+                      text: "Leave room".i18n,
+                      onPressed: () {
+                        if (playerList.isEmpty) {
+                          cubit.deleteRoom();
+                        }
 
-                  cubit.backToMain(context);
-                },
-                type: ButtonType.destructive,
-              ),
-            ),
-          ],
-        ),
+                        cubit.backToMain(context);
+                      },
+                      type: ButtonType.destructive,
+                    ),
+                  ),
+                ],
+              );
+            }),
       ),
     );
   }
@@ -142,15 +126,16 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   Widget _getListView(BuildContext context) {
-    if (playerList.isEmpty) {
-      final list = List.generate(
-        room.config.players - 1,
-        (index) => {"Player ${index + 2}": _getIcon()},
-      );
+    playerList = List.generate(
+      room.config.players,
+      (index) {
+        final playerName = index < room.playerList.length
+            ? room.playerList[index]
+            : "Player ${index + 1}";
 
-      playerList.add({UserSettings.I.name: _getIcon()});
-      playerList.addAll(list);
-    }
+        return {playerName: _getIcon()};
+      },
+    );
 
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),

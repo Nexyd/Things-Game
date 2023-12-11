@@ -2,8 +2,9 @@ import 'dart:convert';
 import 'dart:math';
 
 import 'package:things_game/cubit/model/question_board.dart';
+import 'package:things_game/streams/streamable_mixin.dart';
 
-class GameBoard {
+class GameBoard with Streamable<GameBoard> {
   String id;
   List<QuestionBoard> questionBoard;
 
