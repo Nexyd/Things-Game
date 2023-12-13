@@ -9,36 +9,36 @@ import 'package:things_game/widget/model/configuration_data.dart';
 import '../streams/firestore_room_controller.dart';
 
 class RoomCubit extends Cubit<RoomState> {
-  GameRoom actualGame = GameRoom.empty();
-  final RoomRepository repo = RoomRepository();
+  GameRoom _actualGame = GameRoom.empty();
+  final RoomRepository _repo = RoomRepository();
   FirestoreRoomController? controller;
 
   RoomCubit() : super(RoomInitial());
 
   void updateConfiguration(ConfigurationData data) {
-    actualGame = actualGame.copyWith(config: data);
-    emit(RoomConfigUpdated(config: actualGame.config));
+    _actualGame = _actualGame.copyWith(config: data);
+    emit(RoomConfigUpdated(config: _actualGame.config));
   }
 
   Future<void> createRoom() async {
-    if (actualGame == GameRoom.empty()) return;
-    actualGame.playerList.add(UserSettings.I.name);
-    final result = await repo.createRoom(actualGame.toJson());
+    if (_actualGame == GameRoom.empty()) return;
+    _actualGame.playerList.add(UserSettings.I.name);
+    final result = await _repo.createRoom(_actualGame.toJson());
 
     if (result.startsWith("error")) {
       emit(RoomError(error: result));
       return;
     }
 
-    actualGame.id = result;
-    controller = FirestoreRoomController(room: actualGame);
-    emit(RoomCreated(room: actualGame));
+    _actualGame.id = result;
+    controller = FirestoreRoomController(room: _actualGame);
+    emit(RoomCreated(room: _actualGame));
   }
 
   Future<void> getOpenRooms() async {
     emit(LoadingGameList());
 
-    final result = await repo.getRooms();
+    final result = await _repo.getRooms();
     if (result.isNotEmpty && result.first.containsKey("error")) {
       emit(RoomError(error: result.first.entries.first.value));
       return;
@@ -50,9 +50,9 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<bool> addPlayer(String name) async {
     print("### room cubit add player ###");
-    final result = await repo.updatePlayers(
-      actualGame.id,
-      actualGame.playerList,
+    final result = await _repo.updatePlayers(
+      _actualGame.id,
+      _actualGame.playerList,
     );
 
     print("### room cubit add player result: $result ###");
@@ -71,8 +71,8 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> deleteRoom() async {
     controller?.dispose();
-    final result = await repo.deleteRoom(actualGame.id);
-    actualGame = GameRoom.empty();
+    final result = await _repo.deleteRoom(_actualGame.id);
+    _actualGame = GameRoom.empty();
 
     if (result != null) {
       emit(RoomError(error: result));

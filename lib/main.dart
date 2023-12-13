@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:i18n_extension/i18n_widget.dart';
-import 'package:provider/provider.dart';
 import 'package:things_game/support/route_generator.dart';
 import 'package:things_game/screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
