@@ -13,12 +13,23 @@ class RoomCubit extends Cubit<RoomState> {
   GameRoom _actualGame = GameRoom.empty();
   final RoomRepository _repo = RoomRepository();
   FirestoreRoomController? controller;
+
   Stream<DocumentSnapshot<GameRoom>>? get roomStream =>
       controller?.roomRef.snapshots();
 
   RoomCubit() : super(RoomInitial());
 
-  void updateConfiguration(ConfigurationData data) {
+  Future<void> updateConfiguration(ConfigurationData data) async {
+    _actualGame = _actualGame.copyWith(config: data);
+    final result = await _repo.updateConfig(_actualGame.id, data.toJson());
+
+    if (result.startsWith("error")) {
+      emit(RoomError(error: result));
+      return;
+    }
+  }
+
+  void updateConfigSwitch(ConfigurationData data) {
     _actualGame = _actualGame.copyWith(config: data);
     emit(RoomConfigUpdated(config: _actualGame.config));
   }
@@ -36,6 +47,7 @@ class RoomCubit extends Cubit<RoomState> {
     // TODO: search for a way to autogenerate IDs
     _actualGame.id = result;
     controller = FirestoreRoomController(room: _actualGame);
+
     emit(RoomCreated(room: _actualGame));
   }
 
@@ -52,10 +64,19 @@ class RoomCubit extends Cubit<RoomState> {
     emit(RoomListLoaded(roomList: rooms));
   }
 
-  Future<bool> joinRoom(GameRoom selectedRoom, String name) async {
+  Future<bool> joinRoom(GameRoom selectedRoom) async {
     _actualGame = selectedRoom;
-    _actualGame.playerList.add(name);
+    _actualGame.playerList.add(UserSettings.I.name);
+    return _updatePlayers();
+  }
 
+  Future<bool> leaveRoom() async {
+    // TODO: test with 2 devices
+    _actualGame.playerList.remove(UserSettings.I.name);
+    return _updatePlayers();
+  }
+
+  Future<bool> _updatePlayers() async {
     final result = await _repo.updatePlayers(
       _actualGame.id,
       _actualGame.playerList,
@@ -67,11 +88,6 @@ class RoomCubit extends Cubit<RoomState> {
     }
 
     return true;
-  }
-
-  Future<bool> leaveRoom(String name) async {
-    print("### room cubit leave room ###");
-    return false;
   }
 
   Future<void> deleteRoom() async {

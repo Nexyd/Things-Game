@@ -13,6 +13,7 @@ mixin Streamable<T> {
   /// A [Stream] that fires an event every time a change is made _locally_,
   /// by the player.
   Stream<T> get localChanges => _localChanges.stream;
+  StreamSink<T> get localSink => _localChanges.sink;
 
   /// A [Stream] that fires an event every time a change is made _remotely_,
   /// by another player.

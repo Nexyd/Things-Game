@@ -172,9 +172,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
   }
 
   void navigateToLobby(GameRoom selectedRoom) {
-    final cubit = BlocProvider.of<RoomCubit>(context);
-    cubit.joinRoom(selectedRoom, UserSettings.I.name);
-
+    BlocProvider.of<RoomCubit>(context).joinRoom(selectedRoom);
     Navigator.of(context).pushNamed(
       "/lobby",
       arguments: LobbyScreenArguments(selectedRoom),

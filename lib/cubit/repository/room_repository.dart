@@ -1,4 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:things_game/widget/model/configuration_data.dart';
 
 import '../../support/constants.dart';
 
@@ -40,6 +41,17 @@ class RoomRepository {
     });
 
     return roomList;
+  }
+
+  Future<String> updateConfig(String id, Json config) async {
+    String result = "";
+    await _roomsDb
+        .doc(id)
+        .update({ROOM_CONFIG: config})
+        .then((value) => result = "OK")
+        .catchError((error) => result = "Error: $error");
+
+    return result;
   }
 
   Future<String> updatePlayers(String id, List<String> playerList) async {

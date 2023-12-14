@@ -1,10 +1,8 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
-import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
@@ -14,6 +12,7 @@ import '../cubit/game_cubit.dart';
 
 class LobbyScreenArguments {
   final GameRoom initialRoom;
+
   LobbyScreenArguments(this.initialRoom);
 }
 
@@ -38,79 +37,51 @@ class _LobbyScreenState extends State<LobbyScreen> {
       room = widget.args.initialRoom;
     }
 
-    // TODO: Add StreamBuilder
     return _getContent(context, cubit);
-    // return BlocConsumer<RoomCubit, RoomState>(
-    //   bloc: cubit,
-    //   builder: (context, state) => _getContent(context, cubit),
-    //   listenWhen: (previousState, state) {
-    //     return state is PlayerJoined || state is RoomConfigUpdated;
-    //   },
-    //   listener: (context, state) {
-    //     if (state is RoomConfigUpdated) {
-    //       room = room.copyWith(config: state.config);
-    //       return;
-    //     }
-    //
-    //     state as PlayerJoined;
-    //     final player = playerList.firstWhere(
-    //           (element) => element.keys.first.startsWith("Player"),
-    //     );
-    //
-    //     setState(() {
-    //       playerList.remove(player);
-    //       playerList.insert(1, {
-    //         state.playerName: _getIcon(true),
-    //       });
-    //     });
-    //   },
-    // );
   }
 
   Widget _getContent(BuildContext context, RoomCubit cubit) {
     final width = MediaQuery.of(context).size.width / 100 * 90;
     // TODO: fix navigation back in iOS (add button)
 
-    return Scaffold(
-      backgroundColor: UserSettings.I.backgroundColor,
-      body: SafeArea(
-        child: StreamBuilder(
-            stream: cubit.roomStream,
-            builder: (context, snapshot) {
-              final players = snapshot.data?.data()?.playerList;
-              room = room.copyWith(playerList: players);
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) => _leaveRoom(context),
+      child: Scaffold(
+        backgroundColor: UserSettings.I.backgroundColor,
+        body: SafeArea(
+          child: StreamBuilder(
+              stream: cubit.roomStream,
+              builder: (context, snapshot) {
+                final players = snapshot.data?.data()?.playerList;
+                room = room.copyWith(playerList: players);
 
-              return Column(
-                children: [
-                  _getHeader(),
-                  _getListView(context),
-                  _getIndicatorBar(width),
-                  _getListTile("rounds"),
-                  _getListTile("points"),
-                  StyledButton(
-                    text: "Start/Ready".i18n,
-                    onPressed: () {
-                      BlocProvider.of<GameCubit>(context).startGame();
-                    },
-                  ),
-                  Padding(
-                    padding: const EdgeInsets.only(top: 15.0),
-                    // TODO: fix button size in iOS
-                    child: StyledButton(
-                      text: "Leave room".i18n,
+                return Column(
+                  children: [
+                    _getHeader(),
+                    _getListView(context),
+                    _getIndicatorBar(width),
+                    _getListTile("rounds"),
+                    _getListTile("points"),
+                    StyledButton(
+                      text: "Start/Ready".i18n,
                       onPressed: () {
-                        if (playerList.isEmpty) {
-                          cubit.deleteRoom();
-                        }
-
-                        cubit.backToMain(context);
+                        BlocProvider.of<GameCubit>(context).startGame();
                       },
-                      type: ButtonType.destructive,
                     ),
-                  ),
-                ],
-              );
-            }),
+                    Padding(
+                      padding: const EdgeInsets.only(top: 15.0),
+                      // TODO: fix button size in iOS
+                      child: StyledButton(
+                        text: "Leave room".i18n,
+                        onPressed: () => _leaveRoom(context),
+                        type: ButtonType.destructive,
+                      ),
+                    ),
+                  ],
+                );
+              }),
+        ),
       ),
     );
   }
@@ -127,7 +98,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 2),
-          StyledText("$title: \n${room.id}", fontSize: 30),
+          // TODO: find a way to shorten id (while still being usable).
+          // StyledText("$title: \n${room.id}", fontSize: 30),
+          StyledText("$title: \nFoo", fontSize: 30),
           const Spacer(),
           Align(
             alignment: Alignment.centerRight,
@@ -144,9 +117,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       splashFactory: NoSplash.splashFactory,
       onTap: () {
         final args = RoomSettingsScreenArgs(data: room.config);
-        Navigator.of(context)
-            .pushNamed("/roomSettings", arguments: args)
-            .then((value) => setState(() {}));
+        Navigator.of(context).pushNamed("/roomSettings", arguments: args);
       },
       child: Container(
         width: 45,
@@ -251,5 +222,29 @@ class _LobbyScreenState extends State<LobbyScreen> {
         fit: BoxFit.fill,
       ),
     );
+  }
+
+  void _leaveRoom(BuildContext context) {
+    cubit.leaveRoom();
+    final player = playerList.firstWhere(
+      (e) => e.keys.first == UserSettings.I.name,
+    );
+
+    playerList.remove(player);
+    final players = _getPlayersOnlyList();
+
+    if (players.isEmpty)  cubit.deleteRoom();
+    cubit.backToMain(context);
+  }
+
+  List<String> _getPlayersOnlyList() {
+    // TODO: test with 2 devices
+    final players = playerList.map((e) => e.keys.first).toList();
+    players.remove("Player 1");
+    players.remove("Player 2");
+    players.remove("Player 3");
+    players.remove("Player 4");
+
+    return players;
   }
 }

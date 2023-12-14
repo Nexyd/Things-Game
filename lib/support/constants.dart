@@ -11,6 +11,7 @@ const String LANGUAGE = "language";
 // Json Entries
 const String QUESTION_BOARD = "questionBoard";
 const String PLAYER_LIST = "playerList";
+const String ROOM_CONFIG = "config";
 
 // Miscellaneous
 const double AVATAR_SIZE = 40;

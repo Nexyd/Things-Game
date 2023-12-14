@@ -25,23 +25,39 @@ class RoomSettings extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Form(
-      child: BlocBuilder<RoomCubit, RoomState>(
-        bloc: BlocProvider.of<RoomCubit>(context),
-        builder: (context, state) {
-          if (state is RoomConfigUpdated) {
-            config.name = state.config.name;
-            config.players = state.config.players;
-            config.rounds = state.config.rounds;
-            config.maxPoints = state.config.maxPoints;
-            config.isPrivate = state.config.isPrivate;
-          }
+    return PopScope(
+      canPop: false,
+      onPopInvoked: (didPop) {
+        if (!isPlayersFieldEnabled) {
+          print("### exiting config room... ###");
+          final cubit = BlocProvider.of<RoomCubit>(context);
+          print("### updating room data... ###");
+          cubit.updateConfiguration(config);
+        }
 
-          return Container(
-            color: UserSettings.I.backgroundColor,
-            child: _getContent(context),
-          );
-        },
+        // TODO: search 'Looking up a deactivated widget's ancestor is unsafe.'
+        Future.delayed(const Duration(milliseconds: 500)).then(
+          (value) => Navigator.of(context).pop(),
+        );
+      },
+      child: Form(
+        child: BlocBuilder<RoomCubit, RoomState>(
+          bloc: BlocProvider.of<RoomCubit>(context),
+          builder: (context, state) {
+            if (state is RoomConfigUpdated) {
+              config.name = state.config.name;
+              config.players = state.config.players;
+              config.rounds = state.config.rounds;
+              config.maxPoints = state.config.maxPoints;
+              config.isPrivate = state.config.isPrivate;
+            }
+
+            return Container(
+              color: UserSettings.I.backgroundColor,
+              child: _getContent(context),
+            );
+          },
+        ),
       ),
     );
   }
@@ -52,7 +68,8 @@ class RoomSettings extends StatelessWidget {
       // onChanged: (value) => config.isPrivate = value,
       onChanged: (value) {
         config.isPrivate = value;
-        BlocProvider.of<RoomCubit>(context).updateConfiguration(config);
+        // TODO: try to remove this (switch doesn´t update without it).
+        BlocProvider.of<RoomCubit>(context).updateConfigSwitch(config);
       },
     );
 
@@ -86,12 +103,12 @@ class RoomSettings extends StatelessWidget {
                 trailing: cells[index].values.first,
                 style: ListTileStyle.list,
               );
-            } else {
-              return ListTile(
-                leading: StyledText(cells[index].keys.first),
-                title: cells[index].values.first,
-              );
             }
+
+            return ListTile(
+              leading: StyledText(cells[index].keys.first),
+              title: cells[index].values.first,
+            );
           },
         ),
         if (formSubmittable) submitButton,
@@ -106,8 +123,6 @@ class RoomSettings extends StatelessWidget {
       } else {
         _updateField(field, int.parse(value));
       }
-
-      BlocProvider.of<RoomCubit>(context).updateConfiguration(config);
     }
 
     return StyledTextForm(
