@@ -14,6 +14,18 @@ class RoomRepository {
         .then((value) => result = value.id)
         .catchError((error) => result = "Error: $error");
 
+    _updateId(result);
+    return result;
+  }
+
+  Future<String> _updateId(String id) async {
+    String result = "";
+    await _roomsDb
+        .doc(id)
+        .update({"id": id})
+        .then((value) => result = "OK")
+        .catchError((error) => result = "Error: $error");
+
     return result;
   }
 
@@ -31,7 +43,6 @@ class RoomRepository {
   }
 
   Future<String> updatePlayers(String id, List<String> playerList) async {
-    print("### room repository update players ###");
     String result = "";
     await _roomsDb
         .doc(id)

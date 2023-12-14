@@ -171,10 +171,13 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
     });
   }
 
-  void navigateToLobby(GameRoom room) {
+  void navigateToLobby(GameRoom selectedRoom) {
+    final cubit = BlocProvider.of<RoomCubit>(context);
+    cubit.joinRoom(selectedRoom, UserSettings.I.name);
+
     Navigator.of(context).pushNamed(
       "/lobby",
-      arguments: LobbyScreenArguments(room),
+      arguments: LobbyScreenArguments(selectedRoom),
     );
   }
 }

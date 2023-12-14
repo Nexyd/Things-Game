@@ -1,16 +1,19 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
+import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/screen/room_settings_screen.dart';
 
+import '../cubit/game_cubit.dart';
+
 class LobbyScreenArguments {
   final GameRoom initialRoom;
-
   LobbyScreenArguments(this.initialRoom);
 }
 
@@ -37,17 +40,46 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
     // TODO: Add StreamBuilder
     return _getContent(context, cubit);
+    // return BlocConsumer<RoomCubit, RoomState>(
+    //   bloc: cubit,
+    //   builder: (context, state) => _getContent(context, cubit),
+    //   listenWhen: (previousState, state) {
+    //     return state is PlayerJoined || state is RoomConfigUpdated;
+    //   },
+    //   listener: (context, state) {
+    //     if (state is RoomConfigUpdated) {
+    //       room = room.copyWith(config: state.config);
+    //       return;
+    //     }
+    //
+    //     state as PlayerJoined;
+    //     final player = playerList.firstWhere(
+    //           (element) => element.keys.first.startsWith("Player"),
+    //     );
+    //
+    //     setState(() {
+    //       playerList.remove(player);
+    //       playerList.insert(1, {
+    //         state.playerName: _getIcon(true),
+    //       });
+    //     });
+    //   },
+    // );
   }
 
   Widget _getContent(BuildContext context, RoomCubit cubit) {
     final width = MediaQuery.of(context).size.width / 100 * 90;
     // TODO: fix navigation back in iOS (add button)
+
     return Scaffold(
       backgroundColor: UserSettings.I.backgroundColor,
       body: SafeArea(
-        child: StreamBuilder<GameRoom>(
-            stream: room.allChanges,
+        child: StreamBuilder(
+            stream: cubit.roomStream,
             builder: (context, snapshot) {
+              final players = snapshot.data?.data()?.playerList;
+              room = room.copyWith(playerList: players);
+
               return Column(
                 children: [
                   _getHeader(),
@@ -57,10 +89,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
                   _getListTile("points"),
                   StyledButton(
                     text: "Start/Ready".i18n,
-                    onPressed: () => setState(() {}),
-                    // onPressed: () =>
-                    //     BlocProvider.of<GameCubit>(context).startGame(),
-                    //onPressed: () => gameCubit.startGame(),
+                    onPressed: () {
+                      BlocProvider.of<GameCubit>(context).startGame();
+                    },
                   ),
                   Padding(
                     padding: const EdgeInsets.only(top: 15.0),

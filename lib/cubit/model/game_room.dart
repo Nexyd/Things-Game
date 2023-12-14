@@ -62,6 +62,7 @@ class GameRoom with Streamable<GameRoom> {
 
   Map<String, dynamic> toJson() {
     return {
+      "id": id,
       "config": config.toJson(),
       "playerList": List<dynamic>.from(playerList.map((x) => x)),
     };

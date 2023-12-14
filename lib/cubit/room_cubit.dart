@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/config/user_settings.dart';
@@ -12,6 +13,8 @@ class RoomCubit extends Cubit<RoomState> {
   GameRoom _actualGame = GameRoom.empty();
   final RoomRepository _repo = RoomRepository();
   FirestoreRoomController? controller;
+  Stream<DocumentSnapshot<GameRoom>>? get roomStream =>
+      controller?.roomRef.snapshots();
 
   RoomCubit() : super(RoomInitial());
 
@@ -30,6 +33,7 @@ class RoomCubit extends Cubit<RoomState> {
       return;
     }
 
+    // TODO: search for a way to autogenerate IDs
     _actualGame.id = result;
     controller = FirestoreRoomController(room: _actualGame);
     emit(RoomCreated(room: _actualGame));
@@ -48,14 +52,15 @@ class RoomCubit extends Cubit<RoomState> {
     emit(RoomListLoaded(roomList: rooms));
   }
 
-  Future<bool> addPlayer(String name) async {
-    print("### room cubit add player ###");
+  Future<bool> joinRoom(GameRoom selectedRoom, String name) async {
+    _actualGame = selectedRoom;
+    _actualGame.playerList.add(name);
+
     final result = await _repo.updatePlayers(
       _actualGame.id,
       _actualGame.playerList,
     );
 
-    print("### room cubit add player result: $result ###");
     if (result.startsWith("error")) {
       emit(RoomError(error: result));
       return false;
@@ -64,8 +69,8 @@ class RoomCubit extends Cubit<RoomState> {
     return true;
   }
 
-  Future<bool> removePlayer(String name) async {
-    print("### room cubit remove player ###");
+  Future<bool> leaveRoom(String name) async {
+    print("### room cubit leave room ###");
     return false;
   }
 
