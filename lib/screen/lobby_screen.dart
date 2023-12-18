@@ -1,3 +1,4 @@
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
@@ -27,7 +28,8 @@ class LobbyScreen extends StatefulWidget {
 
 class _LobbyScreenState extends State<LobbyScreen> {
   GameRoom room = GameRoom.empty();
-  List<Map<String, Widget>> playerList = [];
+  List<Map<String, Widget>> players = [];
+  List<String> playersReady = [];
   late RoomCubit cubit;
 
   @override
@@ -37,13 +39,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       room = widget.args.initialRoom;
     }
 
-    return _getContent(context, cubit);
-  }
-
-  Widget _getContent(BuildContext context, RoomCubit cubit) {
-    final width = MediaQuery.of(context).size.width / 100 * 90;
     // TODO: fix navigation back in iOS (add button)
-
     return PopScope(
       canPop: false,
       onPopInvoked: (didPop) => _leaveRoom(context),
@@ -51,38 +47,41 @@ class _LobbyScreenState extends State<LobbyScreen> {
         backgroundColor: UserSettings.I.backgroundColor,
         body: SafeArea(
           child: StreamBuilder(
-              stream: cubit.roomStream,
-              builder: (context, snapshot) {
-                final players = snapshot.data?.data()?.playerList;
-                room = room.copyWith(playerList: players);
-
-                return Column(
-                  children: [
-                    _getHeader(),
-                    _getListView(context),
-                    _getIndicatorBar(width),
-                    _getListTile("rounds"),
-                    _getListTile("points"),
-                    StyledButton(
-                      text: "Start/Ready".i18n,
-                      onPressed: () {
-                        BlocProvider.of<GameCubit>(context).startGame();
-                      },
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 15.0),
-                      // TODO: fix button size in iOS
-                      child: StyledButton(
-                        text: "Leave room".i18n,
-                        onPressed: () => _leaveRoom(context),
-                        type: ButtonType.destructive,
-                      ),
-                    ),
-                  ],
-                );
-              }),
+            stream: cubit.roomStream,
+            builder: (context, snapshot) {
+              // final players = snapshot.data?.data()?.playerList;
+              // room = room.copyWith(playerList: players);
+              room = snapshot.data?.data() ?? room;
+              return _getContent(context);
+            },
+          ),
         ),
       ),
+    );
+  }
+
+  Widget _getContent(BuildContext context) {
+    return Column(
+      children: [
+        _getHeader(),
+        _getListView(context),
+        _getIndicatorBar(),
+        _getListTile("rounds"),
+        _getListTile("points"),
+        StyledButton(
+          text: "Start/Ready".i18n,
+          onPressed: () => _startGame(),
+        ),
+        Padding(
+          padding: const EdgeInsets.only(top: 15.0),
+          // TODO: fix button size in iOS
+          child: StyledButton(
+            text: "Leave room".i18n,
+            onPressed: () => _leaveRoom(context),
+            type: ButtonType.destructive,
+          ),
+        ),
+      ],
     );
   }
 
@@ -116,8 +115,10 @@ class _LobbyScreenState extends State<LobbyScreen> {
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       onTap: () {
-        final args = RoomSettingsScreenArgs(data: room.config);
-        Navigator.of(context).pushNamed("/roomSettings", arguments: args);
+        if (players.first.keys.first == UserSettings.I.name) {
+          final args = RoomSettingsScreenArgs(data: room.config);
+          Navigator.of(context).pushNamed("/roomSettings", arguments: args);
+        }
       },
       child: Container(
         width: 45,
@@ -128,14 +129,18 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   Widget _getListView(BuildContext context) {
-    playerList = List.generate(
+    players = List.generate(
       room.config.players,
       (index) {
         final playerName = index < room.playerList.length
-            ? room.playerList[index]
+            ? room.playerList[index].name
             : "Player ${index + 1}";
 
-        return {playerName: _getIcon()};
+        final playerIcon = index < room.playerList.length
+            ? _getIcon(room.playerList[index].isReady)
+            : _getIcon();
+
+        return {playerName: playerIcon};
       },
     );
 
@@ -147,12 +152,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
         child: Center(
           child: ListView.builder(
             shrinkWrap: true,
-            itemCount: playerList.length,
+            itemCount: players.length,
             itemBuilder: (BuildContext context, int index) {
               return ListTile(
                 leading: UserSettings.I.avatar,
-                title: StyledText(playerList[index].keys.first),
-                trailing: playerList[index].values.first,
+                title: StyledText(players[index].keys.first),
+                trailing: players[index].values.first,
               );
             },
           ),
@@ -161,7 +166,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  Widget _getIndicatorBar(double width) {
+  Widget _getIndicatorBar() {
+    final width = MediaQuery.of(context).size.width / 100 * 90;
     return Center(
       child: Padding(
         padding: const EdgeInsets.all(5.0),
@@ -224,27 +230,64 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
+  void _startGame() {
+    final roomLeader = players.first.keys.first;
+    final allPlayersReady = playersReady.length == room.config.players &&
+        listEquals(room.playerList, playersReady);
+
+    if (roomLeader == UserSettings.I.name && allPlayersReady) {
+      BlocProvider.of<GameCubit>(context).startGame();
+    } else {
+      _setPlayerReady();
+    }
+  }
+
+  void _setPlayerReady() {
+    final index = room.playerList.indexWhere(
+      (element) => element.name == UserSettings.I.name,
+    );
+
+    room.playerList[index].isReady = !room.playerList[index].isReady;
+    final userToUpdate = players.firstWhere(
+      (element) => element.keys.first == UserSettings.I.name,
+    );
+
+    final user = room.playerList[index];
+    userToUpdate.update(
+      UserSettings.I.name,
+      (value) => _getIcon(user.isReady),
+    );
+
+    // TODO: update ready on Firestore.
+    cubit.updatePlayerReady(room.playerList);
+    if (user.isReady && !playersReady.contains(UserSettings.I.name)) {
+      playersReady.add(UserSettings.I.name);
+    } else if (!user.isReady && playersReady.contains(UserSettings.I.name)) {
+      playersReady.remove(UserSettings.I.name);
+    }
+  }
+
   void _leaveRoom(BuildContext context) {
     cubit.leaveRoom();
-    final player = playerList.firstWhere(
+    final player = players.firstWhere(
       (e) => e.keys.first == UserSettings.I.name,
     );
 
-    playerList.remove(player);
-    final players = _getPlayersOnlyList();
+    players.remove(player);
+    final playersOnly = _getPlayersOnlyList();
 
-    if (players.isEmpty)  cubit.deleteRoom();
+    if (playersOnly.isEmpty) cubit.deleteRoom();
     cubit.backToMain(context);
   }
 
   List<String> _getPlayersOnlyList() {
     // TODO: test with 2 devices
-    final players = playerList.map((e) => e.keys.first).toList();
-    players.remove("Player 1");
-    players.remove("Player 2");
-    players.remove("Player 3");
-    players.remove("Player 4");
+    final playersOnly = players.map((e) => e.keys.first).toList();
+    playersOnly.remove("Player 1");
+    playersOnly.remove("Player 2");
+    playersOnly.remove("Player 3");
+    playersOnly.remove("Player 4");
 
-    return players;
+    return playersOnly;
   }
 }

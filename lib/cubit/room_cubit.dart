@@ -29,6 +29,7 @@ class RoomCubit extends Cubit<RoomState> {
     }
   }
 
+  // TODO: look for a way to remove this.
   void updateConfigSwitch(ConfigurationData data) {
     _actualGame = _actualGame.copyWith(config: data);
     emit(RoomConfigUpdated(config: _actualGame.config));
@@ -36,7 +37,7 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> createRoom() async {
     if (_actualGame == GameRoom.empty()) return;
-    _actualGame.playerList.add(UserSettings.I.name);
+    _actualGame.playerList.add(Player(name: UserSettings.I.name));
     final result = await _repo.createRoom(_actualGame.toJson());
 
     if (result.startsWith("error")) {
@@ -64,9 +65,14 @@ class RoomCubit extends Cubit<RoomState> {
     emit(RoomListLoaded(roomList: rooms));
   }
 
+  Future<void> updatePlayerReady(List<Player> players) async {
+    _actualGame = _actualGame.copyWith(playerList: players);
+    _updatePlayers();
+  }
+
   Future<bool> joinRoom(GameRoom selectedRoom) async {
     _actualGame = selectedRoom;
-    _actualGame.playerList.add(UserSettings.I.name);
+    _actualGame.playerList.add(Player(name: UserSettings.I.name));
     return _updatePlayers();
   }
 
@@ -102,9 +108,11 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   void backToMain(BuildContext context) {
-    print("### cubit back to main screen ###");
-    Navigator.of(context).popUntil(
-      (route) => route.settings.name == "/main",
+    // TODO: fix navigation problems with PopScope.
+    Future.delayed(const Duration(milliseconds: 200)).then(
+      (value) => Navigator.of(context).popUntil(
+        (route) => route.settings.name == "/main",
+      ),
     );
   }
 }

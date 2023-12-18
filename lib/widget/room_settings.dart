@@ -29,9 +29,7 @@ class RoomSettings extends StatelessWidget {
       canPop: false,
       onPopInvoked: (didPop) {
         if (!isPlayersFieldEnabled) {
-          print("### exiting config room... ###");
           final cubit = BlocProvider.of<RoomCubit>(context);
-          print("### updating room data... ###");
           cubit.updateConfiguration(config);
         }
 
