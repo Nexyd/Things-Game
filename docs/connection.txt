@@ -42,4 +42,10 @@ Alternativa #2:
     - Convertir path del fichero en SHA1 y usarlo como clave de sala
         - buscar forma de acortar SHA1??
 
-https://docs.flutter.dev/cookbook/games/firestore-multiplayer
+    https://docs.flutter.dev/cookbook/games/firestore-multiplayer
+
+Alternativa #3:
+	- Servidor con MongoDB
+	- Stream API con NodeJS
+		- https://www.mongodb.com/docs/manual/changeStreams/
+	- Conectar app al API node
