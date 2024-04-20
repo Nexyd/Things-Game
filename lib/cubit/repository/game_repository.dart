@@ -1,12 +1,12 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:things_game/cubit/repository/room_repository.dart';
 
 class GameRepository {
-  final _boardsDb = FirebaseFirestore.instance.collection("boards");
+  //final _boardsDb = FirebaseFirestore.instance.collection("boards");
 
   Future<String> createBoard(Json roomJson) async {
     print("### game repository create board ###");
-    String result = "";
+    String result = "error";
+
     final boardJson = {
       "id": "foo",
       "questionBoard": [
@@ -41,10 +41,10 @@ class GameRepository {
       ]
     };
 
-    await _boardsDb
-        .add(boardJson)
-        .then((value) => result = value.id)
-        .catchError((error) => result = "Error: $error");
+    // await _boardsDb
+    //     .add(boardJson)
+    //     .then((value) => result = value.id)
+    //     .catchError((error) => result = "Error: $error");
 
     return result;
   }

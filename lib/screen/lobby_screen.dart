@@ -46,15 +46,16 @@ class _LobbyScreenState extends State<LobbyScreen> {
       child: Scaffold(
         backgroundColor: UserSettings.I.backgroundColor,
         body: SafeArea(
-          child: StreamBuilder(
-            stream: cubit.roomStream,
-            builder: (context, snapshot) {
-              // final players = snapshot.data?.data()?.playerList;
-              // room = room.copyWith(playerList: players);
-              room = snapshot.data?.data() ?? room;
-              return _getContent(context);
-            },
-          ),
+          child: Container(),
+          // child: StreamBuilder(
+          //   stream: cubit.roomStream,
+          //   builder: (context, snapshot) {
+          //     // final players = snapshot.data?.data()?.playerList;
+          //     // room = room.copyWith(playerList: players);
+          //     room = snapshot.data?.data() ?? room;
+          //     return _getContent(context);
+          //   },
+          // ),
         ),
       ),
     );

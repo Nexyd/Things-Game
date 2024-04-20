@@ -1,5 +1,4 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/cubit/model/game_room.dart';
@@ -7,15 +6,13 @@ import 'package:things_game/cubit/repository/room_repository.dart';
 import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
-import '../streams/firestore_room_controller.dart';
-
 class RoomCubit extends Cubit<RoomState> {
   GameRoom _actualGame = GameRoom.empty();
   final RoomRepository _repo = RoomRepository();
-  FirestoreRoomController? controller;
-
-  Stream<DocumentSnapshot<GameRoom>>? get roomStream =>
-      controller?.roomRef.snapshots();
+  // FirestoreRoomController? controller;
+  //
+  // Stream<DocumentSnapshot<GameRoom>>? get roomStream =>
+  //     controller?.roomRef.snapshots();
 
   RoomCubit() : super(RoomInitial());
 
@@ -47,7 +44,7 @@ class RoomCubit extends Cubit<RoomState> {
 
     // TODO: search for a way to autogenerate IDs
     _actualGame.id = result;
-    controller = FirestoreRoomController(room: _actualGame);
+    //controller = FirestoreRoomController(room: _actualGame);
 
     emit(RoomCreated(room: _actualGame));
   }
@@ -78,7 +75,14 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<bool> leaveRoom() async {
     // TODO: test with 2 devices
-    _actualGame.playerList.remove(UserSettings.I.name);
+    final userToRemove = _actualGame.playerList
+        .where((element) => element.name == UserSettings.I.name)
+        .toList();
+
+    if (userToRemove.isNotEmpty) {
+      _actualGame.playerList.remove(userToRemove.first);
+    }
+
     return _updatePlayers();
   }
 
@@ -97,7 +101,7 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> deleteRoom() async {
-    controller?.dispose();
+    //controller?.dispose();
     final result = await _repo.deleteRoom(_actualGame.id);
     _actualGame = GameRoom.empty();
 
