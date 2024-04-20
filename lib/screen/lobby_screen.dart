@@ -10,6 +10,7 @@ import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/screen/room_settings_screen.dart';
 
 import '../cubit/game_cubit.dart';
+import '../widget/player_widget.dart';
 
 class LobbyScreenArguments {
   final GameRoom initialRoom;
@@ -28,7 +29,7 @@ class LobbyScreen extends StatefulWidget {
 
 class _LobbyScreenState extends State<LobbyScreen> {
   GameRoom room = GameRoom.empty();
-  List<Map<String, Widget>> players = [];
+  List<PlayerWidget> players = [];
   List<String> playersReady = [];
   late RoomCubit cubit;
 
@@ -38,6 +39,9 @@ class _LobbyScreenState extends State<LobbyScreen> {
     if (room == GameRoom.empty()) {
       room = widget.args.initialRoom;
     }
+
+    // TODO: use BlocBuilder or BlocConsumer??
+    // Remove Stateful if using one of these.
 
     // TODO: fix navigation back in iOS (add button)
     return PopScope(
@@ -116,7 +120,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
       onTap: () {
-        if (players.first.keys.first == UserSettings.I.name) {
+        if (players.first.name == UserSettings.I.name) {
           final args = RoomSettingsScreenArgs(data: room.config);
           Navigator.of(context).pushNamed("/roomSettings", arguments: args);
         }
@@ -141,7 +145,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
             ? _getIcon(room.playerList[index].isReady)
             : _getIcon();
 
-        return {playerName: playerIcon};
+        return PlayerWidget(name: playerName, icon: playerIcon);
       },
     );
 
@@ -154,13 +158,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
           child: ListView.builder(
             shrinkWrap: true,
             itemCount: players.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                leading: UserSettings.I.avatar,
-                title: StyledText(players[index].keys.first),
-                trailing: players[index].values.first,
-              );
-            },
+            itemBuilder: (context, index) => players[index],
+            // itemBuilder: (BuildContext context, int index) {
+            //   return ListTile(
+            //     leading: UserSettings.I.avatar,
+            //     title: StyledText(players[index].playerName),
+            //     trailing: players[index].widget,
+            //   );
+            // },
           ),
         ),
       ),
@@ -232,11 +237,11 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void _startGame() {
-    final roomLeader = players.first.keys.first;
+    final roomLeader = players.first;
     final allPlayersReady = playersReady.length == room.config.players &&
         listEquals(room.playerList, playersReady);
 
-    if (roomLeader == UserSettings.I.name && allPlayersReady) {
+    if (roomLeader.name == UserSettings.I.name && allPlayersReady) {
       BlocProvider.of<GameCubit>(context).startGame();
     } else {
       _setPlayerReady();
@@ -249,29 +254,63 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
 
     room.playerList[index].isReady = !room.playerList[index].isReady;
-    final userToUpdate = players.firstWhere(
-      (element) => element.keys.first == UserSettings.I.name,
+    final user = room.playerList[index];
+
+    final widgetIndex = players.indexWhere(
+      (element) => element.name == UserSettings.I.name,
     );
 
-    final user = room.playerList[index];
-    userToUpdate.update(
-      UserSettings.I.name,
-      (value) => _getIcon(user.isReady),
+    final updatedUser = PlayerWidget(
+      name: UserSettings.I.name,
+      icon: _getIcon(user.isReady),
     );
+
+    players.removeAt(widgetIndex);
+    players.insert(widgetIndex, updatedUser);
 
     // TODO: update ready on Firestore.
+    // Evaluate if this happens also with MongoDB
     cubit.updatePlayerReady(room.playerList);
+
     if (user.isReady && !playersReady.contains(UserSettings.I.name)) {
       playersReady.add(UserSettings.I.name);
     } else if (!user.isReady && playersReady.contains(UserSettings.I.name)) {
       playersReady.remove(UserSettings.I.name);
     }
+
+    //setState(() {});
   }
+
+  // void _setPlayerReady() {
+  //   final index = room.playerList.indexWhere(
+  //     (element) => element.name == UserSettings.I.name,
+  //   );
+  //
+  //   room.playerList[index].isReady = !room.playerList[index].isReady;
+  //   final userToUpdate = players.firstWhere(
+  //     (element) => element.name == UserSettings.I.name,
+  //   );
+  //
+  //   final user = room.playerList[index];
+  //   userToUpdate.update(
+  //     UserSettings.I.name,
+  //     (value) => _getIcon(user.isReady),
+  //   );
+  //
+  //   // TODO: update ready on Firestore.
+  //   // Evaluate if this happens also with MongoDB
+  //   cubit.updatePlayerReady(room.playerList);
+  //   if (user.isReady && !playersReady.contains(UserSettings.I.name)) {
+  //     playersReady.add(UserSettings.I.name);
+  //   } else if (!user.isReady && playersReady.contains(UserSettings.I.name)) {
+  //     playersReady.remove(UserSettings.I.name);
+  //   }
+  // }
 
   void _leaveRoom(BuildContext context) {
     cubit.leaveRoom();
     final player = players.firstWhere(
-      (e) => e.keys.first == UserSettings.I.name,
+      (e) => e.name == UserSettings.I.name,
     );
 
     players.remove(player);
@@ -283,7 +322,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   List<String> _getPlayersOnlyList() {
     // TODO: test with 2 devices
-    final playersOnly = players.map((e) => e.keys.first).toList();
+    final playersOnly = players.map((e) => e.name).toList();
     playersOnly.remove("Player 1");
     playersOnly.remove("Player 2");
     playersOnly.remove("Player 3");
