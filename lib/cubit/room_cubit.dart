@@ -78,7 +78,14 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<bool> leaveRoom() async {
     // TODO: test with 2 devices
-    _actualGame.playerList.remove(UserSettings.I.name);
+    final userToRemove = _actualGame.playerList
+        .where((element) => element.name == UserSettings.I.name)
+        .toList();
+
+    if (userToRemove.isNotEmpty) {
+      _actualGame.playerList.remove(userToRemove.first);
+    }
+
     return _updatePlayers();
   }
 
