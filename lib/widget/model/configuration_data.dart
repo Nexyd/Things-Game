@@ -3,16 +3,16 @@ import 'dart:convert';
 import 'package:realm/realm.dart';
 import 'package:things_game/translations/room_settings.i18n.dart';
 
-part 'configuration_data.realm.dart';
-
-@RealmModel()
-class _ConfigurationData {
-  late String name;
-  late int players;
-  late int rounds;
-  late int maxPoints;
-  late bool isPrivate;
-}
+// part 'configuration_data.realm.dart';
+//
+// @RealmModel(ObjectType.embeddedObject)
+// class _ConfigurationData {
+//   late String name;
+//   late int players;
+//   late int rounds;
+//   late int maxPoints;
+//   late bool isPrivate;
+// }
 
 // class ConfigurationData {
 //   String name;

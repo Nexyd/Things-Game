@@ -4,9 +4,10 @@ import 'assignment.dart';
 
 // part 'question_board.realm.dart';
 //
-// @RealmModel()
+// @RealmModel(ObjectType.embeddedObject)
 // class _QuestionBoard {
 //   late String question;
+//   @Ignored()
 //   late Map<String, dynamic> answers;
 //   late List<Assignment> assignments;
 // }

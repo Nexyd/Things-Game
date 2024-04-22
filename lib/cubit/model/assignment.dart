@@ -1,14 +1,14 @@
 import 'package:realm/realm.dart';
 
-part 'assignment.realm.dart';
-
-@RealmModel()
-class _Assignment {
-  late String playerName;
-
-  @Ignored()
-  late Map<String, dynamic> playerAssignment;
-}
+// part 'assignment.realm.dart';
+//
+// @RealmModel(ObjectType.embeddedObject)
+// class _Assignment {
+//   late String playerName;
+//
+//   @Ignored()
+//   late Map<String, dynamic> playerAssignment;
+// }
 
 // class Assignment {
 //   String playerName;
