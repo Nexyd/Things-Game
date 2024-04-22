@@ -1,47 +1,22 @@
-import 'package:realm/realm.dart';
+import 'package:things_game/cubit/model/realm_models.dart';
 
-import 'assignment.dart';
+extension QuestionBoardUtils on QuestionBoard {
+  Map<String, dynamic> toJson() {
+    return {
+      "question": question,
+      "answers": answers,
+      "assignments": List<dynamic>.from(
+        assignments.map((x) => x.toJson()),
+      ),
+    };
+  }
+}
 
-// part 'question_board.realm.dart';
-//
-// @RealmModel(ObjectType.embeddedObject)
-// class _QuestionBoard {
-//   late String question;
-//   @Ignored()
-//   late Map<String, dynamic> answers;
-//   late List<Assignment> assignments;
-// }
-
-
-
-// class QuestionBoard {
-//   String question;
-//   Map<String, dynamic> answers;
-//   List<Assignment> assignments;
-//
-//   QuestionBoard({
-//     required this.question,
-//     required this.answers,
-//     required this.assignments,
-//   });
-//
-//   factory QuestionBoard.fromJson(Map<String, dynamic> json) {
-//     return QuestionBoard(
-//       question: json["question"],
-//       answers: json["answers"],
-//       assignments: List<Assignment>.from(
-//         json["assignments"].map((x) => Assignment.fromJson(x)),
-//       ),
-//     );
-//   }
-//
-//   Map<String, dynamic> toJson() {
-//     return {
-//       "question": question,
-//       "answers": answers,
-//       "assignments": List<dynamic>.from(
-//         assignments.map((x) => x.toJson()),
-//       ),
-//     };
-//   }
-// }
+extension AssignmentUtils on Assignment {
+  Map<String, dynamic> toJson() {
+    return {
+      "playerName": playerName,
+      "playerAssignment": playerAssignment
+    };
+  }
+}

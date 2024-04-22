@@ -29,7 +29,7 @@
 //
 //   void dispose() {
 //     _roomLocalSubscription?.cancel();
-//     room = GameRoom.empty();
+//     room = GameRoomUtils.empty();
 //     Logger.firestore.info("Firestore disposed");
 //   }
 //
@@ -42,7 +42,7 @@
 //     final data = snapshot.data();
 //     if (data == null) {
 //       Logger.firestore.info("No data found, returning empty room.");
-//       return GameRoom.empty();
+//       return GameRoomUtils.empty();
 //     }
 //
 //     try {

@@ -10,6 +10,7 @@ import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/screen/room_settings_screen.dart';
 
 import '../cubit/game_cubit.dart';
+import '../cubit/model/realm_models.dart';
 import '../widget/player_widget.dart';
 
 class LobbyScreenArguments {
@@ -28,7 +29,7 @@ class LobbyScreen extends StatefulWidget {
 }
 
 class _LobbyScreenState extends State<LobbyScreen> {
-  GameRoom room = GameRoom.empty();
+  GameRoom room = GameRoomUtils.empty();
   List<PlayerWidget> players = [];
   List<String> playersReady = [];
   late RoomCubit cubit;
@@ -36,7 +37,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   @override
   Widget build(BuildContext context) {
     cubit = BlocProvider.of<RoomCubit>(context);
-    if (room == GameRoom.empty()) {
+    if (room == GameRoomUtils.empty()) {
       room = widget.args.initialRoom;
     }
 
@@ -121,7 +122,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
       splashFactory: NoSplash.splashFactory,
       onTap: () {
         if (players.first.name == UserSettings.I.name) {
-          final args = RoomSettingsScreenArgs(data: room.config);
+          // TODO: Check nullability (should be removed)
+          final args = RoomSettingsScreenArgs(data: room.config!);
           Navigator.of(context).pushNamed("/roomSettings", arguments: args);
         }
       },
@@ -135,7 +137,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   Widget _getListView(BuildContext context) {
     players = List.generate(
-      room.config.players,
+      // TODO: Check nullability (should be removed)
+      room.config!.players,
       (index) {
         final playerName = index < room.playerList.length
             ? room.playerList[index].name
@@ -196,12 +199,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
     switch (tag) {
       case "rounds":
         title = "Rounds".i18n;
-        value = room.config.rounds.toString();
+        // TODO: Check nullability (should be removed)
+        value = room.config!.rounds.toString();
         break;
 
       case "points":
         title = "Max. points".i18n;
-        value = room.config.maxPoints.toString();
+        // TODO: Check nullability (should be removed)
+        value = room.config!.maxPoints.toString();
         break;
 
       default:
@@ -238,7 +243,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   void _startGame() {
     final roomLeader = players.first;
-    final allPlayersReady = playersReady.length == room.config.players &&
+    // TODO: Check nullability (should be removed)
+    final allPlayersReady = playersReady.length == room.config!.players &&
         listEquals(room.playerList, playersReady);
 
     if (roomLeader.name == UserSettings.I.name && allPlayersReady) {

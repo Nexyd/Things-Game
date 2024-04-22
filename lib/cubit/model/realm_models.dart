@@ -1,7 +1,10 @@
 import 'package:realm/realm.dart';
 
-part 'test_model.realm.dart';
+import '../../streams/streamable_mixin.dart';
 
+part 'realm_models.realm.dart';
+
+// TODO: Add named parameters
 @RealmModel(ObjectType.embeddedObject)
 class _ConfigurationData {
   late String name;
@@ -14,13 +17,14 @@ class _ConfigurationData {
 @RealmModel(ObjectType.embeddedObject)
 class _Player {
   late String name;
+  // TODO: add default value to false
   late bool isReady;
 }
 
 // TODO: revert nullable on 'late _ConfigurationData? config'.
 // FIXME: Realm object references must be nullable.
 @RealmModel()
-class _GameRoom {
+class _GameRoom with Streamable<GameRoom> {
   late String id;
   late _ConfigurationData? config;
   late List<_Player> playerList;
@@ -29,21 +33,18 @@ class _GameRoom {
 @RealmModel(ObjectType.embeddedObject)
 class _Assignment {
   late String playerName;
-
-  @Ignored()
-  late Map<String, dynamic> playerAssignment;
+  late Map<String, String> playerAssignment;
 }
 
 @RealmModel(ObjectType.embeddedObject)
 class _QuestionBoard {
   late String question;
-  @Ignored()
-  late Map<String, dynamic> answers;
+  late Map<String, String> answers;
   late List<_Assignment> assignments;
 }
 
 @RealmModel()
-class _GameBoard {
+class _GameBoard with Streamable<GameBoard> {
   late String id;
   late List<_QuestionBoard> questionBoard;
 }

@@ -11,6 +11,8 @@ import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/widget/styled/styled_text_form_field.dart';
 import 'package:things_game/support/logger.dart';
 
+import '../cubit/model/realm_models.dart';
+
 class RoomSettings extends StatelessWidget {
   final ConfigurationData config;
   final bool isPlayersFieldEnabled;

@@ -2,11 +2,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/repository/game_repository.dart';
 import 'package:things_game/cubit/state/game_state.dart';
+import 'model/realm_models.dart';
 
-import 'model/assignment.dart';
 
 class GameCubit extends Cubit<GameState> {
-  GameRoom actualGame = GameRoom.empty();
+  GameRoom actualGame = GameRoomUtils.empty();
   final GameRepository repo = GameRepository();
   //late final FirestoreRoomController controller;
 

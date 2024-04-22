@@ -6,8 +6,10 @@ import 'package:things_game/cubit/repository/room_repository.dart';
 import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
+import 'model/realm_models.dart';
+
 class RoomCubit extends Cubit<RoomState> {
-  GameRoom _actualGame = GameRoom.empty();
+  GameRoom _actualGame = GameRoomUtils.empty();
   final RoomRepository _repo = RoomRepository();
   // FirestoreRoomController? controller;
   //
@@ -29,12 +31,14 @@ class RoomCubit extends Cubit<RoomState> {
   // TODO: look for a way to remove this.
   void updateConfigSwitch(ConfigurationData data) {
     _actualGame = _actualGame.copyWith(config: data);
-    emit(RoomConfigUpdated(config: _actualGame.config));
+    // TODO: Check nullability (should be removed)
+    emit(RoomConfigUpdated(config: _actualGame.config!));
   }
 
   Future<void> createRoom() async {
-    if (_actualGame == GameRoom.empty()) return;
-    _actualGame.playerList.add(Player(name: UserSettings.I.name));
+    if (_actualGame == GameRoomUtils.empty()) return;
+    // TODO: add default parameter to Player RealmModel
+    _actualGame.playerList.add(Player(UserSettings.I.name, false));
     final result = await _repo.createRoom(_actualGame.toJson());
 
     if (result.startsWith("error")) {
@@ -58,7 +62,10 @@ class RoomCubit extends Cubit<RoomState> {
       return;
     }
 
-    List<GameRoom> rooms = result.map((e) => GameRoom.fromJson(e)).toList();
+    //TODO: Review this when MongoDB is ready
+    //List<GameRoom> rooms = result.map((e) => GameRoom.fromJson(e)).toList();
+
+    List<GameRoom> rooms = [];
     emit(RoomListLoaded(roomList: rooms));
   }
 
@@ -69,7 +76,8 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<bool> joinRoom(GameRoom selectedRoom) async {
     _actualGame = selectedRoom;
-    _actualGame.playerList.add(Player(name: UserSettings.I.name));
+    // TODO: add default parameter to Player RealmModel
+    _actualGame.playerList.add(Player(UserSettings.I.name, false));
     return _updatePlayers();
   }
 
@@ -103,7 +111,7 @@ class RoomCubit extends Cubit<RoomState> {
   Future<void> deleteRoom() async {
     //controller?.dispose();
     final result = await _repo.deleteRoom(_actualGame.id);
-    _actualGame = GameRoom.empty();
+    _actualGame = GameRoomUtils.empty();
 
     if (result != null) {
       emit(RoomError(error: result));

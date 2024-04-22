@@ -7,11 +7,12 @@ import 'package:things_game/widget/alert_dialog.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/util/debouncer.dart';
 import 'package:things_game/screen/lobby_screen.dart';
+
+import '../cubit/model/realm_models.dart';
 
 class SearchRoomScreen extends StatefulWidget {
   const SearchRoomScreen({super.key});
@@ -107,7 +108,8 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
         if (state is RoomListLoaded && !isListInitialized) {
           fullList.addAll(state.roomList);
-          gameList = fullList.where((e) => !e.config.isPrivate).toList();
+          // TODO: Check nullability (should be removed)
+          gameList = fullList.where((e) => !e.config!.isPrivate).toList();
           isListInitialized = true;
         }
 
@@ -122,6 +124,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
           );
         }
 
+        // TODO: Check nullability of 'gameList[index].config!.name' (should be removed)
         return ListView.separated(
           shrinkWrap: true,
           itemCount: gameList.length,
@@ -129,7 +132,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
             return ListTile(
               onTap: () => navigateToLobby(gameList[index]),
               title: StyledText(
-                gameList[index].config.name,
+                gameList[index].config!.name,
                 fontSize: 20,
               ),
             );
@@ -159,7 +162,8 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
         if (!foundById) {
           for (var character in value.characters) {
-            result = element.config.name.indexOf(character) > 0;
+            // TODO: Check nullability (should be removed)
+            result = element.config!.name.indexOf(character) > 0;
             if (!result) return false;
           }
         }

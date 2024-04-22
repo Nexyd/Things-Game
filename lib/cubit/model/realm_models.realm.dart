@@ -1,6 +1,6 @@
 // GENERATED CODE - DO NOT MODIFY BY HAND
 
-part of 'test_model.dart';
+part of 'realm_models.dart';
 
 // **************************************************************************
 // RealmObjectGenerator
@@ -255,9 +255,12 @@ class GameRoom extends _GameRoom
 class Assignment extends _Assignment
     with RealmEntity, RealmObjectBase, EmbeddedObject {
   Assignment(
-    String playerName,
-  ) {
+    String playerName, {
+    Map<String, String> playerAssignment = const {},
+  }) {
     RealmObjectBase.set(this, 'playerName', playerName);
+    RealmObjectBase.set<RealmMap<String>>(
+        this, 'playerAssignment', RealmMap<String>(playerAssignment));
   }
 
   Assignment._();
@@ -270,6 +273,13 @@ class Assignment extends _Assignment
       RealmObjectBase.set(this, 'playerName', value);
 
   @override
+  RealmMap<String> get playerAssignment =>
+      RealmObjectBase.get<String>(this, 'playerAssignment') as RealmMap<String>;
+  @override
+  set playerAssignment(covariant RealmMap<String> value) =>
+      throw RealmUnsupportedSetError();
+
+  @override
   Stream<RealmObjectChanges<Assignment>> get changes =>
       RealmObjectBase.getChanges<Assignment>(this);
 
@@ -279,6 +289,7 @@ class Assignment extends _Assignment
   EJsonValue toEJson() {
     return <String, dynamic>{
       'playerName': playerName.toEJson(),
+      'playerAssignment': playerAssignment.toEJson(),
     };
   }
 
@@ -287,9 +298,11 @@ class Assignment extends _Assignment
     return switch (ejson) {
       {
         'playerName': EJsonValue playerName,
+        'playerAssignment': EJsonValue playerAssignment,
       } =>
         Assignment(
           fromEJson(playerName),
+          playerAssignment: fromEJson(playerAssignment),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -300,6 +313,8 @@ class Assignment extends _Assignment
     register(_toEJson, _fromEJson);
     return SchemaObject(ObjectType.embeddedObject, Assignment, 'Assignment', [
       SchemaProperty('playerName', RealmPropertyType.string),
+      SchemaProperty('playerAssignment', RealmPropertyType.string,
+          collectionType: RealmCollectionType.map),
     ]);
   }();
 
@@ -311,9 +326,12 @@ class QuestionBoard extends _QuestionBoard
     with RealmEntity, RealmObjectBase, EmbeddedObject {
   QuestionBoard(
     String question, {
+    Map<String, String> answers = const {},
     Iterable<Assignment> assignments = const [],
   }) {
     RealmObjectBase.set(this, 'question', question);
+    RealmObjectBase.set<RealmMap<String>>(
+        this, 'answers', RealmMap<String>(answers));
     RealmObjectBase.set<RealmList<Assignment>>(
         this, 'assignments', RealmList<Assignment>(assignments));
   }
@@ -325,6 +343,13 @@ class QuestionBoard extends _QuestionBoard
       RealmObjectBase.get<String>(this, 'question') as String;
   @override
   set question(String value) => RealmObjectBase.set(this, 'question', value);
+
+  @override
+  RealmMap<String> get answers =>
+      RealmObjectBase.get<String>(this, 'answers') as RealmMap<String>;
+  @override
+  set answers(covariant RealmMap<String> value) =>
+      throw RealmUnsupportedSetError();
 
   @override
   RealmList<Assignment> get assignments =>
@@ -344,6 +369,7 @@ class QuestionBoard extends _QuestionBoard
   EJsonValue toEJson() {
     return <String, dynamic>{
       'question': question.toEJson(),
+      'answers': answers.toEJson(),
       'assignments': assignments.toEJson(),
     };
   }
@@ -353,10 +379,12 @@ class QuestionBoard extends _QuestionBoard
     return switch (ejson) {
       {
         'question': EJsonValue question,
+        'answers': EJsonValue answers,
         'assignments': EJsonValue assignments,
       } =>
         QuestionBoard(
           fromEJson(question),
+          answers: fromEJson(answers),
           assignments: fromEJson(assignments),
         ),
       _ => raiseInvalidEJson(ejson),
@@ -369,6 +397,8 @@ class QuestionBoard extends _QuestionBoard
     return SchemaObject(
         ObjectType.embeddedObject, QuestionBoard, 'QuestionBoard', [
       SchemaProperty('question', RealmPropertyType.string),
+      SchemaProperty('answers', RealmPropertyType.string,
+          collectionType: RealmCollectionType.map),
       SchemaProperty('assignments', RealmPropertyType.object,
           linkTarget: 'Assignment', collectionType: RealmCollectionType.list),
     ]);
