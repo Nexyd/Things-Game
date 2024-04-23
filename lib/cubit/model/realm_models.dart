@@ -4,19 +4,18 @@ import '../../streams/streamable_mixin.dart';
 
 part 'realm_models.realm.dart';
 
-// TODO: Add named parameters
 @RealmModel(ObjectType.embeddedObject)
 class _ConfigurationData {
-  late String name;
-  late int players;
-  late int rounds;
-  late int maxPoints;
-  late bool isPrivate;
+  late String name = "";
+  late int players = 0;
+  late int rounds = 0;
+  late int maxPoints = 0;
+  late bool isPrivate = true;
 }
 
 @RealmModel(ObjectType.embeddedObject)
 class _Player {
-  late String name;
+  late String name = "";
   late bool isReady = false;
 }
 
@@ -24,26 +23,27 @@ class _Player {
 // FIXME: Realm object references must be nullable.
 @RealmModel()
 class _GameRoom with Streamable<GameRoom> {
-  late String id;
+  late String id = "";
+  //late _ConfigurationData config = ConfigurationDataUtils.empty();
   late _ConfigurationData? config;
-  late List<_Player> playerList;
+  late List<_Player> playerList = [];
 }
 
 @RealmModel(ObjectType.embeddedObject)
 class _Assignment {
-  late String playerName;
-  late Map<String, String> playerAssignment;
+  late String playerName = "";
+  late Map<String, String> playerAssignment = {};
 }
 
 @RealmModel(ObjectType.embeddedObject)
 class _QuestionBoard {
-  late String question;
-  late Map<String, String> answers;
-  late List<_Assignment> assignments;
+  late String question = "";
+  late Map<String, String> answers = {};
+  late List<_Assignment> assignments = [];
 }
 
 @RealmModel()
 class _GameBoard with Streamable<GameBoard> {
-  late String id;
-  late List<_QuestionBoard> questionBoard;
+  late String id = "";
+  late List<_QuestionBoard> questionBoard = [];
 }

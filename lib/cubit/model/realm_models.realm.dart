@@ -9,13 +9,24 @@ part of 'realm_models.dart';
 // ignore_for_file: type=lint
 class ConfigurationData extends _ConfigurationData
     with RealmEntity, RealmObjectBase, EmbeddedObject {
-  ConfigurationData(
-    String name,
-    int players,
-    int rounds,
-    int maxPoints,
-    bool isPrivate,
-  ) {
+  static var _defaultsSet = false;
+
+  ConfigurationData({
+    String name = "",
+    int players = 0,
+    int rounds = 0,
+    int maxPoints = 0,
+    bool isPrivate = true,
+  }) {
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<ConfigurationData>({
+        'name': "",
+        'players': 0,
+        'rounds': 0,
+        'maxPoints': 0,
+        'isPrivate': true,
+      });
+    }
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'players', players);
     RealmObjectBase.set(this, 'rounds', rounds);
@@ -79,11 +90,11 @@ class ConfigurationData extends _ConfigurationData
         'isPrivate': EJsonValue isPrivate,
       } =>
         ConfigurationData(
-          fromEJson(name),
-          fromEJson(players),
-          fromEJson(rounds),
-          fromEJson(maxPoints),
-          fromEJson(isPrivate),
+          name: fromEJson(name),
+          players: fromEJson(players),
+          rounds: fromEJson(rounds),
+          maxPoints: fromEJson(maxPoints),
+          isPrivate: fromEJson(isPrivate),
         ),
       _ => raiseInvalidEJson(ejson),
     };
@@ -109,12 +120,13 @@ class ConfigurationData extends _ConfigurationData
 class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
   static var _defaultsSet = false;
 
-  Player(
-    String name, {
+  Player({
+    String name = "",
     bool isReady = false,
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<Player>({
+        'name': "",
         'isReady': false,
       });
     }
@@ -156,7 +168,7 @@ class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
         'isReady': EJsonValue isReady,
       } =>
         Player(
-          fromEJson(name),
+          name: fromEJson(name),
           isReady: fromEJson(isReady),
         ),
       _ => raiseInvalidEJson(ejson),
@@ -178,11 +190,18 @@ class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
 
 class GameRoom extends _GameRoom
     with RealmEntity, RealmObjectBase, RealmObject {
-  GameRoom(
-    String id, {
+  static var _defaultsSet = false;
+
+  GameRoom({
+    String id = "",
     ConfigurationData? config,
     Iterable<Player> playerList = const [],
   }) {
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<GameRoom>({
+        'id': "",
+      });
+    }
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'config', config);
     RealmObjectBase.set<RealmList<Player>>(
@@ -235,7 +254,7 @@ class GameRoom extends _GameRoom
         'playerList': EJsonValue playerList,
       } =>
         GameRoom(
-          fromEJson(id),
+          id: fromEJson(id),
           config: fromEJson(config),
           playerList: fromEJson(playerList),
         ),
@@ -261,10 +280,17 @@ class GameRoom extends _GameRoom
 
 class Assignment extends _Assignment
     with RealmEntity, RealmObjectBase, EmbeddedObject {
-  Assignment(
-    String playerName, {
+  static var _defaultsSet = false;
+
+  Assignment({
+    String playerName = "",
     Map<String, String> playerAssignment = const {},
   }) {
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<Assignment>({
+        'playerName': "",
+      });
+    }
     RealmObjectBase.set(this, 'playerName', playerName);
     RealmObjectBase.set<RealmMap<String>>(
         this, 'playerAssignment', RealmMap<String>(playerAssignment));
@@ -308,7 +334,7 @@ class Assignment extends _Assignment
         'playerAssignment': EJsonValue playerAssignment,
       } =>
         Assignment(
-          fromEJson(playerName),
+          playerName: fromEJson(playerName),
           playerAssignment: fromEJson(playerAssignment),
         ),
       _ => raiseInvalidEJson(ejson),
@@ -331,11 +357,18 @@ class Assignment extends _Assignment
 
 class QuestionBoard extends _QuestionBoard
     with RealmEntity, RealmObjectBase, EmbeddedObject {
-  QuestionBoard(
-    String question, {
+  static var _defaultsSet = false;
+
+  QuestionBoard({
+    String question = "",
     Map<String, String> answers = const {},
     Iterable<Assignment> assignments = const [],
   }) {
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<QuestionBoard>({
+        'question': "",
+      });
+    }
     RealmObjectBase.set(this, 'question', question);
     RealmObjectBase.set<RealmMap<String>>(
         this, 'answers', RealmMap<String>(answers));
@@ -390,7 +423,7 @@ class QuestionBoard extends _QuestionBoard
         'assignments': EJsonValue assignments,
       } =>
         QuestionBoard(
-          fromEJson(question),
+          question: fromEJson(question),
           answers: fromEJson(answers),
           assignments: fromEJson(assignments),
         ),
@@ -417,10 +450,17 @@ class QuestionBoard extends _QuestionBoard
 
 class GameBoard extends _GameBoard
     with RealmEntity, RealmObjectBase, RealmObject {
-  GameBoard(
-    String id, {
+  static var _defaultsSet = false;
+
+  GameBoard({
+    String id = "",
     Iterable<QuestionBoard> questionBoard = const [],
   }) {
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<GameBoard>({
+        'id': "",
+      });
+    }
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set<RealmList<QuestionBoard>>(
         this, 'questionBoard', RealmList<QuestionBoard>(questionBoard));
@@ -463,7 +503,7 @@ class GameBoard extends _GameBoard
         'questionBoard': EJsonValue questionBoard,
       } =>
         GameBoard(
-          fromEJson(id),
+          id: fromEJson(id),
           questionBoard: fromEJson(questionBoard),
         ),
       _ => raiseInvalidEJson(ejson),

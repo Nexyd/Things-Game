@@ -13,15 +13,23 @@ extension ConfigurationDataUtils on ConfigurationData {
     bool? isPrivate,
   }) {
     return ConfigurationData(
-      name ?? this.name,
-      players ?? this.players,
-      rounds ?? this.rounds,
-      maxPoints ?? this.maxPoints,
-      isPrivate ?? this.isPrivate,
+      name: name ?? this.name,
+      players: players ?? this.players,
+      rounds: rounds ?? this.rounds,
+      maxPoints: maxPoints ?? this.maxPoints,
+      isPrivate: isPrivate ?? this.isPrivate,
     );
   }
 
-  static ConfigurationData empty() => ConfigurationData("", 0, 0, 0, true);
+  static ConfigurationData empty() {
+    return ConfigurationData(
+      name: "",
+      players: 0,
+      rounds: 0,
+      maxPoints: 0,
+      isPrivate: true,
+    );
+  }
 
   Map<String, dynamic> toJson() {
     return {

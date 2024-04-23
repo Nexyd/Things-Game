@@ -6,13 +6,16 @@ import 'package:things_game/cubit/model/realm_models.dart';
 
 extension GameBoardUtils on GameBoard {
   GameBoard copyWith({List<QuestionBoard>? questionBoard}) {
-    return GameBoard(id, questionBoard: questionBoard ?? this.questionBoard);
+    return GameBoard(
+      id: id,
+      questionBoard: questionBoard ?? this.questionBoard,
+    );
   }
 
-  static GameBoard empty() => GameBoard("", questionBoard: []);
+  static GameBoard empty() => GameBoard(id: "", questionBoard: []);
 
   static GameBoard sample() {
-    return GameBoard("Id#${Random().nextInt(999)}", questionBoard: []);
+    return GameBoard(id: "Id#${Random().nextInt(999)}", questionBoard: []);
   }
 
   Map<String, dynamic> toJson() {

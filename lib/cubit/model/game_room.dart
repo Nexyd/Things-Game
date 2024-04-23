@@ -11,7 +11,7 @@ extension GameRoomUtils on GameRoom {
     List<Player>? playerList,
   }) {
     return GameRoom(
-      id,
+      id: id,
       config: config ?? this.config,
       playerList: playerList ?? this.playerList,
     );
@@ -19,7 +19,7 @@ extension GameRoomUtils on GameRoom {
 
   static GameRoom empty() {
     return GameRoom(
-      "",
+      id: "",
       config: ConfigurationDataUtils.empty(),
       playerList: [],
     );
@@ -27,13 +27,13 @@ extension GameRoomUtils on GameRoom {
 
   static GameRoom sample() {
     return GameRoom(
-      "Id#${Random().nextInt(999)}",
+      id: "Id#${Random().nextInt(999)}",
       config: ConfigurationData(
-        "Game#${Random().nextInt(999)}",
-        Random().nextInt(10),
-        Random().nextInt(10),
-        Random().nextInt(70),
-        Random().nextBool(),
+        name: "Game#${Random().nextInt(999)}",
+        players: Random().nextInt(10),
+        rounds: Random().nextInt(10),
+        maxPoints: Random().nextInt(70),
+        isPrivate: Random().nextBool(),
       ),
       playerList: [],
     );
