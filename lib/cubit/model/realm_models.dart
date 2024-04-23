@@ -20,7 +20,9 @@ class _Player {
 }
 
 // TODO: revert nullable on 'late _ConfigurationData? config'.
-// FIXME: Realm object references must be nullable.
+// although it doesn't seem possible...
+// 'Realm object references must be nullable.'
+// https://www.mongodb.com/docs/atlas/device-sdks/sdk/flutter/realm-database/model-data/relationships/#std-label-flutter-client-relationships
 @RealmModel()
 class _GameRoom with Streamable<GameRoom> {
   late String id = "";
