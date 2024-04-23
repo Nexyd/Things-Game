@@ -38,7 +38,7 @@ class RoomCubit extends Cubit<RoomState> {
   Future<void> createRoom() async {
     if (_actualGame == GameRoomUtils.empty()) return;
     // TODO: add default parameter to Player RealmModel
-    _actualGame.playerList.add(Player(UserSettings.I.name, false));
+    _actualGame.playerList.add(Player(UserSettings.I.name));
     final result = await _repo.createRoom(_actualGame.toJson());
 
     if (result.startsWith("error")) {
@@ -77,7 +77,7 @@ class RoomCubit extends Cubit<RoomState> {
   Future<bool> joinRoom(GameRoom selectedRoom) async {
     _actualGame = selectedRoom;
     // TODO: add default parameter to Player RealmModel
-    _actualGame.playerList.add(Player(UserSettings.I.name, false));
+    _actualGame.playerList.add(Player(UserSettings.I.name));
     return _updatePlayers();
   }
 

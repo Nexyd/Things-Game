@@ -107,10 +107,17 @@ class ConfigurationData extends _ConfigurationData
 }
 
 class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
+  static var _defaultsSet = false;
+
   Player(
-    String name,
-    bool isReady,
-  ) {
+    String name, {
+    bool isReady = false,
+  }) {
+    if (!_defaultsSet) {
+      _defaultsSet = RealmObjectBase.setDefaults<Player>({
+        'isReady': false,
+      });
+    }
     RealmObjectBase.set(this, 'name', name);
     RealmObjectBase.set(this, 'isReady', isReady);
   }
@@ -150,7 +157,7 @@ class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
       } =>
         Player(
           fromEJson(name),
-          fromEJson(isReady),
+          isReady: fromEJson(isReady),
         ),
       _ => raiseInvalidEJson(ejson),
     };

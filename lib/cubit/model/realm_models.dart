@@ -17,8 +17,7 @@ class _ConfigurationData {
 @RealmModel(ObjectType.embeddedObject)
 class _Player {
   late String name;
-  // TODO: add default value to false
-  late bool isReady;
+  late bool isReady = false;
 }
 
 // TODO: revert nullable on 'late _ConfigurationData? config'.
