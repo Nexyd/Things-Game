@@ -8,20 +8,6 @@ import 'package:things_game/cubit/model/realm_models.dart';
 class GameBoard {
   late GameBoardDB _db;
 
-  // Get attributes
-  String get id => _db.id;
-
-  List<QuestionBoard> get questionBoard =>
-      _db.questionBoard.toList().map((e) => QuestionBoard.fromDB(e)).toList();
-
-  // Set attributes
-  set id(String value) => _db.realm.write(() => _db.id = value);
-
-  set questionBoard(List<QuestionBoard> value) {
-    _db.questionBoard.clear();
-    _db.questionBoard.addAll(value.map((e) => e.db));
-  }
-
   GameBoard({
     required String id,
     required List<QuestionBoard> questionBoard,
@@ -65,4 +51,20 @@ class GameBoard {
 
   @override
   int get hashCode => id.hashCode;
+}
+
+extension GameBoardUtilsDB on GameBoard {
+  // Get attributes
+  String get id => _db.id;
+
+  List<QuestionBoard> get questionBoard =>
+      _db.questionBoard.toList().map((e) => QuestionBoard.fromDB(e)).toList();
+
+  // Set attributes
+  set id(String value) => _db.realm.write(() => _db.id = value);
+
+  set questionBoard(List<QuestionBoard> value) {
+    _db.questionBoard.clear();
+    _db.questionBoard.addAll(value.map((e) => e.db));
+  }
 }

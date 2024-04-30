@@ -5,30 +5,6 @@ import 'assignment.dart';
 class QuestionBoard {
   late QuestionBoardDB _db;
 
-  QuestionBoardDB get db => _db;
-
-  // Get attributes
-  String get question => _db.question;
-
-  Map<String, dynamic> get answers => _db.answers;
-
-  List<Assignment> get assignments =>
-      _db.assignments.toList().map((e) => Assignment.fromDB(e)).toList();
-
-  // Set attributes
-  set question(String value) => _db.realm.write(() => _db.question = value);
-
-  set answers(Map<String, dynamic> value) {
-    _db.answers.clear();
-    // TODO: think how to do this.
-    //_db.answers.addAll(value.map((e) => e.db));
-  }
-
-  set assignments(List<Assignment> value) {
-    _db.assignments.clear();
-    _db.assignments.addAll(value.map((e) => e.db));
-  }
-
   QuestionBoard({
     required String question,
     required Map<String, dynamic> answers,
@@ -61,5 +37,31 @@ class QuestionBoard {
         assignments.map((x) => x.toJson()),
       ),
     };
+  }
+}
+
+extension QuestionBoardUtilsDB on QuestionBoard {
+  QuestionBoardDB get db => _db;
+
+  // Get attributes
+  String get question => _db.question;
+
+  Map<String, dynamic> get answers => _db.answers;
+
+  List<Assignment> get assignments =>
+      _db.assignments.toList().map((e) => Assignment.fromDB(e)).toList();
+
+  // Set attributes
+  set question(String value) => _db.realm.write(() => _db.question = value);
+
+  set answers(Map<String, dynamic> value) {
+    _db.answers.clear();
+    // TODO: think how to do this.
+    //_db.answers.addAll(value.map((e) => e.db));
+  }
+
+  set assignments(List<Assignment> value) {
+    _db.assignments.clear();
+    _db.assignments.addAll(value.map((e) => e.db));
   }
 }

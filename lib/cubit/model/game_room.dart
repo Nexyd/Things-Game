@@ -11,28 +11,6 @@ import 'package:things_game/widget/model/configuration_data.dart';
 class GameRoom {
   late GameRoomDB _db;
 
-  Stream<RealmObjectChanges<GameRoomDB>> get changes => _db.changes;
-
-  // Get attributes
-  String get id => _db.id;
-
-  ConfigurationData get config =>
-      ConfigurationData.fromDB(_db.configData ?? ConfigurationDataDB());
-
-  List<Player> get playerList =>
-      _db.playerList.toList().map((e) => Player.fromDB(e)).toList();
-
-  // Set attributes
-  set id(String value) => _db.realm.write(() => _db.id = value);
-
-  set config(ConfigurationData value) =>
-      _db.realm.write(() => _db.configData = value.db);
-
-  set playerList(List<Player> value) {
-    _db.playerList.clear();
-    _db.playerList.addAll(value.map((e) => e.db));
-  }
-
   GameRoom({
     required String id,
     required ConfigurationData config,
@@ -97,4 +75,28 @@ class GameRoom {
 
   @override
   int get hashCode => id.hashCode;
+}
+
+extension GameRoomUtilsDB on GameRoom {
+  Stream<RealmObjectChanges<GameRoomDB>> get changes => _db.changes;
+
+  // Get attributes
+  String get id => _db.id;
+
+  ConfigurationData get config =>
+      ConfigurationData.fromDB(_db.configData ?? ConfigurationDataDB());
+
+  List<Player> get playerList =>
+      _db.playerList.toList().map((e) => Player.fromDB(e)).toList();
+
+  // Set attributes
+  set id(String value) => _db.realm.write(() => _db.id = value);
+
+  set config(ConfigurationData value) =>
+      _db.realm.write(() => _db.configData = value.db);
+
+  set playerList(List<Player> value) {
+    _db.playerList.clear();
+    _db.playerList.addAll(value.map((e) => e.db));
+  }
 }

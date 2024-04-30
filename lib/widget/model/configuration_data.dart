@@ -6,25 +6,6 @@ import '../../cubit/model/realm_models.dart';
 
 class ConfigurationData {
   late ConfigurationDataDB _db;
-  ConfigurationDataDB get db => _db;
-
-  // Get attributes
-  String get name => _db.name;
-  int get players => _db.players;
-  int get rounds => _db.rounds;
-  int get maxPoints => _db.maxPoints;
-  bool get isPrivate => _db.isPrivate;
-
-  // Set attributes
-  set name(String value) => _db.realm.write(() => _db.name = value);
-  set players(int value) => _db.realm.write(() => _db.players = value);
-  set rounds(int value) => _db.realm.write(() => _db.rounds = value);
-
-  set maxPoints(int value) =>
-    _db.realm.write(() => _db.maxPoints = value);
-
-  set isPrivate(bool value) =>
-    _db.realm.write(() => _db.isPrivate = value);
 
   ConfigurationData({
     String name = "",
@@ -103,6 +84,32 @@ class ConfigurationData {
 
   @override
   int get hashCode => name.hashCode;
+}
+
+extension ConfigurationDataUtilsDB on ConfigurationData {
+  ConfigurationDataDB get db => _db;
+
+  // Get attributes
+  String get name => _db.name;
+
+  int get players => _db.players;
+
+  int get rounds => _db.rounds;
+
+  int get maxPoints => _db.maxPoints;
+
+  bool get isPrivate => _db.isPrivate;
+
+  // Set attributes
+  set name(String value) => _db.realm.write(() => _db.name = value);
+
+  set players(int value) => _db.realm.write(() => _db.players = value);
+
+  set rounds(int value) => _db.realm.write(() => _db.rounds = value);
+
+  set maxPoints(int value) => _db.realm.write(() => _db.maxPoints = value);
+
+  set isPrivate(bool value) => _db.realm.write(() => _db.isPrivate = value);
 }
 
 extension ValidateConfig on ConfigurationData {

@@ -4,6 +4,7 @@ import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/translations/search_room_screen.i18n.dart';
 import 'package:things_game/util/color_utils.dart';
 import 'package:things_game/widget/alert_dialog.dart';
+import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';

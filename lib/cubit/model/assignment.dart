@@ -4,24 +4,6 @@ import 'package:things_game/cubit/model/realm_models.dart';
 class Assignment {
   late AssignmentDB _db;
 
-  AssignmentDB get db => _db;
-
-  Stream<RealmObjectChanges<AssignmentDB>> get changes => _db.changes;
-
-  // Get attributes
-  String get playerName => _db.playerName;
-
-  Map<String, dynamic> get playerAssignment => _db.playerAssignment;
-
-  // Set attributes
-  set playerName(String value) => _db.realm.write(() => _db.playerName = value);
-
-  set playerAssignment(Map<String, dynamic> value) {
-    _db.playerAssignment.clear();
-    // TODO: think how to do this.
-    //_db.playerAssignment.addAll(value.map((e) => e.db));
-  }
-
   Assignment({
     required String playerName,
     required Map<String, dynamic> playerAssignment,
@@ -42,5 +24,25 @@ class Assignment {
 
   Map<String, dynamic> toJson() {
     return {"playerName": playerName, "playerAssignment": playerAssignment};
+  }
+}
+
+extension AssignmentUtilsDB on Assignment {
+  AssignmentDB get db => _db;
+
+  Stream<RealmObjectChanges<AssignmentDB>> get changes => _db.changes;
+
+  // Get attributes
+  String get playerName => _db.playerName;
+
+  Map<String, dynamic> get playerAssignment => _db.playerAssignment;
+
+  // Set attributes
+  set playerName(String value) => _db.realm.write(() => _db.playerName = value);
+
+  set playerAssignment(Map<String, dynamic> value) {
+    _db.playerAssignment.clear();
+    // TODO: think how to do this.
+    //_db.playerAssignment.addAll(value.map((e) => e.db));
   }
 }
