@@ -42,6 +42,8 @@ app.*.map.json
 /android/app/debug
 /android/app/profile
 /android/app/release
-
+g
 # MongoDB
 /docs/mongodb_data.txt
+/lib/support/mongo/
+/assets/mongodb_config/
