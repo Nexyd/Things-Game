@@ -12,7 +12,7 @@ extension GameRoomUtils on GameRoom {
   }) {
     return GameRoom(
       id: id,
-      config: config ?? this.config,
+      configData: config ?? this.config,
       playerList: playerList ?? this.playerList,
     );
   }
@@ -20,7 +20,7 @@ extension GameRoomUtils on GameRoom {
   static GameRoom empty() {
     return GameRoom(
       id: "",
-      config: ConfigurationDataUtils.empty(),
+      configData: ConfigurationDataUtils.empty(),
       playerList: [],
     );
   }
@@ -28,7 +28,7 @@ extension GameRoomUtils on GameRoom {
   static GameRoom sample() {
     return GameRoom(
       id: "Id#${Random().nextInt(999)}",
-      config: ConfigurationData(
+      configData: ConfigurationData(
         name: "Game#${Random().nextInt(999)}",
         players: Random().nextInt(10),
         rounds: Random().nextInt(10),
@@ -42,7 +42,7 @@ extension GameRoomUtils on GameRoom {
   Map<String, dynamic> toJson() {
     return {
       "id": id,
-      "config": config?.toJson(),
+      "config": config.toJson(),
       "playerList": List<dynamic>.from(playerList.map((x) => x)),
     };
   }

@@ -26,9 +26,11 @@ class _Player {
 @RealmModel()
 class _GameRoom with Streamable<GameRoom> {
   late String id = "";
-  //late _ConfigurationData config = ConfigurationDataUtils.empty();
-  late _ConfigurationData? config;
+  late _ConfigurationData? configData;
   late List<_Player> playerList = [];
+
+  // ConfigurationData get config => configData == null ? configData : ConfigurationData();
+  ConfigurationData get config => ConfigurationData();
 }
 
 @RealmModel(ObjectType.embeddedObject)

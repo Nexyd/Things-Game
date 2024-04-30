@@ -194,7 +194,7 @@ class GameRoom extends _GameRoom
 
   GameRoom({
     String id = "",
-    ConfigurationData? config,
+    ConfigurationData? configData,
     Iterable<Player> playerList = const [],
   }) {
     if (!_defaultsSet) {
@@ -203,7 +203,7 @@ class GameRoom extends _GameRoom
       });
     }
     RealmObjectBase.set(this, 'id', id);
-    RealmObjectBase.set(this, 'config', config);
+    RealmObjectBase.set(this, 'configData', configData);
     RealmObjectBase.set<RealmList<Player>>(
         this, 'playerList', RealmList<Player>(playerList));
   }
@@ -216,12 +216,12 @@ class GameRoom extends _GameRoom
   set id(String value) => RealmObjectBase.set(this, 'id', value);
 
   @override
-  ConfigurationData? get config =>
-      RealmObjectBase.get<ConfigurationData>(this, 'config')
+  ConfigurationData? get configData =>
+      RealmObjectBase.get<ConfigurationData>(this, 'configData')
           as ConfigurationData?;
   @override
-  set config(covariant ConfigurationData? value) =>
-      RealmObjectBase.set(this, 'config', value);
+  set configData(covariant ConfigurationData? value) =>
+      RealmObjectBase.set(this, 'configData', value);
 
   @override
   RealmList<Player> get playerList =>
@@ -240,7 +240,7 @@ class GameRoom extends _GameRoom
   EJsonValue toEJson() {
     return <String, dynamic>{
       'id': id.toEJson(),
-      'config': config.toEJson(),
+      'configData': configData.toEJson(),
       'playerList': playerList.toEJson(),
     };
   }
@@ -250,12 +250,12 @@ class GameRoom extends _GameRoom
     return switch (ejson) {
       {
         'id': EJsonValue id,
-        'config': EJsonValue config,
+        'configData': EJsonValue configData,
         'playerList': EJsonValue playerList,
       } =>
         GameRoom(
           id: fromEJson(id),
-          config: fromEJson(config),
+          configData: fromEJson(configData),
           playerList: fromEJson(playerList),
         ),
       _ => raiseInvalidEJson(ejson),
@@ -267,7 +267,7 @@ class GameRoom extends _GameRoom
     register(_toEJson, _fromEJson);
     return SchemaObject(ObjectType.realmObject, GameRoom, 'GameRoom', [
       SchemaProperty('id', RealmPropertyType.string),
-      SchemaProperty('config', RealmPropertyType.object,
+      SchemaProperty('configData', RealmPropertyType.object,
           optional: true, linkTarget: 'ConfigurationData'),
       SchemaProperty('playerList', RealmPropertyType.object,
           linkTarget: 'Player', collectionType: RealmCollectionType.list),
