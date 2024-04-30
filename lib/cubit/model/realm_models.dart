@@ -5,7 +5,7 @@ import '../../streams/streamable_mixin.dart';
 part 'realm_models.realm.dart';
 
 @RealmModel(ObjectType.embeddedObject)
-class _ConfigurationData {
+class _ConfigurationDataDB {
   late String name = "";
   late int players = 0;
   late int rounds = 0;
@@ -14,7 +14,7 @@ class _ConfigurationData {
 }
 
 @RealmModel(ObjectType.embeddedObject)
-class _Player {
+class _PlayerDB {
   late String name = "";
   late bool isReady = false;
 }
@@ -24,30 +24,30 @@ class _Player {
 // 'Realm object references must be nullable.'
 // https://www.mongodb.com/docs/atlas/device-sdks/sdk/flutter/realm-database/model-data/relationships/#std-label-flutter-client-relationships
 @RealmModel()
-class _GameRoom with Streamable<GameRoom> {
+class _GameRoomDB with Streamable<GameRoomDB> {
   late String id = "";
-  late _ConfigurationData? configData;
-  late List<_Player> playerList = [];
+  late _ConfigurationDataDB? configData;
+  late List<_PlayerDB> playerList = [];
 
   // ConfigurationData get config => configData == null ? configData : ConfigurationData();
-  ConfigurationData get config => ConfigurationData();
+  ConfigurationDataDB get config => ConfigurationDataDB();
 }
 
 @RealmModel(ObjectType.embeddedObject)
-class _Assignment {
+class _AssignmentDB {
   late String playerName = "";
   late Map<String, String> playerAssignment = {};
 }
 
 @RealmModel(ObjectType.embeddedObject)
-class _QuestionBoard {
+class _QuestionBoardDB {
   late String question = "";
   late Map<String, String> answers = {};
-  late List<_Assignment> assignments = [];
+  late List<_AssignmentDB> assignments = [];
 }
 
 @RealmModel()
-class _GameBoard with Streamable<GameBoard> {
+class _GameBoardDB with Streamable<GameBoardDB> {
   late String id = "";
-  late List<_QuestionBoard> questionBoard = [];
+  late List<_QuestionBoardDB> questionBoard = [];
 }

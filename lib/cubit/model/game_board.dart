@@ -4,7 +4,35 @@ import 'dart:math';
 import 'package:things_game/cubit/model/question_board.dart';
 import 'package:things_game/cubit/model/realm_models.dart';
 
-extension GameBoardUtils on GameBoard {
+// class GameBoard with Streamable<GameBoard> {
+class GameBoard {
+  late GameBoardDB _db;
+
+  // Get attributes
+  String get id => _db.id;
+
+  List<QuestionBoard> get questionBoard =>
+      _db.questionBoard.toList().map((e) => QuestionBoard.fromDB(e)).toList();
+
+  // Set attributes
+  set id(String value) => _db.realm.write(() => _db.id = value);
+
+  set questionBoard(List<QuestionBoard> value) {
+    _db.questionBoard.clear();
+    _db.questionBoard.addAll(value.map((e) => e.db));
+  }
+
+  GameBoard({
+    required String id,
+    required List<QuestionBoard> questionBoard,
+  }) {
+    // TODO: get data from DB
+    _db = GameBoardDB();
+
+    this.id = id;
+    this.questionBoard = questionBoard;
+  }
+
   GameBoard copyWith({List<QuestionBoard>? questionBoard}) {
     return GameBoard(
       id: id,
@@ -12,9 +40,9 @@ extension GameBoardUtils on GameBoard {
     );
   }
 
-  static GameBoard empty() => GameBoard(id: "", questionBoard: []);
+  factory GameBoard.empty() => GameBoard(id: "", questionBoard: []);
 
-  static GameBoard sample() {
+  factory GameBoard.sample() {
     return GameBoard(id: "Id#${Random().nextInt(999)}", questionBoard: []);
   }
 
@@ -29,8 +57,12 @@ extension GameBoardUtils on GameBoard {
 
   String toRawJson() => jsonEncode(toJson());
 
-  bool compareTo(Object other) {
+  @override
+  bool operator ==(Object other) {
     if (other is! GameBoard) return false;
     return id == other.id;
   }
+
+  @override
+  int get hashCode => id.hashCode;
 }

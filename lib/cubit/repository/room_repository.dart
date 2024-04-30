@@ -1,5 +1,5 @@
 import '../../support/constants.dart';
-import '../model/realm_models.dart';
+import '../model/player.dart';
 
 typedef Json = Map<String, dynamic>;
 

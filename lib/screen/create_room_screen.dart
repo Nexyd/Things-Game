@@ -41,7 +41,7 @@ class CreateRoomScreen extends StatelessWidget {
       appBar: StyledAppBar("Create a room".i18n),
       backgroundColor: UserSettings.I.backgroundColor,
       body: RoomSettings(
-        config: ConfigurationDataUtils.empty(),
+        config: ConfigurationData.empty(),
         formSubmittable: true,
       ),
     );

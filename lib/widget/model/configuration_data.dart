@@ -2,9 +2,67 @@ import 'dart:convert';
 
 import 'package:things_game/translations/room_settings.i18n.dart';
 
-import 'package:things_game/cubit/model/realm_models.dart';
+import '../../cubit/model/realm_models.dart';
 
-extension ConfigurationDataUtils on ConfigurationData {
+class ConfigurationData {
+  late ConfigurationDataDB _db;
+  ConfigurationDataDB get db => _db;
+
+  // Get attributes
+  String get name => _db.name;
+  int get players => _db.players;
+  int get rounds => _db.rounds;
+  int get maxPoints => _db.maxPoints;
+  bool get isPrivate => _db.isPrivate;
+
+  // Set attributes
+  set name(String value) => _db.realm.write(() => _db.name = value);
+  set players(int value) => _db.realm.write(() => _db.players = value);
+  set rounds(int value) => _db.realm.write(() => _db.rounds = value);
+
+  set maxPoints(int value) =>
+    _db.realm.write(() => _db.maxPoints = value);
+
+  set isPrivate(bool value) =>
+    _db.realm.write(() => _db.isPrivate = value);
+
+  ConfigurationData({
+    String name = "",
+    int players = 0,
+    int rounds = 0,
+    int maxPoints = 0,
+    bool isPrivate = true,
+  }) {
+    // TODO: get data from DB
+    _db = ConfigurationDataDB();
+
+    this.name = name;
+    this.players = players;
+    this.rounds = rounds;
+    this.maxPoints = maxPoints;
+    this.isPrivate = isPrivate;
+  }
+
+  factory ConfigurationData.empty() {
+    return ConfigurationData(
+      name: "",
+      players: 0,
+      rounds: 0,
+      maxPoints: 0,
+      isPrivate: true,
+    );
+  }
+
+  factory ConfigurationData.fromDB(ConfigurationDataDB db) {
+    return ConfigurationData(
+      name: db.name,
+      players: db.players,
+      rounds: db.rounds,
+      maxPoints: db.maxPoints,
+      isPrivate: db.isPrivate,
+    );
+  }
+
   ConfigurationData copyWith({
     String? name,
     int? players,
@@ -21,16 +79,6 @@ extension ConfigurationDataUtils on ConfigurationData {
     );
   }
 
-  static ConfigurationData empty() {
-    return ConfigurationData(
-      name: "",
-      players: 0,
-      rounds: 0,
-      maxPoints: 0,
-      isPrivate: true,
-    );
-  }
-
   Map<String, dynamic> toJson() {
     return {
       "name": name,
@@ -43,7 +91,8 @@ extension ConfigurationDataUtils on ConfigurationData {
 
   String toRawJson() => jsonEncode(toJson());
 
-  bool compareTo(Object other) {
+  @override
+  bool operator ==(Object other) {
     if (other is! ConfigurationData) return false;
     return name == other.name &&
         players == other.players &&
@@ -51,6 +100,9 @@ extension ConfigurationDataUtils on ConfigurationData {
         maxPoints == other.maxPoints &&
         isPrivate == other.isPrivate;
   }
+
+  @override
+  int get hashCode => name.hashCode;
 }
 
 extension ValidateConfig on ConfigurationData {

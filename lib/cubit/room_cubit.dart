@@ -6,10 +6,10 @@ import 'package:things_game/cubit/repository/room_repository.dart';
 import 'package:things_game/cubit/state/room_state.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
 
-import 'model/realm_models.dart';
+import 'model/player.dart';
 
 class RoomCubit extends Cubit<RoomState> {
-  GameRoom _actualGame = GameRoomUtils.empty();
+  GameRoom _actualGame = GameRoom.empty();
   final RoomRepository _repo = RoomRepository();
   // FirestoreRoomController? controller;
   //
@@ -31,13 +31,11 @@ class RoomCubit extends Cubit<RoomState> {
   // TODO: look for a way to remove this.
   void updateConfigSwitch(ConfigurationData data) {
     _actualGame = _actualGame.copyWith(config: data);
-    // TODO: Check nullability (should be removed)
-    emit(RoomConfigUpdated(config: _actualGame.config!));
+    emit(RoomConfigUpdated(config: _actualGame.config));
   }
 
   Future<void> createRoom() async {
-    if (_actualGame == GameRoomUtils.empty()) return;
-    // TODO: add default parameter to Player RealmModel
+    if (_actualGame == GameRoom.empty()) return;
     _actualGame.playerList.add(Player(name: UserSettings.I.name));
     final result = await _repo.createRoom(_actualGame.toJson());
 
@@ -76,7 +74,6 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<bool> joinRoom(GameRoom selectedRoom) async {
     _actualGame = selectedRoom;
-    // TODO: add default parameter to Player RealmModel
     _actualGame.playerList.add(Player(name: UserSettings.I.name));
     return _updatePlayers();
   }
@@ -111,7 +108,7 @@ class RoomCubit extends Cubit<RoomState> {
   Future<void> deleteRoom() async {
     //controller?.dispose();
     final result = await _repo.deleteRoom(_actualGame.id);
-    _actualGame = GameRoomUtils.empty();
+    _actualGame = GameRoom.empty();
 
     if (result != null) {
       emit(RoomError(error: result));

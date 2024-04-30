@@ -7,11 +7,11 @@ part of 'realm_models.dart';
 // **************************************************************************
 
 // ignore_for_file: type=lint
-class ConfigurationData extends _ConfigurationData
+class ConfigurationDataDB extends _ConfigurationDataDB
     with RealmEntity, RealmObjectBase, EmbeddedObject {
   static var _defaultsSet = false;
 
-  ConfigurationData({
+  ConfigurationDataDB({
     String name = "",
     int players = 0,
     int rounds = 0,
@@ -19,7 +19,7 @@ class ConfigurationData extends _ConfigurationData
     bool isPrivate = true,
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<ConfigurationData>({
+      _defaultsSet = RealmObjectBase.setDefaults<ConfigurationDataDB>({
         'name': "",
         'players': 0,
         'rounds': 0,
@@ -34,7 +34,7 @@ class ConfigurationData extends _ConfigurationData
     RealmObjectBase.set(this, 'isPrivate', isPrivate);
   }
 
-  ConfigurationData._();
+  ConfigurationDataDB._();
 
   @override
   String get name => RealmObjectBase.get<String>(this, 'name') as String;
@@ -62,12 +62,12 @@ class ConfigurationData extends _ConfigurationData
   set isPrivate(bool value) => RealmObjectBase.set(this, 'isPrivate', value);
 
   @override
-  Stream<RealmObjectChanges<ConfigurationData>> get changes =>
-      RealmObjectBase.getChanges<ConfigurationData>(this);
+  Stream<RealmObjectChanges<ConfigurationDataDB>> get changes =>
+      RealmObjectBase.getChanges<ConfigurationDataDB>(this);
 
   @override
-  ConfigurationData freeze() =>
-      RealmObjectBase.freezeObject<ConfigurationData>(this);
+  ConfigurationDataDB freeze() =>
+      RealmObjectBase.freezeObject<ConfigurationDataDB>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -79,8 +79,8 @@ class ConfigurationData extends _ConfigurationData
     };
   }
 
-  static EJsonValue _toEJson(ConfigurationData value) => value.toEJson();
-  static ConfigurationData _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(ConfigurationDataDB value) => value.toEJson();
+  static ConfigurationDataDB _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'name': EJsonValue name,
@@ -89,7 +89,7 @@ class ConfigurationData extends _ConfigurationData
         'maxPoints': EJsonValue maxPoints,
         'isPrivate': EJsonValue isPrivate,
       } =>
-        ConfigurationData(
+        ConfigurationDataDB(
           name: fromEJson(name),
           players: fromEJson(players),
           rounds: fromEJson(rounds),
@@ -101,10 +101,10 @@ class ConfigurationData extends _ConfigurationData
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(ConfigurationData._);
+    RealmObjectBase.registerFactory(ConfigurationDataDB._);
     register(_toEJson, _fromEJson);
     return SchemaObject(
-        ObjectType.embeddedObject, ConfigurationData, 'ConfigurationData', [
+        ObjectType.embeddedObject, ConfigurationDataDB, 'ConfigurationDataDB', [
       SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('players', RealmPropertyType.int),
       SchemaProperty('rounds', RealmPropertyType.int),
@@ -117,15 +117,16 @@ class ConfigurationData extends _ConfigurationData
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
 
-class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
+class PlayerDB extends _PlayerDB
+    with RealmEntity, RealmObjectBase, EmbeddedObject {
   static var _defaultsSet = false;
 
-  Player({
+  PlayerDB({
     String name = "",
     bool isReady = false,
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<Player>({
+      _defaultsSet = RealmObjectBase.setDefaults<PlayerDB>({
         'name': "",
         'isReady': false,
       });
@@ -134,7 +135,7 @@ class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
     RealmObjectBase.set(this, 'isReady', isReady);
   }
 
-  Player._();
+  PlayerDB._();
 
   @override
   String get name => RealmObjectBase.get<String>(this, 'name') as String;
@@ -147,11 +148,11 @@ class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
   set isReady(bool value) => RealmObjectBase.set(this, 'isReady', value);
 
   @override
-  Stream<RealmObjectChanges<Player>> get changes =>
-      RealmObjectBase.getChanges<Player>(this);
+  Stream<RealmObjectChanges<PlayerDB>> get changes =>
+      RealmObjectBase.getChanges<PlayerDB>(this);
 
   @override
-  Player freeze() => RealmObjectBase.freezeObject<Player>(this);
+  PlayerDB freeze() => RealmObjectBase.freezeObject<PlayerDB>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -160,14 +161,14 @@ class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
     };
   }
 
-  static EJsonValue _toEJson(Player value) => value.toEJson();
-  static Player _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(PlayerDB value) => value.toEJson();
+  static PlayerDB _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'name': EJsonValue name,
         'isReady': EJsonValue isReady,
       } =>
-        Player(
+        PlayerDB(
           name: fromEJson(name),
           isReady: fromEJson(isReady),
         ),
@@ -176,9 +177,9 @@ class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(Player._);
+    RealmObjectBase.registerFactory(PlayerDB._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.embeddedObject, Player, 'Player', [
+    return SchemaObject(ObjectType.embeddedObject, PlayerDB, 'PlayerDB', [
       SchemaProperty('name', RealmPropertyType.string),
       SchemaProperty('isReady', RealmPropertyType.bool),
     ]);
@@ -188,27 +189,27 @@ class Player extends _Player with RealmEntity, RealmObjectBase, EmbeddedObject {
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
 
-class GameRoom extends _GameRoom
+class GameRoomDB extends _GameRoomDB
     with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  GameRoom({
+  GameRoomDB({
     String id = "",
-    ConfigurationData? configData,
-    Iterable<Player> playerList = const [],
+    ConfigurationDataDB? configData,
+    Iterable<PlayerDB> playerList = const [],
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<GameRoom>({
+      _defaultsSet = RealmObjectBase.setDefaults<GameRoomDB>({
         'id': "",
       });
     }
     RealmObjectBase.set(this, 'id', id);
     RealmObjectBase.set(this, 'configData', configData);
-    RealmObjectBase.set<RealmList<Player>>(
-        this, 'playerList', RealmList<Player>(playerList));
+    RealmObjectBase.set<RealmList<PlayerDB>>(
+        this, 'playerList', RealmList<PlayerDB>(playerList));
   }
 
-  GameRoom._();
+  GameRoomDB._();
 
   @override
   String get id => RealmObjectBase.get<String>(this, 'id') as String;
@@ -216,26 +217,26 @@ class GameRoom extends _GameRoom
   set id(String value) => RealmObjectBase.set(this, 'id', value);
 
   @override
-  ConfigurationData? get configData =>
-      RealmObjectBase.get<ConfigurationData>(this, 'configData')
-          as ConfigurationData?;
+  ConfigurationDataDB? get configData =>
+      RealmObjectBase.get<ConfigurationDataDB>(this, 'configData')
+          as ConfigurationDataDB?;
   @override
-  set configData(covariant ConfigurationData? value) =>
+  set configData(covariant ConfigurationDataDB? value) =>
       RealmObjectBase.set(this, 'configData', value);
 
   @override
-  RealmList<Player> get playerList =>
-      RealmObjectBase.get<Player>(this, 'playerList') as RealmList<Player>;
+  RealmList<PlayerDB> get playerList =>
+      RealmObjectBase.get<PlayerDB>(this, 'playerList') as RealmList<PlayerDB>;
   @override
-  set playerList(covariant RealmList<Player> value) =>
+  set playerList(covariant RealmList<PlayerDB> value) =>
       throw RealmUnsupportedSetError();
 
   @override
-  Stream<RealmObjectChanges<GameRoom>> get changes =>
-      RealmObjectBase.getChanges<GameRoom>(this);
+  Stream<RealmObjectChanges<GameRoomDB>> get changes =>
+      RealmObjectBase.getChanges<GameRoomDB>(this);
 
   @override
-  GameRoom freeze() => RealmObjectBase.freezeObject<GameRoom>(this);
+  GameRoomDB freeze() => RealmObjectBase.freezeObject<GameRoomDB>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -245,15 +246,15 @@ class GameRoom extends _GameRoom
     };
   }
 
-  static EJsonValue _toEJson(GameRoom value) => value.toEJson();
-  static GameRoom _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(GameRoomDB value) => value.toEJson();
+  static GameRoomDB _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'id': EJsonValue id,
         'configData': EJsonValue configData,
         'playerList': EJsonValue playerList,
       } =>
-        GameRoom(
+        GameRoomDB(
           id: fromEJson(id),
           configData: fromEJson(configData),
           playerList: fromEJson(playerList),
@@ -263,14 +264,14 @@ class GameRoom extends _GameRoom
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(GameRoom._);
+    RealmObjectBase.registerFactory(GameRoomDB._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.realmObject, GameRoom, 'GameRoom', [
+    return SchemaObject(ObjectType.realmObject, GameRoomDB, 'GameRoomDB', [
       SchemaProperty('id', RealmPropertyType.string),
       SchemaProperty('configData', RealmPropertyType.object,
-          optional: true, linkTarget: 'ConfigurationData'),
+          optional: true, linkTarget: 'ConfigurationDataDB'),
       SchemaProperty('playerList', RealmPropertyType.object,
-          linkTarget: 'Player', collectionType: RealmCollectionType.list),
+          linkTarget: 'PlayerDB', collectionType: RealmCollectionType.list),
     ]);
   }();
 
@@ -278,16 +279,16 @@ class GameRoom extends _GameRoom
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
 
-class Assignment extends _Assignment
+class AssignmentDB extends _AssignmentDB
     with RealmEntity, RealmObjectBase, EmbeddedObject {
   static var _defaultsSet = false;
 
-  Assignment({
+  AssignmentDB({
     String playerName = "",
     Map<String, String> playerAssignment = const {},
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<Assignment>({
+      _defaultsSet = RealmObjectBase.setDefaults<AssignmentDB>({
         'playerName': "",
       });
     }
@@ -296,7 +297,7 @@ class Assignment extends _Assignment
         this, 'playerAssignment', RealmMap<String>(playerAssignment));
   }
 
-  Assignment._();
+  AssignmentDB._();
 
   @override
   String get playerName =>
@@ -313,11 +314,11 @@ class Assignment extends _Assignment
       throw RealmUnsupportedSetError();
 
   @override
-  Stream<RealmObjectChanges<Assignment>> get changes =>
-      RealmObjectBase.getChanges<Assignment>(this);
+  Stream<RealmObjectChanges<AssignmentDB>> get changes =>
+      RealmObjectBase.getChanges<AssignmentDB>(this);
 
   @override
-  Assignment freeze() => RealmObjectBase.freezeObject<Assignment>(this);
+  AssignmentDB freeze() => RealmObjectBase.freezeObject<AssignmentDB>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -326,14 +327,14 @@ class Assignment extends _Assignment
     };
   }
 
-  static EJsonValue _toEJson(Assignment value) => value.toEJson();
-  static Assignment _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(AssignmentDB value) => value.toEJson();
+  static AssignmentDB _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'playerName': EJsonValue playerName,
         'playerAssignment': EJsonValue playerAssignment,
       } =>
-        Assignment(
+        AssignmentDB(
           playerName: fromEJson(playerName),
           playerAssignment: fromEJson(playerAssignment),
         ),
@@ -342,9 +343,10 @@ class Assignment extends _Assignment
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(Assignment._);
+    RealmObjectBase.registerFactory(AssignmentDB._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.embeddedObject, Assignment, 'Assignment', [
+    return SchemaObject(
+        ObjectType.embeddedObject, AssignmentDB, 'AssignmentDB', [
       SchemaProperty('playerName', RealmPropertyType.string),
       SchemaProperty('playerAssignment', RealmPropertyType.string,
           collectionType: RealmCollectionType.map),
@@ -355,28 +357,28 @@ class Assignment extends _Assignment
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
 
-class QuestionBoard extends _QuestionBoard
+class QuestionBoardDB extends _QuestionBoardDB
     with RealmEntity, RealmObjectBase, EmbeddedObject {
   static var _defaultsSet = false;
 
-  QuestionBoard({
+  QuestionBoardDB({
     String question = "",
     Map<String, String> answers = const {},
-    Iterable<Assignment> assignments = const [],
+    Iterable<AssignmentDB> assignments = const [],
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<QuestionBoard>({
+      _defaultsSet = RealmObjectBase.setDefaults<QuestionBoardDB>({
         'question': "",
       });
     }
     RealmObjectBase.set(this, 'question', question);
     RealmObjectBase.set<RealmMap<String>>(
         this, 'answers', RealmMap<String>(answers));
-    RealmObjectBase.set<RealmList<Assignment>>(
-        this, 'assignments', RealmList<Assignment>(assignments));
+    RealmObjectBase.set<RealmList<AssignmentDB>>(
+        this, 'assignments', RealmList<AssignmentDB>(assignments));
   }
 
-  QuestionBoard._();
+  QuestionBoardDB._();
 
   @override
   String get question =>
@@ -392,19 +394,20 @@ class QuestionBoard extends _QuestionBoard
       throw RealmUnsupportedSetError();
 
   @override
-  RealmList<Assignment> get assignments =>
-      RealmObjectBase.get<Assignment>(this, 'assignments')
-          as RealmList<Assignment>;
+  RealmList<AssignmentDB> get assignments =>
+      RealmObjectBase.get<AssignmentDB>(this, 'assignments')
+          as RealmList<AssignmentDB>;
   @override
-  set assignments(covariant RealmList<Assignment> value) =>
+  set assignments(covariant RealmList<AssignmentDB> value) =>
       throw RealmUnsupportedSetError();
 
   @override
-  Stream<RealmObjectChanges<QuestionBoard>> get changes =>
-      RealmObjectBase.getChanges<QuestionBoard>(this);
+  Stream<RealmObjectChanges<QuestionBoardDB>> get changes =>
+      RealmObjectBase.getChanges<QuestionBoardDB>(this);
 
   @override
-  QuestionBoard freeze() => RealmObjectBase.freezeObject<QuestionBoard>(this);
+  QuestionBoardDB freeze() =>
+      RealmObjectBase.freezeObject<QuestionBoardDB>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -414,15 +417,15 @@ class QuestionBoard extends _QuestionBoard
     };
   }
 
-  static EJsonValue _toEJson(QuestionBoard value) => value.toEJson();
-  static QuestionBoard _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(QuestionBoardDB value) => value.toEJson();
+  static QuestionBoardDB _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'question': EJsonValue question,
         'answers': EJsonValue answers,
         'assignments': EJsonValue assignments,
       } =>
-        QuestionBoard(
+        QuestionBoardDB(
           question: fromEJson(question),
           answers: fromEJson(answers),
           assignments: fromEJson(assignments),
@@ -432,15 +435,15 @@ class QuestionBoard extends _QuestionBoard
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(QuestionBoard._);
+    RealmObjectBase.registerFactory(QuestionBoardDB._);
     register(_toEJson, _fromEJson);
     return SchemaObject(
-        ObjectType.embeddedObject, QuestionBoard, 'QuestionBoard', [
+        ObjectType.embeddedObject, QuestionBoardDB, 'QuestionBoardDB', [
       SchemaProperty('question', RealmPropertyType.string),
       SchemaProperty('answers', RealmPropertyType.string,
           collectionType: RealmCollectionType.map),
       SchemaProperty('assignments', RealmPropertyType.object,
-          linkTarget: 'Assignment', collectionType: RealmCollectionType.list),
+          linkTarget: 'AssignmentDB', collectionType: RealmCollectionType.list),
     ]);
   }();
 
@@ -448,25 +451,25 @@ class QuestionBoard extends _QuestionBoard
   SchemaObject get objectSchema => RealmObjectBase.getSchema(this) ?? schema;
 }
 
-class GameBoard extends _GameBoard
+class GameBoardDB extends _GameBoardDB
     with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  GameBoard({
+  GameBoardDB({
     String id = "",
-    Iterable<QuestionBoard> questionBoard = const [],
+    Iterable<QuestionBoardDB> questionBoard = const [],
   }) {
     if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<GameBoard>({
+      _defaultsSet = RealmObjectBase.setDefaults<GameBoardDB>({
         'id': "",
       });
     }
     RealmObjectBase.set(this, 'id', id);
-    RealmObjectBase.set<RealmList<QuestionBoard>>(
-        this, 'questionBoard', RealmList<QuestionBoard>(questionBoard));
+    RealmObjectBase.set<RealmList<QuestionBoardDB>>(
+        this, 'questionBoard', RealmList<QuestionBoardDB>(questionBoard));
   }
 
-  GameBoard._();
+  GameBoardDB._();
 
   @override
   String get id => RealmObjectBase.get<String>(this, 'id') as String;
@@ -474,19 +477,19 @@ class GameBoard extends _GameBoard
   set id(String value) => RealmObjectBase.set(this, 'id', value);
 
   @override
-  RealmList<QuestionBoard> get questionBoard =>
-      RealmObjectBase.get<QuestionBoard>(this, 'questionBoard')
-          as RealmList<QuestionBoard>;
+  RealmList<QuestionBoardDB> get questionBoard =>
+      RealmObjectBase.get<QuestionBoardDB>(this, 'questionBoard')
+          as RealmList<QuestionBoardDB>;
   @override
-  set questionBoard(covariant RealmList<QuestionBoard> value) =>
+  set questionBoard(covariant RealmList<QuestionBoardDB> value) =>
       throw RealmUnsupportedSetError();
 
   @override
-  Stream<RealmObjectChanges<GameBoard>> get changes =>
-      RealmObjectBase.getChanges<GameBoard>(this);
+  Stream<RealmObjectChanges<GameBoardDB>> get changes =>
+      RealmObjectBase.getChanges<GameBoardDB>(this);
 
   @override
-  GameBoard freeze() => RealmObjectBase.freezeObject<GameBoard>(this);
+  GameBoardDB freeze() => RealmObjectBase.freezeObject<GameBoardDB>(this);
 
   EJsonValue toEJson() {
     return <String, dynamic>{
@@ -495,14 +498,14 @@ class GameBoard extends _GameBoard
     };
   }
 
-  static EJsonValue _toEJson(GameBoard value) => value.toEJson();
-  static GameBoard _fromEJson(EJsonValue ejson) {
+  static EJsonValue _toEJson(GameBoardDB value) => value.toEJson();
+  static GameBoardDB _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
         'id': EJsonValue id,
         'questionBoard': EJsonValue questionBoard,
       } =>
-        GameBoard(
+        GameBoardDB(
           id: fromEJson(id),
           questionBoard: fromEJson(questionBoard),
         ),
@@ -511,12 +514,12 @@ class GameBoard extends _GameBoard
   }
 
   static final schema = () {
-    RealmObjectBase.registerFactory(GameBoard._);
+    RealmObjectBase.registerFactory(GameBoardDB._);
     register(_toEJson, _fromEJson);
-    return SchemaObject(ObjectType.realmObject, GameBoard, 'GameBoard', [
+    return SchemaObject(ObjectType.realmObject, GameBoardDB, 'GameBoardDB', [
       SchemaProperty('id', RealmPropertyType.string),
       SchemaProperty('questionBoard', RealmPropertyType.object,
-          linkTarget: 'QuestionBoard',
+          linkTarget: 'QuestionBoardDB',
           collectionType: RealmCollectionType.list),
     ]);
   }();
