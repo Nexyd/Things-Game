@@ -4,12 +4,12 @@ import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 
 import 'package:i18n_extension/i18n_widget.dart';
+import 'package:realm/realm.dart';
 
 import 'package:things_game/cubit/game_cubit.dart';
 import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/screen/splash_screen.dart';
-import 'package:things_game/support/mongo/mongo_config.dart';
-import 'package:things_game/support/mongo/mongo_providers.dart';
+import 'package:things_game/support/mongo_config.dart';
 import 'package:things_game/support/route_generator.dart';
 import 'package:things_game/support/logger.dart';
 
@@ -18,16 +18,8 @@ Future<void> main() async {
   FlutterNativeSplash.preserve(widgetsBinding: widgetsBinding);
   Logger.init(LoggerConfig(level: LoggerLevel.debug));
 
-  MongoConfig config = await MongoConfig.getConfig(
-    'assets/mongodb_config/config.json',
-  );
-
-  runApp(MongoProviders(
-    config: config,
-    child: I18n(child: const ThingsGame()),
-  ));
-
-  // runApp(I18n(child: const ThingsGame()));
+  MongoConfig.I.init("assets/mongodb_config/config.json");
+  runApp(I18n(child: const ThingsGame()));
 }
 
 class ThingsGame extends StatelessWidget {
