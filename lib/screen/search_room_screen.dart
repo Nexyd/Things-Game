@@ -1,19 +1,19 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
+
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/cubit/room_cubit.dart';
+import 'package:things_game/cubit/state/room_state.dart';
+import 'package:things_game/model/configuration_data.dart';
+import 'package:things_game/model/game_room.dart';
+import 'package:things_game/screen/lobby_screen.dart';
 import 'package:things_game/translations/search_room_screen.i18n.dart';
+import 'package:things_game/util/debouncer.dart';
 import 'package:things_game/util/color_utils.dart';
 import 'package:things_game/widget/alert_dialog.dart';
-import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/cubit/room_cubit.dart';
-import 'package:things_game/cubit/state/room_state.dart';
-import 'package:things_game/util/debouncer.dart';
-import 'package:things_game/screen/lobby_screen.dart';
-
-import '../cubit/model/game_room.dart';
 
 class SearchRoomScreen extends StatefulWidget {
   const SearchRoomScreen({super.key});

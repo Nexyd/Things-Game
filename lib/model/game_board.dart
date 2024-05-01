@@ -1,8 +1,8 @@
 import 'dart:convert';
 import 'dart:math';
 
-import 'package:things_game/cubit/model/question_board.dart';
-import 'package:things_game/cubit/model/realm_models.dart';
+import 'package:things_game/model/question_board.dart';
+import 'package:things_game/model/realm_models.dart';
 
 // class GameBoard with Streamable<GameBoard> {
 class GameBoard {

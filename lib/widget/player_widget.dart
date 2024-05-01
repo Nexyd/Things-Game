@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:things_game/widget/styled/styled_text.dart';
 
-import '../config/user_settings.dart';
+import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/widget/styled/styled_text.dart';
 
 class PlayerWidget extends StatelessWidget {
   final String name;

@@ -1,18 +1,17 @@
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:things_game/cubit/model/game_room.dart';
-import 'package:things_game/cubit/model/player.dart';
+import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/cubit/room_cubit.dart';
+import 'package:things_game/cubit/game_cubit.dart';
+import 'package:things_game/model/configuration_data.dart';
+import 'package:things_game/model/game_room.dart';
+import 'package:things_game/model/player.dart';
+import 'package:things_game/screen/room_settings_screen.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
-import 'package:things_game/widget/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/screen/room_settings_screen.dart';
-
-import '../cubit/game_cubit.dart';
-import '../widget/player_widget.dart';
+import 'package:things_game/widget/player_widget.dart';
 
 class LobbyScreenArguments {
   final GameRoom initialRoom;

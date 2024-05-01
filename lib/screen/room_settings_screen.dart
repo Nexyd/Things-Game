@@ -1,10 +1,10 @@
 import 'package:flutter/material.dart';
+
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/translations/room_settings_screen.i18n.dart';
+import 'package:things_game/model/configuration_data.dart';
 import 'package:things_game/widget/room_settings.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
-
-import '../widget/model/configuration_data.dart';
 
 class RoomSettingsScreenArgs {
   final ConfigurationData data;

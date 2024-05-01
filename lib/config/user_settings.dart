@@ -4,9 +4,9 @@ import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 import 'package:things_game/support/constants.dart';
+import 'package:things_game/support/logger.dart';
 import 'package:things_game/widget/avatar_icon.dart';
 
-import '../support/logger.dart';
 
 class UserSettings {
   String name;

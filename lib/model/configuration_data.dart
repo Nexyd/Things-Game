@@ -1,8 +1,7 @@
 import 'dart:convert';
 
+import 'package:things_game/model/realm_models.dart';
 import 'package:things_game/translations/room_settings.i18n.dart';
-
-import '../../cubit/model/realm_models.dart';
 
 class ConfigurationData {
   late ConfigurationDataDB _db;

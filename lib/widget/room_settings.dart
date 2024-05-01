@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/cubit/state/room_state.dart';
-import 'package:things_game/widget/model/configuration_data.dart';
+import 'package:things_game/model/configuration_data.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_switch.dart';
 import 'package:things_game/widget/styled/styled_text.dart';

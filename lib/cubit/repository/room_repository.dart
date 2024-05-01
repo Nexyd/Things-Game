@@ -1,5 +1,5 @@
-import '../../support/constants.dart';
-import '../model/player.dart';
+import 'package:things_game/model/player.dart';
+import 'package:things_game/support/constants.dart';
 
 typedef Json = Map<String, dynamic>;
 

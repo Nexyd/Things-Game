@@ -1,20 +1,21 @@
 import 'dart:io';
 
-import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+
+import 'package:file_picker/file_picker.dart';
 import 'package:i18n_extension/i18n_widget.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/support/constants.dart';
+import 'package:things_game/support/logger.dart';
 import 'package:things_game/translations/user_settings_screen.i18n.dart';
+import 'package:things_game/util/color_utils.dart';
 import 'package:things_game/widget/avatar_icon.dart';
 import 'package:things_game/widget/color_picker.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
-import 'package:things_game/util/color_utils.dart';
-
-import '../support/logger.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});

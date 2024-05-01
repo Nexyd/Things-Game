@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/config/user_settings.dart';
-import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/repository/room_repository.dart';
 import 'package:things_game/cubit/state/room_state.dart';
-import 'package:things_game/widget/model/configuration_data.dart';
-
-import 'model/player.dart';
+import 'package:things_game/model/configuration_data.dart';
+import 'package:things_game/model/game_room.dart';
+import 'package:things_game/model/player.dart';
 
 class RoomCubit extends Cubit<RoomState> {
   GameRoom _actualGame = GameRoom.empty();

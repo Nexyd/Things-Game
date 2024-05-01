@@ -1,4 +1,4 @@
-import 'package:things_game/cubit/model/realm_models.dart';
+import 'package:things_game/model/realm_models.dart';
 
 class Player {
   late PlayerDB _db;

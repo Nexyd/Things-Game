@@ -1,11 +1,12 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
+import 'package:things_game/widget/alert_dialog.dart';
 
-import '../widget/alert_dialog.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});

@@ -1,7 +1,5 @@
 import 'package:realm/realm.dart';
 
-import '../../streams/streamable_mixin.dart';
-
 part 'realm_models.realm.dart';
 
 @RealmModel(ObjectType.embeddedObject)
@@ -24,13 +22,10 @@ class _PlayerDB {
 // 'Realm object references must be nullable.'
 // https://www.mongodb.com/docs/atlas/device-sdks/sdk/flutter/realm-database/model-data/relationships/#std-label-flutter-client-relationships
 @RealmModel()
-class _GameRoomDB with Streamable<GameRoomDB> {
+class _GameRoomDB {
   late String id = "";
   late _ConfigurationDataDB? configData;
   late List<_PlayerDB> playerList = [];
-
-  // ConfigurationData get config => configData == null ? configData : ConfigurationData();
-  ConfigurationDataDB get config => ConfigurationDataDB();
 }
 
 @RealmModel(ObjectType.embeddedObject)
@@ -47,7 +42,7 @@ class _QuestionBoardDB {
 }
 
 @RealmModel()
-class _GameBoardDB with Streamable<GameBoardDB> {
+class _GameBoardDB {
   late String id = "";
   late List<_QuestionBoardDB> questionBoard = [];
 }

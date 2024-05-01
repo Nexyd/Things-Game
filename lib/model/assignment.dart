@@ -1,5 +1,5 @@
 import 'package:realm/realm.dart';
-import 'package:things_game/cubit/model/realm_models.dart';
+import 'package:things_game/model/realm_models.dart';
 
 class Assignment {
   late AssignmentDB _db;

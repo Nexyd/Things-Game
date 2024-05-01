@@ -3,9 +3,9 @@ import 'dart:math';
 
 import 'package:flutter/foundation.dart';
 import 'package:realm/realm.dart';
-import 'package:things_game/cubit/model/player.dart';
-import 'package:things_game/cubit/model/realm_models.dart';
-import 'package:things_game/widget/model/configuration_data.dart';
+import 'package:things_game/model/configuration_data.dart';
+import 'package:things_game/model/player.dart';
+import 'package:things_game/model/realm_models.dart';
 
 // class GameRoom with Streamable<GameRoom> {
 class GameRoom {

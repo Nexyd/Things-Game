@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
-import '../../widget/model/configuration_data.dart';
-import '../model/game_room.dart';
+import 'package:things_game/model/game_room.dart';
+import 'package:things_game/model/configuration_data.dart';
 
 @immutable
 abstract class RoomState {}

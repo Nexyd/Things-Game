@@ -1,8 +1,8 @@
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/repository/game_repository.dart';
 import 'package:things_game/cubit/state/game_state.dart';
-import 'model/assignment.dart';
+import 'package:things_game/model/game_room.dart';
+import 'package:things_game/model/assignment.dart';
 
 class GameCubit extends Cubit<GameState> {
   GameRoom actualGame = GameRoom.empty();
