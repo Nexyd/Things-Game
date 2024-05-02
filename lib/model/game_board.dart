@@ -1,6 +1,7 @@
 import 'dart:convert';
 import 'dart:math';
 
+import 'package:realm/realm.dart';
 import 'package:things_game/model/question_board.dart';
 import 'package:things_game/model/realm_models.dart';
 
@@ -9,32 +10,32 @@ class GameBoard {
   late GameBoardDB _db;
 
   GameBoard({
-    required String id,
+    required String roomId,
     required List<QuestionBoard> questionBoard,
   }) {
     // TODO: get data from DB
-    _db = GameBoardDB();
+    _db = GameBoardDB(ObjectId());
 
-    this.id = id;
+    this.roomId = roomId;
     this.questionBoard = questionBoard;
   }
 
   GameBoard copyWith({List<QuestionBoard>? questionBoard}) {
     return GameBoard(
-      id: id,
+      roomId: roomId,
       questionBoard: questionBoard ?? this.questionBoard,
     );
   }
 
-  factory GameBoard.empty() => GameBoard(id: "", questionBoard: []);
+  factory GameBoard.empty() => GameBoard(roomId: "", questionBoard: []);
 
   factory GameBoard.sample() {
-    return GameBoard(id: "Id#${Random().nextInt(999)}", questionBoard: []);
+    return GameBoard(roomId: "Id#${Random().nextInt(999)}", questionBoard: []);
   }
 
   Map<String, dynamic> toJson() {
     return {
-      "id": id,
+      "id": roomId,
       "questionBoard": List<dynamic>.from(
         questionBoard.map((x) => x.toJson()),
       ),
@@ -55,13 +56,16 @@ class GameBoard {
 
 extension GameBoardUtilsDB on GameBoard {
   // Get attributes
-  String get id => _db.id;
+  String get id => _db.id.hexString;
+
+  String get roomId => _db.roomId;
 
   List<QuestionBoard> get questionBoard =>
       _db.questionBoard.toList().map((e) => QuestionBoard.fromDB(e)).toList();
 
   // Set attributes
-  set id(String value) => _db.realm.write(() => _db.id = value);
+  set roomId(String value) => _db.realm.write(() => _db.roomId = value);
+  // set id(String value) => _db.realm.write(() => _db.id = value);
 
   set questionBoard(List<QuestionBoard> value) {
     _db.questionBoard.clear();

@@ -1,14 +1,35 @@
+import 'package:realm/realm.dart';
+
 import 'package:things_game/model/player.dart';
+import 'package:things_game/model/realm_models.dart';
 import 'package:things_game/support/constants.dart';
+import 'package:things_game/support/mongo_manager.dart';
 
 typedef Json = Map<String, dynamic>;
 
 class RoomRepository {
+  late Realm realm;
+
+  static const String queryAllName = "getAllItemsSubscription";
   //late final CollectionReference<Map<String, dynamic>> _roomsDb;
 
   RoomRepository() {
     // TODO: create collection if it doesn't exist.
     //_roomsDb = FirebaseFirestore.instance.collection("rooms");
+
+    realm = Realm(MongoManager.I.roomConfig);
+    realm.subscriptions.update((mutableSubscriptions) {
+      mutableSubscriptions.add(realm.all<GameRoomDB>());
+    });
+  }
+
+  void query() {
+    // final result = realm.query<GameRoomDB>('authorName BEGINSWITH \$0', ["Use"]);
+    // final result = realm.query<GameRoomDB>('config != null');
+    final result = realm.all<GameRoomDB>();
+    // realm.subscriptions.findByName("getAllItemsSubscription");
+
+    print("### result: ${result.length} ###");
   }
 
   Future<String> createRoom(Json roomJson) async {

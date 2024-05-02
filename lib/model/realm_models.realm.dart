@@ -191,19 +191,12 @@ class PlayerDB extends _PlayerDB
 
 class GameRoomDB extends _GameRoomDB
     with RealmEntity, RealmObjectBase, RealmObject {
-  static var _defaultsSet = false;
-
-  GameRoomDB({
-    String id = "",
+  GameRoomDB(
+    ObjectId id, {
     ConfigurationDataDB? configData,
     Iterable<PlayerDB> playerList = const [],
   }) {
-    if (!_defaultsSet) {
-      _defaultsSet = RealmObjectBase.setDefaults<GameRoomDB>({
-        'id': "",
-      });
-    }
-    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, '_id', id);
     RealmObjectBase.set(this, 'configData', configData);
     RealmObjectBase.set<RealmList<PlayerDB>>(
         this, 'playerList', RealmList<PlayerDB>(playerList));
@@ -212,9 +205,9 @@ class GameRoomDB extends _GameRoomDB
   GameRoomDB._();
 
   @override
-  String get id => RealmObjectBase.get<String>(this, 'id') as String;
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, '_id') as ObjectId;
   @override
-  set id(String value) => RealmObjectBase.set(this, 'id', value);
+  set id(ObjectId value) => RealmObjectBase.set(this, '_id', value);
 
   @override
   ConfigurationDataDB? get configData =>
@@ -240,7 +233,7 @@ class GameRoomDB extends _GameRoomDB
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      'id': id.toEJson(),
+      '_id': id.toEJson(),
       'configData': configData.toEJson(),
       'playerList': playerList.toEJson(),
     };
@@ -250,12 +243,12 @@ class GameRoomDB extends _GameRoomDB
   static GameRoomDB _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
-        'id': EJsonValue id,
+        '_id': EJsonValue id,
         'configData': EJsonValue configData,
         'playerList': EJsonValue playerList,
       } =>
         GameRoomDB(
-          id: fromEJson(id),
+          fromEJson(id),
           configData: fromEJson(configData),
           playerList: fromEJson(playerList),
         ),
@@ -267,7 +260,8 @@ class GameRoomDB extends _GameRoomDB
     RealmObjectBase.registerFactory(GameRoomDB._);
     register(_toEJson, _fromEJson);
     return SchemaObject(ObjectType.realmObject, GameRoomDB, 'GameRoomDB', [
-      SchemaProperty('id', RealmPropertyType.string),
+      SchemaProperty('id', RealmPropertyType.objectid,
+          mapTo: '_id', primaryKey: true),
       SchemaProperty('configData', RealmPropertyType.object,
           optional: true, linkTarget: 'ConfigurationDataDB'),
       SchemaProperty('playerList', RealmPropertyType.object,
@@ -455,16 +449,18 @@ class GameBoardDB extends _GameBoardDB
     with RealmEntity, RealmObjectBase, RealmObject {
   static var _defaultsSet = false;
 
-  GameBoardDB({
-    String id = "",
+  GameBoardDB(
+    ObjectId id, {
+    String roomId = "",
     Iterable<QuestionBoardDB> questionBoard = const [],
   }) {
     if (!_defaultsSet) {
       _defaultsSet = RealmObjectBase.setDefaults<GameBoardDB>({
-        'id': "",
+        'roomId': "",
       });
     }
-    RealmObjectBase.set(this, 'id', id);
+    RealmObjectBase.set(this, '_id', id);
+    RealmObjectBase.set(this, 'roomId', roomId);
     RealmObjectBase.set<RealmList<QuestionBoardDB>>(
         this, 'questionBoard', RealmList<QuestionBoardDB>(questionBoard));
   }
@@ -472,9 +468,14 @@ class GameBoardDB extends _GameBoardDB
   GameBoardDB._();
 
   @override
-  String get id => RealmObjectBase.get<String>(this, 'id') as String;
+  ObjectId get id => RealmObjectBase.get<ObjectId>(this, '_id') as ObjectId;
   @override
-  set id(String value) => RealmObjectBase.set(this, 'id', value);
+  set id(ObjectId value) => RealmObjectBase.set(this, '_id', value);
+
+  @override
+  String get roomId => RealmObjectBase.get<String>(this, 'roomId') as String;
+  @override
+  set roomId(String value) => RealmObjectBase.set(this, 'roomId', value);
 
   @override
   RealmList<QuestionBoardDB> get questionBoard =>
@@ -493,7 +494,8 @@ class GameBoardDB extends _GameBoardDB
 
   EJsonValue toEJson() {
     return <String, dynamic>{
-      'id': id.toEJson(),
+      '_id': id.toEJson(),
+      'roomId': roomId.toEJson(),
       'questionBoard': questionBoard.toEJson(),
     };
   }
@@ -502,11 +504,13 @@ class GameBoardDB extends _GameBoardDB
   static GameBoardDB _fromEJson(EJsonValue ejson) {
     return switch (ejson) {
       {
-        'id': EJsonValue id,
+        '_id': EJsonValue id,
+        'roomId': EJsonValue roomId,
         'questionBoard': EJsonValue questionBoard,
       } =>
         GameBoardDB(
-          id: fromEJson(id),
+          fromEJson(id),
+          roomId: fromEJson(roomId),
           questionBoard: fromEJson(questionBoard),
         ),
       _ => raiseInvalidEJson(ejson),
@@ -517,7 +521,9 @@ class GameBoardDB extends _GameBoardDB
     RealmObjectBase.registerFactory(GameBoardDB._);
     register(_toEJson, _fromEJson);
     return SchemaObject(ObjectType.realmObject, GameBoardDB, 'GameBoardDB', [
-      SchemaProperty('id', RealmPropertyType.string),
+      SchemaProperty('id', RealmPropertyType.objectid,
+          mapTo: '_id', primaryKey: true),
+      SchemaProperty('roomId', RealmPropertyType.string),
       SchemaProperty('questionBoard', RealmPropertyType.object,
           linkTarget: 'QuestionBoardDB',
           collectionType: RealmCollectionType.list),

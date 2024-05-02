@@ -43,8 +43,8 @@ class RoomCubit extends Cubit<RoomState> {
       return;
     }
 
-    // TODO: search for a way to autogenerate IDs
-    _actualGame.id = result;
+    // TODO: search for a way to autogenerate IDs (Using realm's ObjectId??)
+    // _actualGame.id = result;
     //controller = FirestoreRoomController(room: _actualGame);
 
     emit(RoomCreated(room: _actualGame));

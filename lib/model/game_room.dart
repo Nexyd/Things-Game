@@ -12,14 +12,12 @@ class GameRoom {
   late GameRoomDB _db;
 
   GameRoom({
-    required String id,
     required ConfigurationData config,
     required List<Player> playerList,
   }) {
     // TODO: get data from DB
-    _db = GameRoomDB();
+    _db = GameRoomDB(ObjectId());
 
-    this.id = id;
     this.config = config;
     this.playerList = playerList;
   }
@@ -29,7 +27,6 @@ class GameRoom {
     List<Player>? playerList,
   }) {
     return GameRoom(
-      id: id,
       config: config ?? this.config,
       playerList: playerList ?? this.playerList,
     );
@@ -37,7 +34,6 @@ class GameRoom {
 
   factory GameRoom.empty() {
     return GameRoom(
-      id: "",
       config: ConfigurationData(),
       playerList: [],
     );
@@ -45,7 +41,7 @@ class GameRoom {
 
   factory GameRoom.sample() {
     return GameRoom(
-      id: "Id#${Random().nextInt(999)}",
+      //id: "Id#${Random().nextInt(999)}",
       config: ConfigurationData(
         name: "Game#${Random().nextInt(999)}",
         players: Random().nextInt(10),
@@ -59,7 +55,6 @@ class GameRoom {
 
   Map<String, dynamic> toJson() {
     return {
-      "id": id,
       "config": config.toJson(),
       "playerList": List<dynamic>.from(playerList.map((x) => x)),
     };
@@ -81,7 +76,7 @@ extension GameRoomUtilsDB on GameRoom {
   Stream<RealmObjectChanges<GameRoomDB>> get changes => _db.changes;
 
   // Get attributes
-  String get id => _db.id;
+  String get id => _db.id.hexString;
 
   ConfigurationData get config =>
       ConfigurationData.fromDB(_db.configData ?? ConfigurationDataDB());
@@ -90,8 +85,6 @@ extension GameRoomUtilsDB on GameRoom {
       _db.playerList.toList().map((e) => Player.fromDB(e)).toList();
 
   // Set attributes
-  set id(String value) => _db.realm.write(() => _db.id = value);
-
   set config(ConfigurationData value) =>
       _db.realm.write(() => _db.configData = value.db);
 

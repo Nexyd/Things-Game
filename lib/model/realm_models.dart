@@ -23,7 +23,10 @@ class _PlayerDB {
 // https://www.mongodb.com/docs/atlas/device-sdks/sdk/flutter/realm-database/model-data/relationships/#std-label-flutter-client-relationships
 @RealmModel()
 class _GameRoomDB {
-  late String id = "";
+  @MapTo('_id')
+  @PrimaryKey()
+  late ObjectId id;
+  //late String id = "";
   late _ConfigurationDataDB? configData;
   late List<_PlayerDB> playerList = [];
 }
@@ -43,6 +46,9 @@ class _QuestionBoardDB {
 
 @RealmModel()
 class _GameBoardDB {
-  late String id = "";
+  @MapTo('_id')
+  @PrimaryKey()
+  late ObjectId id;
+  late String roomId = "";
   late List<_QuestionBoardDB> questionBoard = [];
 }

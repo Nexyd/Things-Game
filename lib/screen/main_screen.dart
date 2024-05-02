@@ -7,6 +7,7 @@ import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/alert_dialog.dart';
 
+import 'package:things_game/cubit/repository/room_repository.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -85,6 +86,7 @@ class _MainScreenState extends State<MainScreen> {
           padding: const EdgeInsets.only(bottom: 20.0),
           child: StyledButton(
             text: "Create game".i18n,
+            // onPressed: () => RoomRepository().query(),
             onPressed: () => Navigator.of(context).pushNamed("/create"),
           ),
         ),
