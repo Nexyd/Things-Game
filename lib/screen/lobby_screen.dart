@@ -51,7 +51,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       child: Scaffold(
         backgroundColor: UserSettings.I.backgroundColor,
         body: SafeArea(
-          child: Container(),
+          child: _getContent(context),
           // child: StreamBuilder(
           //   stream: cubit.roomStream,
           //   builder: (context, snapshot) {

@@ -3,6 +3,7 @@ import 'dart:convert';
 import 'package:things_game/model/realm_models.dart';
 import 'package:things_game/translations/room_settings.i18n.dart';
 
+// TODO: maybe replace this with its DB model?
 class ConfigurationData {
   late ConfigurationDataDB _db;
 
@@ -90,25 +91,23 @@ extension ConfigurationDataUtilsDB on ConfigurationData {
 
   // Get attributes
   String get name => _db.name;
-
   int get players => _db.players;
-
   int get rounds => _db.rounds;
-
   int get maxPoints => _db.maxPoints;
-
   bool get isPrivate => _db.isPrivate;
 
   // Set attributes
-  set name(String value) => _db.realm.write(() => _db.name = value);
+  set name(String value) => _db.name = value;
+  set players(int value) => _db.players = value;
+  set rounds(int value) => _db.rounds = value;
+  set maxPoints(int value) => _db.maxPoints = value;
+  set isPrivate(bool value) => _db.isPrivate = value;
 
-  set players(int value) => _db.realm.write(() => _db.players = value);
-
-  set rounds(int value) => _db.realm.write(() => _db.rounds = value);
-
-  set maxPoints(int value) => _db.realm.write(() => _db.maxPoints = value);
-
-  set isPrivate(bool value) => _db.realm.write(() => _db.isPrivate = value);
+  // set name(String value) => _db.realm.write(() => _db.name = value);
+  // set players(int value) => _db.realm.write(() => _db.players = value);
+  // set rounds(int value) => _db.realm.write(() => _db.rounds = value);
+  // set maxPoints(int value) => _db.realm.write(() => _db.maxPoints = value);
+  // set isPrivate(bool value) => _db.realm.write(() => _db.isPrivate = value);
 }
 
 extension ValidateConfig on ConfigurationData {

@@ -1,6 +1,7 @@
 import 'package:realm/realm.dart';
 import 'package:things_game/model/realm_models.dart';
 
+// TODO: maybe replace this with its DB model?
 class Assignment {
   late AssignmentDB _db;
 
@@ -38,7 +39,8 @@ extension AssignmentUtilsDB on Assignment {
   Map<String, dynamic> get playerAssignment => _db.playerAssignment;
 
   // Set attributes
-  set playerName(String value) => _db.realm.write(() => _db.playerName = value);
+  set playerName(String value) => _db.playerName = value;
+  // set playerName(String value) => _db.realm.write(() => _db.playerName = value);
 
   set playerAssignment(Map<String, dynamic> value) {
     _db.playerAssignment.clear();

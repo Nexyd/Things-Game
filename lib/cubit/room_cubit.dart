@@ -17,6 +17,9 @@ class RoomCubit extends Cubit<RoomState> {
 
   RoomCubit() : super(RoomInitial());
 
+  void testQuery() => _repo.testQuery();
+  void testCreateRoom() => _repo.testCreateRoom();
+
   Future<void> updateConfiguration(ConfigurationData data) async {
     _actualGame = _actualGame.copyWith(config: data);
     final result = await _repo.updateConfig(_actualGame.id, data.toJson());
@@ -34,11 +37,24 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> createRoom() async {
-    if (_actualGame == GameRoom.empty()) return;
-    _actualGame.playerList.add(Player(name: UserSettings.I.name));
-    final result = await _repo.createRoom(_actualGame.toJson());
+    print("### checking room config not empty... ###");
+    print("### actual room: ${_actualGame.toJson()} ###");
 
+    if (_actualGame == GameRoom.empty()) return;
+    print("### room config valid ###");
+
+    print("### adding player... ###");
+    _actualGame.playerList.add(Player(name: UserSettings.I.name));
+    print("### player added ###");
+
+    // final result = await _repo.createRoom(_actualGame.toJson());
+    print("### creating room... ###");
+    final result = await _repo.createRoom(_actualGame);
+    print("### room created ###");
+
+    print("### result: $result ###");
     if (result.startsWith("error")) {
+      print("### error found ###");
       emit(RoomError(error: result));
       return;
     }
@@ -47,6 +63,7 @@ class RoomCubit extends Cubit<RoomState> {
     // _actualGame.id = result;
     //controller = FirestoreRoomController(room: _actualGame);
 
+    print("### emitting room created state ###");
     emit(RoomCreated(room: _actualGame));
   }
 

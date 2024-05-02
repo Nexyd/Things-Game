@@ -1,6 +1,7 @@
 import 'package:things_game/model/realm_models.dart';
 import 'package:things_game/model/assignment.dart';
 
+// TODO: maybe replace this with its DB model?
 class QuestionBoard {
   late QuestionBoardDB _db;
 
@@ -51,7 +52,8 @@ extension QuestionBoardUtilsDB on QuestionBoard {
       _db.assignments.toList().map((e) => Assignment.fromDB(e)).toList();
 
   // Set attributes
-  set question(String value) => _db.realm.write(() => _db.question = value);
+  set question(String value) => _db.question = value;
+  // set question(String value) => _db.realm.write(() => _db.question = value);
 
   set answers(Map<String, dynamic> value) {
     _db.answers.clear();

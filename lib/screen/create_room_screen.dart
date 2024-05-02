@@ -16,7 +16,7 @@ class CreateRoomScreen extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final cubit = BlocProvider.of<RoomCubit>(context);
+    final cubit = context.read<RoomCubit>();
     return BlocConsumer<RoomCubit, RoomState>(
       bloc: cubit,
       builder: (context, state) => _getContent(cubit),

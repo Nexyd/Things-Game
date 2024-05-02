@@ -1,4 +1,5 @@
 import 'package:realm/realm.dart';
+import 'package:things_game/model/game_room.dart';
 
 import 'package:things_game/model/player.dart';
 import 'package:things_game/model/realm_models.dart';
@@ -6,40 +7,103 @@ import 'package:things_game/support/constants.dart';
 import 'package:things_game/support/mongo_manager.dart';
 
 typedef Json = Map<String, dynamic>;
+const String QUERY_ALL_NAME = "getAllItemsSubscription";
 
 class RoomRepository {
-  late Realm realm;
-
-  static const String queryAllName = "getAllItemsSubscription";
+  late Realm _realm;
   //late final CollectionReference<Map<String, dynamic>> _roomsDb;
 
   RoomRepository() {
     // TODO: create collection if it doesn't exist.
     //_roomsDb = FirebaseFirestore.instance.collection("rooms");
 
-    realm = Realm(MongoManager.I.roomConfig);
-    realm.subscriptions.update((mutableSubscriptions) {
-      mutableSubscriptions.add(realm.all<GameRoomDB>());
+    _initRealm();
+  }
+
+  Future<void> _initRealm() async {
+    print("### initializing realm... ###");
+    _realm = Realm(MongoManager.I.roomConfig);
+
+    print("### updating subscriptions... ###");
+    _realm.subscriptions.update((mutableSubscriptions) {
+      // mutableSubscriptions.add(_realm.all<GameRoomDB>());
+      mutableSubscriptions.add(_realm.all<GameRoomDB>(), name: QUERY_ALL_NAME);
+      // mutableSubscriptions.add(
+      //   _realm.query<GameRoomDB>(r'name == $0 AND age > $1', ['Clifford', 5]),
+      // );
     });
+
+    print("### waiting for synchronization... ###");
+    await _realm.subscriptions.waitForSynchronization();
+
+    print("### realm synchronized ###");
   }
 
-  void query() {
-    // final result = realm.query<GameRoomDB>('authorName BEGINSWITH \$0', ["Use"]);
-    // final result = realm.query<GameRoomDB>('config != null');
-    final result = realm.all<GameRoomDB>();
-    // realm.subscriptions.findByName("getAllItemsSubscription");
-
+  void testQuery() {
+    print("#########");
+    print("#########");
+    print("### ----------------- TEST QUERY ----------------- ###");
+    final result = _realm.all<GameRoomDB>();
     print("### result: ${result.length} ###");
+
+    if (result.isNotEmpty) {
+      final foo = result.first;
+      print("#########");
+      print("### result id hexString: ${foo.id.hexString} ###");
+      print("### result id: ${foo.id} ###");
+      print("### result playerList: ${foo.playerList} ###");
+      print("### result config name: ${foo.configData?.name} ###");
+      print("### result config numPlayers: ${foo.configData?.players} ###");
+      print("### result config rounds: ${foo.configData?.rounds} ###");
+      print("### result config maxPoints: ${foo.configData?.maxPoints} ###");
+      print("### result config isPrivate: ${foo.configData?.isPrivate} ###");
+      print("#########");
+    }
+
+    print("### ----------------- TEST QUERY ----------------- ###");
+    print("#########");
+    print("#########");
   }
 
-  Future<String> createRoom(Json roomJson) async {
+  void testCreateRoom() async {
+    print("#########");
+    print("#########");
+    print("### ----------------- TEST CREATE ROOM ----------------- ###");
+    print("### creating config... ###");
+    final config = ConfigurationDataDB(
+        name: "Foo", players: 4, rounds: 3, maxPoints: 72, isPrivate: true);
+    print("### config: ${config.toEJson()} ###");
+
+    print("### creating room... ###");
+    final room = GameRoomDB(ObjectId(), configData: config, playerList: []);
+    print("### room: ${room.toEJson()} ###");
+
+    print("### saving room to db... ###");
+    final result = _realm.write<GameRoomDB>(
+      () => _realm.add<GameRoomDB>(room),
+    );
+
+    print("### saved to db ###");
+    print("### result: ${result.toEJson()} ###");
+    print("### ----------------- TEST CREATE ROOM ----------------- ###");
+    print("#########");
+    print("#########");
+
+    testQuery();
+  }
+
+  // Future<String> createRoom(Json roomJson) async {
+  Future<String> createRoom(GameRoom room) async {
     String result = "";
     // await _roomsDb
     //     .add(roomJson)
     //     .then((value) => result = value.id)
     //     .catchError((error) => result = "Error: $error");
 
-    _updateField(result, "id", result);
+    print("### creating room: ${room.toJson()} ###");
+    _realm.write<GameRoomDB>(() => _realm.add<GameRoomDB>(room.db));
+
+    //_updateField(result, "id", result);
     return result;
   }
 

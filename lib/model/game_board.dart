@@ -64,7 +64,8 @@ extension GameBoardUtilsDB on GameBoard {
       _db.questionBoard.toList().map((e) => QuestionBoard.fromDB(e)).toList();
 
   // Set attributes
-  set roomId(String value) => _db.realm.write(() => _db.roomId = value);
+  set roomId(String value) => _db.roomId = value;
+  // set roomId(String value) => _db.realm.write(() => _db.roomId = value);
   // set id(String value) => _db.realm.write(() => _db.id = value);
 
   set questionBoard(List<QuestionBoard> value) {

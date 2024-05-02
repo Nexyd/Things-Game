@@ -1,5 +1,6 @@
 import 'package:things_game/model/realm_models.dart';
 
+// TODO: maybe replace this with its DB model?
 class Player {
   late PlayerDB _db;
 
@@ -21,11 +22,12 @@ extension PlayerUtilsDB on Player {
 
   // Get attributes
   String get name => _db.name;
-
   bool get isReady => _db.isReady;
 
   // Set attributes
-  set name(String value) => _db.realm.write(() => _db.name = value);
+  set name(String value) => _db.name = value;
+  set isReady(bool value) => _db.isReady = value;
 
-  set isReady(bool value) => _db.realm.write(() => _db.isReady = value);
+  // set name(String value) => _db.realm.write(() => _db.name = value);
+  // set isReady(bool value) => _db.realm.write(() => _db.isReady = value);
 }

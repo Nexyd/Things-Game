@@ -1,13 +1,13 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/alert_dialog.dart';
-
-import 'package:things_game/cubit/repository/room_repository.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -35,68 +35,79 @@ class _MainScreenState extends State<MainScreen> {
 
   Widget _getContent(BuildContext context) {
     final screenSize = MediaQuery.of(context).size;
-    final configPadding = Platform.isIOS ? 0.0 : 10.0;
 
-    return Column(
-      children: [
-        // Config button
-        // TODO: replace for Positioned ??
-        Align(
-          alignment: Alignment.topRight,
+    return Column(children: [
+      // TODO: replace for Positioned ??
+      _buildConfigButton(),
+      _buildAppLogo(),
+
+      // Empty space
+      SizedBox(
+        height: screenSize.height * 0.30,
+        width: screenSize.width,
+      ),
+
+      // Create game button
+      _buildCreateRoomButton(),
+      _buildJoinRoomButton(),
+    ]);
+  }
+
+  Widget _buildConfigButton() {
+    return Align(
+      alignment: Alignment.topRight,
+      child: Container(
+        margin: EdgeInsets.only(
+          right: 65.0,
+          top: Platform.isIOS ? 0.0 : 10.0,
+        ),
+        child: InkWell(
+          highlightColor: Colors.transparent,
+          splashFactory: NoSplash.splashFactory,
+          onTap: () {
+            Navigator.of(context)
+                .pushNamed("/preferences")
+                .then((value) => setState(() {}));
+          },
           child: Container(
-            margin: EdgeInsets.only(
-              right: 65.0,
-              top: configPadding,
-            ),
-            child: InkWell(
-              highlightColor: Colors.transparent,
-              splashFactory: NoSplash.splashFactory,
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed("/preferences")
-                    .then((value) => setState(() {}));
-              },
-              child: Container(
-                width: 45,
-                height: 45,
-                decoration: _getDecoration("assets/config.png"),
-              ),
-            ),
+            width: 45,
+            height: 45,
+            decoration: _getDecoration("assets/config.png"),
           ),
         ),
+      ),
+    );
+  }
 
-        // App Logo
-        SizedBox(
-          height: screenSize.height * 0.20,
-          width: screenSize.width,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Image.asset("assets/logo.png", scale: 3),
-          ),
-        ),
+  Widget _buildAppLogo() {
+    final screenSize = MediaQuery.of(context).size;
 
-        // Empty space
-        SizedBox(
-          height: screenSize.height * 0.30,
-          width: screenSize.width,
-        ),
+    return SizedBox(
+      height: screenSize.height * 0.20,
+      width: screenSize.width,
+      child: Align(
+        alignment: Alignment.bottomCenter,
+        child: Image.asset("assets/logo.png", scale: 3),
+      ),
+    );
+  }
 
-        // Create game button
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: StyledButton(
-            text: "Create game".i18n,
-            // onPressed: () => RoomRepository().query(),
-            onPressed: () => Navigator.of(context).pushNamed("/create"),
-          ),
-        ),
+  Widget _buildCreateRoomButton() {
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 20.0),
+      child: StyledButton(
+        text: "Create game".i18n,
+        onPressed: () => context.read<RoomCubit>().testCreateRoom(),
+        // onPressed: () => Navigator.of(context).pushNamed("/create"),
+      ),
+    );
+  }
 
-        // Join game button
-        StyledButton(
-          text: "Join game".i18n,
-          onPressed: () => Navigator.of(context).pushNamed("/search"),
-        ),
-      ],
+  Widget _buildJoinRoomButton() {
+    return StyledButton(
+      text: "Join game".i18n,
+      onPressed: () => context.read<RoomCubit>().testQuery(),
+      // onPressed: () => Navigator.of(context).pushNamed("/search"),
     );
   }
 
