@@ -82,6 +82,7 @@ class RoomSettings extends StatelessWidget {
     final submitButton = StyledButton(
       text: "Create".i18n,
       onPressed: () {
+        print("### cubit createRoom  ###");
         if (Form.of(context).validate()) {
           BlocProvider.of<RoomCubit>(context).createRoom();
         }

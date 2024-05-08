@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
@@ -15,6 +16,7 @@ class UserSettings {
   Color textColor;
   Color backgroundColor;
   Locale language;
+  UserCredential? credentials;
 
   UserSettings._privateConstructor({
     required this.name,
@@ -23,6 +25,7 @@ class UserSettings {
     required this.textColor,
     required this.backgroundColor,
     required this.language,
+    required this.credentials,
   });
 
   static UserSettings? _instance;
@@ -46,6 +49,7 @@ class UserSettings {
         ? _getAvatarImage(data[AVATAR]!)
         : const AvatarIcon();
 
+    final credentials = await _signIn();
     return UserSettings._privateConstructor(
       name: data[NAME] ?? "Player",
       avatar: avatar,
@@ -53,7 +57,26 @@ class UserSettings {
       textColor: text ?? Colors.white,
       backgroundColor: background ?? Colors.grey.shade800,
       language: _getLocale(data[LANGUAGE]),
+      credentials: credentials,
     );
+  }
+
+  static Future<UserCredential?> _signIn() async {
+    try {
+      final credentials = await FirebaseAuth.instance.signInAnonymously();
+      Logger.user.info("Logged in with uid: ${credentials.user?.uid}");
+      return credentials;
+    } on FirebaseAuthException catch (e) {
+      switch (e.code) {
+        case "operation-not-allowed":
+          Logger.user.info("Anonymous auth is not enabled.");
+          break;
+        default:
+          Logger.user.error("Unknown error getting credentials.");
+      }
+
+      return null;
+    }
   }
 
   static Future<Map<String, String?>> _getSettingsFromPrefs() async {

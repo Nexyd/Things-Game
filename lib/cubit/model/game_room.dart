@@ -8,11 +8,21 @@ import 'package:things_game/widget/model/configuration_data.dart';
 class Player {
   final String name;
   bool isReady;
+  String? uid;
 
-  Player({required this.name, this.isReady = false});
+  Player({required this.name, this.isReady = false, this.uid = ""});
+
+  Map<String, dynamic> toJson() {
+    return {"name": name, "isReady": isReady, "uid": uid};
+  }
 
   factory Player.fromJson(Map<String, dynamic> json) {
-    return Player(name: json.keys.first, isReady: json.values.first);
+    // return Player(name: json.keys.first, isReady: json.values.first);
+    return Player(
+      name: json["name"],
+      isReady: json["isReady"],
+      uid: json["uid"],
+    );
   }
 }
 
@@ -80,7 +90,9 @@ class GameRoom with Streamable<GameRoom> {
     return {
       "id": id,
       "config": config.toJson(),
-      "playerList": List<dynamic>.from(playerList.map((x) => x)),
+      "playerList": List<dynamic>.from(
+        playerList.map((x) => x.toJson()),
+      ),
     };
   }
 

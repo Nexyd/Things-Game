@@ -99,7 +99,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
           const Spacer(flex: 2),
           // TODO: find a way to shorten id (while still being usable).
           // StyledText("$title: \n${room.id}", fontSize: 30),
-          StyledText("$title: \nFoo", fontSize: 30),
+          StyledText("$title: \nSomeRandomId", fontSize: 30),
           const Spacer(),
           Align(
             alignment: Alignment.centerRight,
@@ -268,6 +268,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void _leaveRoom(BuildContext context) {
+    print("### leaving room... ###");
     cubit.leaveRoom();
     final player = players.firstWhere(
       (e) => e.keys.first == UserSettings.I.name,

@@ -37,9 +37,12 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> createRoom() async {
     if (_actualGame == GameRoom.empty()) return;
-    _actualGame.playerList.add(Player(name: UserSettings.I.name));
-    final result = await _repo.createRoom(_actualGame.toJson());
+    _actualGame.playerList.add(Player(
+      name: UserSettings.I.name,
+      uid: UserSettings.I.credentials?.user?.uid,
+    ));
 
+    final result = await _repo.createRoom(_actualGame.toJson());
     if (result.startsWith("error")) {
       emit(RoomError(error: result));
       return;

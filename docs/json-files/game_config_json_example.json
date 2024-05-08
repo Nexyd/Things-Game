@@ -7,9 +7,9 @@
 		"isPrivate": true
 	},
 	"playerList": [
-		"player1",
-		"player2",
-		"player3",
-		"player4"
+		{"name": "player1", "isReady": true,  "uid": "asd1"},
+		{"name": "player2", "isReady": false, "uid": "asd2"},
+		{"name": "player3", "isReady": false, "uid": "asd3"},
+		{"name": "player4", "isReady": false, "uid": "asd4"}
 	]
 }

@@ -5,15 +5,18 @@ import '../../support/constants.dart';
 import '../model/game_room.dart';
 
 typedef Json = Map<String, dynamic>;
+typedef DocData = QueryDocumentSnapshot<Map<String, dynamic>>;
+typedef RoomsResponse = ({List<Json> rooms, String? error});
 
 class RoomRepository {
   late final CollectionReference<Map<String, dynamic>> _roomsDb;
 
   RoomRepository() {
-    // TODO: create collection if it doesn't exist.
+    // TODO: create collection if it doesn't exist?.
     _roomsDb = FirebaseFirestore.instance.collection("rooms");
   }
 
+  // TODO: Change 'String result' to Records with success and error.
   Future<String> createRoom(Json roomJson) async {
     String result = "";
     await _roomsDb
@@ -25,17 +28,37 @@ class RoomRepository {
     return result;
   }
 
-  Future<List<Json>> getRooms() async {
+  // Future<List<Json>> getRooms() async {
+  //   final List<Json> roomList = [];
+  //   await _roomsDb.get().then((event) {
+  //     for (DocData doc in event.docs) {
+  //       roomList.add(doc.data());
+  //     }
+  //   }).catchError((error) {
+  //     roomList.add({"error": error});
+  //   });
+  //
+  //   return roomList;
+  // }
+  
+  Future<RoomsResponse> getRooms() async {
     final List<Json> roomList = [];
-    await _roomsDb.get().then((event) {
-      for (var doc in event.docs) {
+
+    try {
+      final rooms = await _roomsDb.get();
+      for (DocData doc in rooms.docs) {
         roomList.add(doc.data());
       }
-    }).catchError((error) {
-      roomList.add({"error": error});
-    });
 
-    return roomList;
+      return (rooms: roomList, error: null);
+    } catch (error) {
+      final result = (
+        rooms: List<Json>.empty(),
+        error: error.toString(),
+      );
+
+      return Future.value(result);
+    }
   }
 
   Future<String> updateConfig(String id, Json config) async =>
@@ -47,6 +70,7 @@ class RoomRepository {
   Future<String> updateReady(String id, Player player) async =>
       _updateField(id, PLAYER_LIST, player);
 
+  // TODO: Change 'String result' to Records with success and error.
   Future<String> _updateField(String id, String field, dynamic value) async {
     String result = "";
     await _roomsDb
