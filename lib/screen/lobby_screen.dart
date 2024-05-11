@@ -49,9 +49,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
           child: StreamBuilder(
             stream: cubit.roomStream,
             builder: (context, snapshot) {
-              // final players = snapshot.data?.data()?.playerList;
-              // room = room.copyWith(playerList: players);
-              room = snapshot.data?.data() ?? room;
+              final players = snapshot.data?.data()?.playerList;
+              room = room.copyWith(playerList: players);
               return _getContent(context);
             },
           ),

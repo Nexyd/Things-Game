@@ -124,10 +124,11 @@ class RoomSettings extends StatelessWidget {
       }
     }
 
+    // TODO: change TextInputType.number to text if field == name
     return StyledTextForm(
       hint: '',
       initialValue: _getInitialValue(field),
-      type: TextInputType.number,
+      type: field == "name" ? TextInputType.text : TextInputType.number,
       enabled: field == "players" ? isPlayersFieldEnabled : true,
       onChanged: onChanged,
       validator: (text) {

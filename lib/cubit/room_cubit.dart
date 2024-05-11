@@ -23,8 +23,8 @@ class RoomCubit extends Cubit<RoomState> {
     _actualGame = _actualGame.copyWith(config: data);
     final result = await _repo.updateConfig(_actualGame.id, data.toJson());
 
-    if (result.startsWith("error")) {
-      emit(RoomError(error: result));
+    if (result.error != null) {
+      emit(RoomError(error: result.error!));
       return;
     }
   }
@@ -43,13 +43,13 @@ class RoomCubit extends Cubit<RoomState> {
     ));
 
     final result = await _repo.createRoom(_actualGame.toJson());
-    if (result.startsWith("error")) {
-      emit(RoomError(error: result));
+    if (result.error != null) {
+      emit(RoomError(error: result.error!));
       return;
     }
 
-    // TODO: search for a way to autogenerate IDs
-    _actualGame.id = result;
+    // TODO: search for a way to autogenerate IDs (or shorten firebase ids)
+    _actualGame.id = result.result!;
     controller = FirestoreRoomController(room: _actualGame);
 
     emit(RoomCreated(room: _actualGame));
@@ -59,12 +59,12 @@ class RoomCubit extends Cubit<RoomState> {
     emit(LoadingGameList());
 
     final result = await _repo.getRooms();
-    if (result.isNotEmpty && result.first.containsKey("error")) {
-      emit(RoomError(error: result.first.entries.first.value));
+    if (result.error != null) {
+      emit(RoomError(error: result.error!));
       return;
     }
 
-    List<GameRoom> rooms = result.map((e) => GameRoom.fromJson(e)).toList();
+    final rooms = result.rooms.map((e) => GameRoom.fromJson(e)).toList();
     emit(RoomListLoaded(roomList: rooms));
   }
 
@@ -73,13 +73,13 @@ class RoomCubit extends Cubit<RoomState> {
     _updatePlayers();
   }
 
-  Future<bool> joinRoom(GameRoom selectedRoom) async {
+  Future<void> joinRoom(GameRoom selectedRoom) async {
     _actualGame = selectedRoom;
     _actualGame.playerList.add(Player(name: UserSettings.I.name));
     return _updatePlayers();
   }
 
-  Future<bool> leaveRoom() async {
+  Future<void> leaveRoom() async {
     // TODO: test with 2 devices
     final userToRemove = _actualGame.playerList
         .where((element) => element.name == UserSettings.I.name)
@@ -92,18 +92,18 @@ class RoomCubit extends Cubit<RoomState> {
     return _updatePlayers();
   }
 
-  Future<bool> _updatePlayers() async {
+  Future<void> _updatePlayers() async {
     final result = await _repo.updatePlayers(
       _actualGame.id,
       _actualGame.playerList,
     );
 
-    if (result.startsWith("error")) {
-      emit(RoomError(error: result));
-      return false;
+    if (result.error != null) {
+      emit(RoomError(error: result.error!));
+      return;
     }
 
-    return true;
+    emit(PlayerLeft(playerName: UserSettings.I.name));
   }
 
   Future<void> deleteRoom() async {
@@ -113,7 +113,6 @@ class RoomCubit extends Cubit<RoomState> {
 
     if (result != null) {
       emit(RoomError(error: result));
-      return;
     }
   }
 

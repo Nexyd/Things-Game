@@ -99,6 +99,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     TextEditingController controller = TextEditingController();
     controller.text = UserSettings.I.name;
 
+    // TODO: not saving name in iOS?
     return StyledTextField(
       hint: 'Enter user name',
       controller: controller,

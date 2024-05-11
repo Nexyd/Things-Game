@@ -10,6 +10,7 @@ enum LoggerType {
   game,
   user,
   firestore,
+  repository,
 }
 
 class LoggerConfig {
@@ -39,7 +40,8 @@ final Map<LoggerType, Type> _types = {
   LoggerType.room: RoomLoggy,
   LoggerType.game: GameLoggy,
   LoggerType.user: UserLoggy,
-  LoggerType.firestore: FirestoreLoggy
+  LoggerType.firestore: FirestoreLoggy,
+  LoggerType.repository: RepositoryLoggy,
 };
 
 class Logger {
@@ -78,6 +80,7 @@ class Logger {
   static final Loggy room = Loggy<RoomLoggy>('Room');
   static final Loggy game = Loggy<GameLoggy>('Game');
   static final Loggy user = Loggy<UserLoggy>('User');
+  static final Loggy repository = Loggy<SettingsLoggy>('Repository');
   static final Loggy firestore = Loggy<SettingsLoggy>('Firestore');
 }
 
@@ -109,4 +112,9 @@ class UserLoggy implements LoggyType {
 class FirestoreLoggy implements LoggyType {
   @override
   Loggy<FirestoreLoggy> get loggy => Loggy<FirestoreLoggy>('Firestore');
+}
+
+class RepositoryLoggy implements LoggyType {
+  @override
+  Loggy<RepositoryLoggy> get loggy => Loggy<RepositoryLoggy>('Repository');
 }
