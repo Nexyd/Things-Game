@@ -77,7 +77,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
   }
 
   Widget _getListGames(BuildContext context) {
-    final cubit = BlocProvider.of<RoomCubit>(context);
+    final cubit = context.read<RoomCubit>();
     if (!isListInitialized) {
       cubit.getOpenRooms();
     }
@@ -86,8 +86,9 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
       bloc: cubit,
       builder: (context, state) {
         if (state is RoomError) {
-          Future.delayed(const Duration(milliseconds: 200)).then(
-            (value) => ErrorDialog(context).show(),
+          Future.delayed(
+            const Duration(milliseconds: 200),
+            () => ErrorDialog(context).show(),
           );
 
           return Padding(
@@ -127,19 +128,15 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
           itemCount: gameList.length,
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
-              onTap: () => navigateToLobby(gameList[index]),
+              onTap: () => _navigateToLobby(gameList[index]),
               title: StyledText(
                 gameList[index].config.name,
                 fontSize: 20,
               ),
             );
           },
-          separatorBuilder: (BuildContext context, int index) {
-            return Divider(
-              height: 1,
-              color: UserSettings.I.textColor,
-            );
-          },
+          separatorBuilder: (BuildContext context, int index) =>
+              Divider(height: 1, color: UserSettings.I.textColor),
         );
       },
     );
@@ -171,7 +168,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
     });
   }
 
-  void navigateToLobby(GameRoom selectedRoom) {
+  void _navigateToLobby(GameRoom selectedRoom) {
     BlocProvider.of<RoomCubit>(context).joinRoom(selectedRoom);
     Navigator.of(context).pushNamed(
       "/lobby",

@@ -48,7 +48,6 @@ class RoomCubit extends Cubit<RoomState> {
       return;
     }
 
-    // TODO: search for a way to autogenerate IDs (or shorten firebase ids)
     _actualGame.id = result.result!;
     controller = FirestoreRoomController(room: _actualGame);
 

@@ -33,6 +33,7 @@ class RoomRepository {
       return response;
     }
 
+    // TODO: search for a way to autogenerate IDs (or shorten firebase ids)
     Logger.repository.info("Created room with ID: ${response.result}");
     _updateField(result!, "id", result);
 

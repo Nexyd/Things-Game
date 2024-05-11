@@ -82,12 +82,12 @@ class UserSettings {
   static Future<Map<String, String?>> _getSettingsFromPrefs() async {
     final prefs = await SharedPreferences.getInstance();
     return {
-      "name": prefs.getString(NAME),
-      "avatar": prefs.getString(AVATAR),
-      "primaryColor": prefs.getString(PRIMARY_COLOR),
-      "textColor": prefs.getString(TEXT_COLOR),
-      "backgroundColor": prefs.getString(BACKGROUND_COLOR),
-      "language": prefs.getString(LANGUAGE),
+      NAME: prefs.getString(NAME),
+      AVATAR: prefs.getString(AVATAR),
+      PRIMARY_COLOR: prefs.getString(PRIMARY_COLOR),
+      TEXT_COLOR: prefs.getString(TEXT_COLOR),
+      BACKGROUND_COLOR: prefs.getString(BACKGROUND_COLOR),
+      LANGUAGE: prefs.getString(LANGUAGE),
     };
   }
 
