@@ -92,10 +92,8 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> _updatePlayers() async {
-    final result = await _repo.updatePlayers(
-      _actualGame.id,
-      _actualGame.playerList,
-    );
+    final playerList = _actualGame.playerList.map((e) => e.toJson()).toList();
+    final result = await _repo.updatePlayers(_actualGame.id, playerList);
 
     if (result.error != null) {
       emit(RoomError(error: result.error!));

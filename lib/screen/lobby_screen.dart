@@ -51,6 +51,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
             builder: (context, snapshot) {
               final players = snapshot.data?.data()?.playerList;
               room = room.copyWith(playerList: players);
+
               return _getContent(context);
             },
           ),
@@ -257,7 +258,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
       (value) => _getIcon(user.isReady),
     );
 
-    // TODO: update ready on Firestore.
     cubit.updatePlayerReady(room.playerList);
     if (user.isReady && !playersReady.contains(UserSettings.I.name)) {
       playersReady.add(UserSettings.I.name);

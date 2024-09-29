@@ -65,7 +65,8 @@ class RoomRepository {
 
   Future<RoomRepoResponse> updatePlayers(
     String id,
-    List<Player> playerList,
+    // List<Player> playerList,
+    List<Json> playerList,
   ) async =>
       _updateField(id, PLAYER_LIST, playerList);
 
@@ -77,6 +78,9 @@ class RoomRepository {
     String field,
     dynamic value,
   ) async {
+    // final remoteList = (getRooms() as RoomListResponse).rooms;
+    // print("### remoteList: $remoteList ###");
+
     String? result;
     String? error;
 
@@ -88,6 +92,23 @@ class RoomRepository {
 
     return (result: result, error: error);
   }
+
+  // Future<RoomRepoResponse> _updateField(
+  //   String id,
+  //   String field,
+  //   dynamic value,
+  // ) async {
+  //   String? result;
+  //   String? error;
+  //
+  //   await _roomsDb
+  //       .doc(id)
+  //       .update({field: value})
+  //       .then((value) => result = "OK")
+  //       .catchError((error) => result = "Error: $error");
+  //
+  //   return (result: result, error: error);
+  // }
 
   Future<String?> deleteRoom(String id) async {
     try {
