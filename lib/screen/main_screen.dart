@@ -19,7 +19,7 @@ class _MainScreenState extends State<MainScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (bool didPop) => ExitAppDialog(context).show(),
+      onPopInvokedWithResult: (didPop, result) => ExitAppDialog(context).show(),
       child: Scaffold(
         backgroundColor: UserSettings.I.backgroundColor,
         body: Container(

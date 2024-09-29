@@ -27,16 +27,16 @@ class RoomSettings extends StatelessWidget {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) {
+      onPopInvokedWithResult: (didPop, result) {
         if (!isPlayersFieldEnabled) {
           final cubit = BlocProvider.of<RoomCubit>(context);
           cubit.updateConfiguration(config);
         }
 
-        // TODO: search 'Looking up a deactivated widget's ancestor is unsafe.'
-        Future.delayed(const Duration(milliseconds: 500)).then(
-          (value) => Navigator.of(context).pop(),
-        );
+        Future.delayed(const Duration(milliseconds: 500)).then((value) {
+          if (!context.mounted) return;
+          Navigator.of(context).pop();
+        });
       },
       child: Form(
         child: BlocBuilder<RoomCubit, RoomState>(

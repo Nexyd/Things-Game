@@ -86,10 +86,10 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
       bloc: cubit,
       builder: (context, state) {
         if (state is RoomError) {
-          Future.delayed(
-            const Duration(milliseconds: 200),
-            () => ErrorDialog(context).show(),
-          );
+          Future.delayed(const Duration(milliseconds: 200), () {
+            if (!context.mounted) return;
+            ErrorDialog(context).show();
+          });
 
           return Padding(
             padding: const EdgeInsets.only(top: 10.0),

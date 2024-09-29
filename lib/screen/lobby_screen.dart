@@ -42,7 +42,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     // TODO: fix navigation back in iOS (add button)
     return PopScope(
       canPop: false,
-      onPopInvoked: (didPop) => _leaveRoom(context),
+      onPopInvokedWithResult: (didPop, result) => _leaveRoom(context),
       child: Scaffold(
         backgroundColor: UserSettings.I.backgroundColor,
         body: SafeArea(

@@ -114,11 +114,11 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   void backToMain(BuildContext context) {
-    // TODO: fix navigation problems with PopScope.
-    Future.delayed(const Duration(milliseconds: 200)).then(
-      (value) => Navigator.of(context).popUntil(
+    Future.delayed(const Duration(milliseconds: 200)).then((value) {
+      if (!context.mounted) return;
+      Navigator.of(context).popUntil(
         (route) => route.settings.name == "/main",
-      ),
-    );
+      );
+    });
   }
 }
