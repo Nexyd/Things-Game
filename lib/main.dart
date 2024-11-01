@@ -3,6 +3,7 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:i18n_extension/i18n_extension.dart';
+import 'package:things_game/config/theme_data_manager.dart';
 import 'package:things_game/support/route_generator.dart';
 import 'package:things_game/screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
@@ -44,18 +45,16 @@ class ThingsGameView extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const MaterialApp(
+    return MaterialApp(
       onGenerateRoute: RouteGenerator.routeGenerator,
-      localizationsDelegates: [
+      localizationsDelegates: const [
         GlobalMaterialLocalizations.delegate,
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      supportedLocales: [
-        Locale('en', "GB"),
-        Locale('es', "ES"),
-      ],
-      home: SplashScreen(),
+      theme: ThemeDataManager.build(),
+      supportedLocales: const [Locale('en', "GB"), Locale('es', "ES")],
+      home: const SplashScreen(),
     );
   }
 }

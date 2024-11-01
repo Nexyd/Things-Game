@@ -56,20 +56,12 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
   Widget _getSearchBar(BuildContext context) {
     return SearchBar(
       hintText: "Room id".i18n,
-      textStyle: MaterialStateProperty.all(
+      textStyle: WidgetStateProperty.all(
         TextStyle(color: UserSettings.I.textColor),
       ),
-      leading: Icon(
-        Icons.menu,
-        color: UserSettings.I.textColor,
-      ),
-      trailing: [
-        Icon(
-          Icons.search,
-          color: UserSettings.I.textColor,
-        ),
-      ],
-      backgroundColor: MaterialStateProperty.all(
+      leading: Icon(Icons.menu, color: UserSettings.I.textColor),
+      trailing: [Icon(Icons.search, color: UserSettings.I.textColor)],
+      backgroundColor: WidgetStateProperty.all(
         UserSettings.I.backgroundColor.shade(20),
       ),
       onChanged: _filterResultsBy,
@@ -129,10 +121,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
           itemBuilder: (BuildContext context, int index) {
             return ListTile(
               onTap: () => _navigateToLobby(gameList[index]),
-              title: StyledText(
-                gameList[index].config.name,
-                fontSize: 20,
-              ),
+              title: StyledText(gameList[index].config.name, fontSize: 20),
             );
           },
           separatorBuilder: (BuildContext context, int index) =>
