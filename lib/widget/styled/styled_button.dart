@@ -64,12 +64,10 @@ class StyledButton extends StatelessWidget {
 
   Widget _getTextButton() {
     if (Platform.isIOS) {
+      final color = UserSettings.I.primaryColor;
       return TextButton(
         style: TextButton.styleFrom(
-          textStyle: TextStyle(
-            color: UserSettings.I.primaryColor,
-            fontSize: 18,
-          ),
+          textStyle: TextStyle(color: color, fontSize: 18),
         ),
         onPressed: onPressed,
         child: StyledText(text, isDestructive: true),
@@ -81,11 +79,7 @@ class StyledButton extends StatelessWidget {
       child: InkWell(
         onTap: onPressed,
         splashFactory: NoSplash.splashFactory,
-        child: StyledText(
-          text,
-          isDestructive: true,
-          fontSize: 18,
-        ),
+        child: StyledText(text, isDestructive: true, fontSize: 18),
       ),
     );
   }

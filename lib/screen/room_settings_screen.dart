@@ -21,10 +21,7 @@ class RoomSettingsScreen extends StatelessWidget {
     return Scaffold(
       appBar: StyledAppBar("Game settings".i18n),
       backgroundColor: UserSettings.I.backgroundColor,
-      body: RoomSettings(
-        config: args.data,
-        isPlayersFieldEnabled: false,
-      ),
+      body: RoomSettings(config: args.data, isPlayersFieldEnabled: false),
     );
   }
 }

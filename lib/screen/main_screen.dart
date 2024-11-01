@@ -35,66 +35,58 @@ class _MainScreenState extends State<MainScreen> {
     final screenSize = MediaQuery.of(context).size;
     final configPadding = Platform.isIOS ? 0.0 : 10.0;
 
-    return Column(
-      children: [
-        // Config button
-        // TODO: replace for Positioned ??
-        Align(
-          alignment: Alignment.topRight,
-          child: Container(
-            margin: EdgeInsets.only(
-              right: 65.0,
-              top: configPadding,
-            ),
-            child: InkWell(
-              highlightColor: Colors.transparent,
-              splashFactory: NoSplash.splashFactory,
-              onTap: () {
-                Navigator.of(context)
-                    .pushNamed("/preferences")
-                    .then((value) => setState(() {}));
-              },
-              child: Container(
-                width: 45,
-                height: 45,
-                decoration: _getDecoration("assets/config.png"),
-              ),
+    return Column(children: [
+      // Config button
+      // TODO: replace for Positioned ??
+      Align(
+        alignment: Alignment.topRight,
+        child: Container(
+          margin: EdgeInsets.only(right: 65.0, top: configPadding),
+          child: InkWell(
+            highlightColor: Colors.transparent,
+            splashFactory: NoSplash.splashFactory,
+            onTap: () {
+              Navigator.of(context)
+                  .pushNamed("/preferences")
+                  .then((value) => setState(() {}));
+            },
+            child: Container(
+              width: 45,
+              height: 45,
+              decoration: _getDecoration("assets/config.png"),
             ),
           ),
         ),
+      ),
 
-        // App Logo
-        SizedBox(
-          height: screenSize.height * 0.20,
-          width: screenSize.width,
-          child: Align(
-            alignment: Alignment.bottomCenter,
-            child: Image.asset("assets/logo.png", scale: 3),
-          ),
+      // App Logo
+      SizedBox(
+        height: screenSize.height * 0.20,
+        width: screenSize.width,
+        child: Align(
+          alignment: Alignment.bottomCenter,
+          child: Image.asset("assets/logo.png", scale: 3),
         ),
+      ),
 
-        // Empty space
-        SizedBox(
-          height: screenSize.height * 0.30,
-          width: screenSize.width,
-        ),
+      // Empty space
+      SizedBox(height: screenSize.height * 0.30, width: screenSize.width),
 
-        // Create game button
-        Padding(
-          padding: const EdgeInsets.only(bottom: 20.0),
-          child: StyledButton(
-            text: "Create game".i18n,
-            onPressed: () => Navigator.of(context).pushNamed("/create"),
-          ),
+      // Create game button
+      Padding(
+        padding: const EdgeInsets.only(bottom: 20.0),
+        child: StyledButton(
+          text: "Create game".i18n,
+          onPressed: () => Navigator.of(context).pushNamed("/create"),
         ),
+      ),
 
-        // Join game button
-        StyledButton(
-          text: "Join game".i18n,
-          onPressed: () => Navigator.of(context).pushNamed("/search"),
-        ),
-      ],
-    );
+      // Join game button
+      StyledButton(
+        text: "Join game".i18n,
+        onPressed: () => Navigator.of(context).pushNamed("/search"),
+      ),
+    ]);
   }
 
   BoxDecoration _getDecoration(String asset) {

@@ -31,11 +31,6 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
 
   void raiseDialog(BuildContext context) {
     pickerColor = _getColorFromSettings();
-
-    // Theme.of(context).textTheme.bodySmall  = UserSettings.I.textColor;
-    // Theme.of(context).textTheme.bodyMedium = UserSettings.I.textColor;
-    // Theme.of(context).textTheme.bodyLarge  = UserSettings.I.textColor;
-
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -45,8 +40,6 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: pickerColor!,
-              // TODO: deprecated, but necessary, search other options if available
-              // labelTextStyle: TextStyle(color: UserSettings.I.textColor),
               onColorChanged: (color) => setState(() => pickerColor = color),
             ),
           ),

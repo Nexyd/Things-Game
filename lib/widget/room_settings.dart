@@ -71,6 +71,7 @@ class RoomSettings extends StatelessWidget {
       },
     );
 
+    // TODO: Replace maps to Records?
     final cells = [
       {"Room name".i18n: _getTextForm("name", context)},
       {"Players".i18n: _getTextForm("players", context)},
@@ -89,30 +90,28 @@ class RoomSettings extends StatelessWidget {
       },
     );
 
-    return Column(
-      children: [
-        ListView.builder(
-          shrinkWrap: true,
-          itemCount: cells.length,
-          physics: const NeverScrollableScrollPhysics(),
-          itemBuilder: (context, index) {
-            if (index == cells.length - 1) {
-              return ListTile(
-                leading: StyledText(cells[index].keys.first),
-                trailing: cells[index].values.first,
-                style: ListTileStyle.list,
-              );
-            }
-
+    return Column(children: [
+      ListView.builder(
+        shrinkWrap: true,
+        itemCount: cells.length,
+        physics: const NeverScrollableScrollPhysics(),
+        itemBuilder: (context, index) {
+          if (index == cells.length - 1) {
             return ListTile(
               leading: StyledText(cells[index].keys.first),
-              title: cells[index].values.first,
+              trailing: cells[index].values.first,
+              style: ListTileStyle.list,
             );
-          },
-        ),
-        if (formSubmittable) submitButton,
-      ],
-    );
+          }
+
+          return ListTile(
+            leading: StyledText(cells[index].keys.first),
+            title: cells[index].values.first,
+          );
+        },
+      ),
+      if (formSubmittable) submitButton,
+    ]);
   }
 
   Widget _getTextForm(String field, BuildContext context) {

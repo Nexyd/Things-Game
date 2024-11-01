@@ -58,14 +58,13 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
   Widget _getContent() {
     Widget icon = InkWell(
-      onTap: () {
-        _pickAvatar().then((value) {
-          Logger.settings.info("avatar saved!");
-        });
-      },
+      onTap: () => _pickAvatar().then((value) {
+        Logger.settings.info("avatar saved!");
+      }),
       child: isImagePicked ? UserSettings.I.avatar : const AvatarIcon(),
     );
 
+    // TODO: Replace maps to Records?
     final cells = [
       {"Name".i18n: _getTextField()},
       {"Avatar".i18n: icon},
@@ -165,12 +164,15 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       case "Spanish":
         _saveLanguage("es_ES");
         break;
+
       case "Español":
         _saveLanguage("es_ES");
         break;
+
       case "English":
         _saveLanguage("en_GB");
         break;
+
       case "Inglés":
         _saveLanguage("en_GB");
         break;

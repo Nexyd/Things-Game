@@ -39,6 +39,14 @@ abstract class BasicDialog {
   }
 
   void _showAlertDialog() {
+    final list = <Widget>[
+      StyledButton(
+        text: buttonMessage,
+        type: ButtonType.text,
+        onPressed: () => Navigator.pop(context),
+      ),
+    ];
+
     showDialog<String>(
       context: context,
       barrierDismissible: true,
@@ -46,33 +54,21 @@ abstract class BasicDialog {
         title: icon ?? StyledText(title!),
         backgroundColor: UserSettings.I.backgroundColor,
         content: contentWidget ?? StyledText(content!),
-        actions: actions ??
-            <Widget>[
-              StyledButton(
-                text: buttonMessage,
-                type: ButtonType.text,
-                onPressed: () => Navigator.pop(context),
-              ),
-            ],
+        actions: actions ?? list,
       ),
     );
   }
 
   void _showCupertinoDialog() {
+    const styleBlack = TextStyle(color: Colors.black);
+    const styleBlack54 = TextStyle(color: Colors.black54);
+
     showCupertinoDialog(
       context: context,
       barrierDismissible: true,
       builder: (BuildContext context) => CupertinoAlertDialog(
-        title: icon ??
-            Text(
-              title!,
-              style: const TextStyle(color: Colors.black),
-            ),
-        content: contentWidget ??
-            Text(
-              content!,
-              style: const TextStyle(color: Colors.black54),
-            ),
+        title: icon ?? Text(title!, style: styleBlack),
+        content: contentWidget ?? Text(content!, style: styleBlack54),
         actions: <Widget>[
           Center(
             child: StyledButton(
