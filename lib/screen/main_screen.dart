@@ -1,7 +1,6 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 
@@ -21,7 +20,7 @@ class _MainScreenState extends State<MainScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) => ExitAppDialog(context).show(),
       child: Scaffold(
-        backgroundColor: UserSettings.I.backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
           decoration: _getDecoration("assets/background_main.png"),
@@ -94,7 +93,7 @@ class _MainScreenState extends State<MainScreen> {
       image: DecorationImage(
         image: AssetImage(asset),
         colorFilter: ColorFilter.mode(
-          UserSettings.I.primaryColor,
+          Theme.of(context).primaryColor,
           BlendMode.srcIn,
         ),
         fit: BoxFit.fill,

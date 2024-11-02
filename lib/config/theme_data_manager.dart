@@ -8,6 +8,7 @@ class ThemeDataManager {
     required Color text,
   }) {
     return ThemeData(
+      primaryColor: primary,
       colorScheme: ColorScheme(
         brightness: Brightness.dark,
         primary: primary,

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:things_game/config/user_settings.dart';
 
 class StyledSwitch extends StatefulWidget {
   final bool? value;
@@ -26,7 +25,7 @@ class _StyledTextState extends State<StyledSwitch> {
 
     return Switch(
       value: light,
-      activeColor: UserSettings.I.primaryColor,
+      activeColor: Theme.of(context).primaryColor,
       onChanged: (value) {
         widget.onChanged.call(value);
         setState(() => light = value);

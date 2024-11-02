@@ -8,12 +8,12 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/support/constants.dart';
 import 'package:things_game/translations/user_settings_screen.i18n.dart';
+import 'package:things_game/util/color_utils.dart';
 import 'package:things_game/widget/avatar_icon.dart';
 import 'package:things_game/widget/color_picker.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
-import 'package:things_game/util/color_utils.dart';
 
 import '../cubit/theme_switcher_cubit.dart';
 import '../support/logger.dart';
@@ -26,10 +26,10 @@ class UserSettingsScreen extends StatefulWidget {
 }
 
 class _UserSettingsScreenState extends State<UserSettingsScreen> {
+  ThemeSwitcherCubit? cubit;
   bool isImagePicked = false;
   String? localeStr = "Spanish".i18n;
   final StyledAppBar appBar = StyledAppBar("User settings".i18n);
-  late final ThemeSwitcherCubit cubit;
 
   @override
   Widget build(BuildContext context) {
@@ -39,7 +39,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return Scaffold(
       appBar: appBar,
       body: Container(
-        color: UserSettings.I.backgroundColor,
+        color: Theme.of(context).colorScheme.secondary,
         child: _getContent(context),
       ),
     );
@@ -73,10 +73,10 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     final cells = [
       {"Name".i18n: _getTextField()},
       {"Avatar".i18n: icon},
-      {"Primary color".i18n: _getColorIcon(context, PRIMARY_COLOR)},
-      {"Text color".i18n: _getColorIcon(context, TEXT_COLOR)},
-      {"Background color".i18n: _getColorIcon(context, BACKGROUND_COLOR)},
-      {"Language".i18n: _getDropdown()},
+      {"Primary color".i18n: _getColorIcon(PRIMARY_COLOR)},
+      {"Text color".i18n: _getColorIcon(TEXT_COLOR)},
+      {"Background color".i18n: _getColorIcon(BACKGROUND_COLOR)},
+      {"Language".i18n: _getDropdown(context)},
     ];
 
     return ListView.builder(
@@ -110,7 +110,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     );
   }
 
-  Widget _getColorIcon(BuildContext context, String tag) {
+  Widget _getColorIcon(String tag) {
     const double iconSize = 25;
     return Container(
       decoration: BoxDecoration(
@@ -122,7 +122,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       child: ColorPickerWrapper(
         colorTag: tag,
         callback: () => setState(() {
-          cubit.updateTheme();
+          cubit?.updateTheme();
         }),
       ),
     );
@@ -143,11 +143,11 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     return Colors.transparent;
   }
 
-  Widget _getDropdown() {
+  Widget _getDropdown(BuildContext context) {
     return DropdownButton<String>(
       alignment: Alignment.centerRight,
-      dropdownColor: UserSettings.I.backgroundColor,
-      focusColor: UserSettings.I.primaryColor,
+      dropdownColor: Theme.of(context).colorScheme.secondary,
+      focusColor: Theme.of(context).primaryColor,
       underline: Container(),
       items: [
         DropdownMenuItem(

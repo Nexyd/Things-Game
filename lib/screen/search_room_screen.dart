@@ -31,7 +31,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
 
     return Scaffold(
       appBar: StyledAppBar("Search room".i18n),
-      backgroundColor: UserSettings.I.backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: Container(
         margin: const EdgeInsets.all(10.0),
         child: Column(
@@ -54,15 +54,17 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
   }
 
   Widget _getSearchBar(BuildContext context) {
+    final textColor =
+        Theme.of(context).textTheme.bodyMedium?.color
+        ?? UserSettings.I.textColor;
+
     return SearchBar(
       hintText: "Room id".i18n,
-      textStyle: WidgetStateProperty.all(
-        TextStyle(color: UserSettings.I.textColor),
-      ),
-      leading: Icon(Icons.menu, color: UserSettings.I.textColor),
-      trailing: [Icon(Icons.search, color: UserSettings.I.textColor)],
+      textStyle: WidgetStateProperty.all(TextStyle(color: textColor)),
+      leading: Icon(Icons.menu, color: textColor),
+      trailing: [Icon(Icons.search, color: textColor)],
       backgroundColor: WidgetStateProperty.all(
-        UserSettings.I.backgroundColor.shade(20),
+        Theme.of(context).colorScheme.secondary.shade(20),
       ),
       onChanged: _filterResultsBy,
     );
@@ -115,6 +117,10 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
           );
         }
 
+        final textColor =
+            Theme.of(context).textTheme.bodyMedium?.color
+            ?? UserSettings.I.textColor;
+
         return ListView.separated(
           shrinkWrap: true,
           itemCount: gameList.length,
@@ -125,7 +131,7 @@ class _SearchRoomScreenState extends State<SearchRoomScreen> {
             );
           },
           separatorBuilder: (BuildContext context, int index) =>
-              Divider(height: 1, color: UserSettings.I.textColor),
+              Divider(height: 1, color: textColor),
         );
       },
     );

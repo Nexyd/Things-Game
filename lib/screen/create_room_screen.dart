@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
-import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/screen/lobby_screen.dart';
 import 'package:things_game/translations/room_settings_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
@@ -18,7 +17,7 @@ class CreateRoomScreen extends StatelessWidget {
     final cubit = BlocProvider.of<RoomCubit>(context);
     return BlocConsumer<RoomCubit, RoomState>(
       bloc: cubit,
-      builder: (context, state) => _getContent(cubit),
+      builder: (context, state) => _getContent(context, cubit),
       listenWhen: (previous, current) {
         return current is RoomError || current is RoomCreated;
       },
@@ -35,14 +34,11 @@ class CreateRoomScreen extends StatelessWidget {
     );
   }
 
-  Widget _getContent(RoomCubit cubit) {
+  Widget _getContent(BuildContext context, RoomCubit cubit) {
     return Scaffold(
       appBar: StyledAppBar("Create a room".i18n),
-      backgroundColor: UserSettings.I.backgroundColor,
-      body: RoomSettings(
-        config: ConfigurationData(),
-        formSubmittable: true,
-      ),
+      backgroundColor: Theme.of(context).colorScheme.secondary,
+      body: RoomSettings(config: ConfigurationData(), formSubmittable: true),
     );
   }
 }

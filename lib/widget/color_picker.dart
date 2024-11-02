@@ -36,7 +36,7 @@ class _ColorPickerState extends State<ColorPickerWrapper> {
       builder: (BuildContext context) {
         return AlertDialog(
           title: const StyledText('Pick a color!'),
-          backgroundColor: UserSettings.I.backgroundColor,
+          backgroundColor: Theme.of(context).colorScheme.secondary,
           content: SingleChildScrollView(
             child: ColorPicker(
               pickerColor: pickerColor!,

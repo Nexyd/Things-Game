@@ -44,7 +44,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       canPop: false,
       onPopInvokedWithResult: (didPop, result) => _leaveRoom(context),
       child: Scaffold(
-        backgroundColor: UserSettings.I.backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         body: SafeArea(
           child: StreamBuilder(
             stream: cubit.roomStream,
@@ -123,7 +123,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       child: Container(
         width: 45,
         height: 45,
-        decoration: _getDecoration("assets/config.png"),
+        decoration: _getDecoration(context ,"assets/config.png"),
       ),
     );
   }
@@ -217,12 +217,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
         : const Icon(Icons.close, color: Colors.red);
   }
 
-  BoxDecoration _getDecoration(String asset) {
+  BoxDecoration _getDecoration(BuildContext context, String asset) {
     return BoxDecoration(
       image: DecorationImage(
         image: AssetImage(asset),
         colorFilter: ColorFilter.mode(
-          UserSettings.I.primaryColor,
+          Theme.of(context).primaryColor,
           BlendMode.srcIn,
         ),
         fit: BoxFit.fill,

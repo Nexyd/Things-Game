@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/translations/room_settings_screen.i18n.dart';
 import 'package:things_game/widget/room_settings.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
@@ -20,7 +19,7 @@ class RoomSettingsScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: StyledAppBar("Game settings".i18n),
-      backgroundColor: UserSettings.I.backgroundColor,
+      backgroundColor: Theme.of(context).colorScheme.secondary,
       body: RoomSettings(config: args.data, isPlayersFieldEnabled: false),
     );
   }

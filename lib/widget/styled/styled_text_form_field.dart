@@ -22,8 +22,12 @@ class StyledTextForm extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor =
+        Theme.of(context).textTheme.bodyMedium?.color
+        ?? UserSettings.I.textColor;
+
     final debouncer = Debouncer(milliseconds: 500);
-    final border = BorderSide(color: UserSettings.I.textColor);
+    final border = BorderSide(color: textColor);
 
     return TextFormField(
       initialValue: initialValue,
@@ -33,11 +37,11 @@ class StyledTextForm extends StatelessWidget {
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       onChanged: (text) => debouncer.run(() => onChanged?.call(text)),
       validator: (text) => validator?.call(text ?? ""),
-      style: TextStyle(color: UserSettings.I.textColor),
+      style: TextStyle(color: textColor),
       decoration: InputDecoration(
         border: UnderlineInputBorder(borderSide: border),
         hintText: hint,
-        hintStyle: TextStyle(color: UserSettings.I.textColor),
+        hintStyle: TextStyle(color: textColor),
       ),
     );
   }

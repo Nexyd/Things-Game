@@ -2,7 +2,6 @@ import 'dart:io';
 
 import 'package:flutter/material.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/config/user_settings.dart';
 
 enum ButtonType { constructive, destructive, text }
 
@@ -21,20 +20,20 @@ class StyledButton extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     if (type == ButtonType.constructive) {
-      return _getConstructiveButton();
+      return _getConstructiveButton(context);
     } else if (type == ButtonType.destructive) {
-      return _getDestructiveButton();
+      return _getDestructiveButton(context);
     }
 
-    return _getTextButton();
+    return _getTextButton(context);
   }
 
-  Widget _getConstructiveButton() {
+  Widget _getConstructiveButton(BuildContext context) {
     return ConstrainedBox(
       constraints: const BoxConstraints(minWidth: 140),
       child: MaterialButton(
         onPressed: onPressed,
-        color: UserSettings.I.primaryColor,
+        color: Theme.of(context).primaryColor,
         shape: const RoundedRectangleBorder(
           borderRadius: BorderRadius.all(Radius.circular(20.0)),
         ),
@@ -43,7 +42,7 @@ class StyledButton extends StatelessWidget {
     );
   }
 
-  Widget _getDestructiveButton() {
+  Widget _getDestructiveButton(BuildContext context) {
     return SizedBox(
       width: 140,
       child: OutlinedButton(
@@ -51,7 +50,7 @@ class StyledButton extends StatelessWidget {
         style: OutlinedButton.styleFrom(
           side: BorderSide(
             width: 2.0,
-            color: UserSettings.I.primaryColor,
+            color: Theme.of(context).primaryColor,
           ),
           shape: const RoundedRectangleBorder(
             borderRadius: BorderRadius.all(Radius.circular(20.0)),
@@ -62,9 +61,9 @@ class StyledButton extends StatelessWidget {
     );
   }
 
-  Widget _getTextButton() {
+  Widget _getTextButton(BuildContext context) {
     if (Platform.isIOS) {
-      final color = UserSettings.I.primaryColor;
+      final color = Theme.of(context).primaryColor;
       return TextButton(
         style: TextButton.styleFrom(
           textStyle: TextStyle(color: color, fontSize: 18),

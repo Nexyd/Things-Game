@@ -3,7 +3,6 @@ import 'dart:io';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:things_game/config/user_settings.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/translations/alert_dialog.i18n.dart';
@@ -52,7 +51,7 @@ abstract class BasicDialog {
       barrierDismissible: true,
       builder: (BuildContext context) => AlertDialog(
         title: icon ?? StyledText(title!),
-        backgroundColor: UserSettings.I.backgroundColor,
+        backgroundColor: Theme.of(context).colorScheme.secondary,
         content: contentWidget ?? StyledText(content!),
         actions: actions ?? list,
       ),

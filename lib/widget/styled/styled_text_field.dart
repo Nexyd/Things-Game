@@ -22,8 +22,12 @@ class StyledTextField extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final textColor =
+        Theme.of(context).textTheme.bodyMedium?.color
+        ?? UserSettings.I.textColor;
+
     final debouncer = Debouncer(milliseconds: 500);
-    final border = BorderSide(color: UserSettings.I.textColor);
+    final border = BorderSide(color: textColor);
 
     return TextField(
       controller: controller ?? TextEditingController(),
@@ -31,12 +35,12 @@ class StyledTextField extends StatelessWidget {
       enabled: enabled,
       onTapOutside: (event) => FocusScope.of(context).unfocus(),
       onChanged: (text) => debouncer.run(() => onChanged?.call(text)),
-      style: TextStyle(color: UserSettings.I.textColor),
+      style: TextStyle(color: textColor),
       decoration: InputDecoration(
         border: UnderlineInputBorder(borderSide: border),
         hintText: hint,
         errorText: onError?.call(),
-        hintStyle: TextStyle(color: UserSettings.I.textColor),
+        hintStyle: TextStyle(color: textColor),
       ),
     );
   }

@@ -1,4 +1,4 @@
-import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
 
 class StyledText extends StatelessWidget {
@@ -19,9 +19,12 @@ class StyledText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor = UserSettings.I.textColor;
+    Color textColor =
+        Theme.of(context).textTheme.bodyMedium?.color
+        ?? UserSettings.I.textColor;
+
     if (isDestructive) {
-      textColor = UserSettings.I.primaryColor;
+      textColor = Theme.of(context).primaryColor;
     }
 
     return Text(
