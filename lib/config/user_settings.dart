@@ -32,6 +32,8 @@ class UserSettings {
 
   static UserSettings get I => _instance!;
 
+  static bool get isInit => _instance != null;
+
   static Future<void> init() async {
     if (_instance != null) return;
     _instance = await _init();

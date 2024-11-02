@@ -3,10 +3,11 @@ import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
 import 'package:i18n_extension/i18n_extension.dart';
-import 'package:things_game/config/theme_data_manager.dart';
 import 'package:things_game/support/route_generator.dart';
 import 'package:things_game/screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:things_game/widget/theme_switcher.dart';
+import 'cubit/theme_switcher_cubit.dart';
 import 'firebase_options.dart';
 
 import 'cubit/game_cubit.dart';
@@ -30,18 +31,18 @@ class ThingsGame extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MultiBlocProvider(
-      providers: [
-        BlocProvider(create: (context) => RoomCubit()),
-        BlocProvider(create: (context) => GameCubit()),
-      ],
-      child: const ThingsGameView(),
-    );
+    return MultiBlocProvider(providers: [
+      BlocProvider(create: (context) => RoomCubit()),
+      BlocProvider(create: (context) => GameCubit()),
+      BlocProvider(create: (context) => ThemeSwitcherCubit()),
+    ], child: const ThemeSwitcherWidget());
   }
 }
 
 class ThingsGameView extends StatelessWidget {
-  const ThingsGameView({super.key});
+  final ThemeData themeData;
+
+  const ThingsGameView({super.key, required this.themeData});
 
   @override
   Widget build(BuildContext context) {
@@ -52,7 +53,7 @@ class ThingsGameView extends StatelessWidget {
         GlobalWidgetsLocalizations.delegate,
         GlobalCupertinoLocalizations.delegate,
       ],
-      theme: ThemeDataManager.build(),
+      theme: themeData,
       supportedLocales: const [Locale('en', "GB"), Locale('es', "ES")],
       home: const SplashScreen(),
     );

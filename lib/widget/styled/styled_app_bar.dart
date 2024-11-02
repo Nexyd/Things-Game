@@ -1,12 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
-import 'package:things_game/config/user_settings.dart';
 
 // TODO: think a way to make it immutable
 //ignore: must_be_immutable
 class StyledAppBar extends StatefulWidget implements PreferredSizeWidget {
   final String title;
-  ValueNotifier<Color>? colorNotifier;
   ValueNotifier<String>? titleNotifier;
 
   StyledAppBar(this.title, {super.key})
@@ -23,10 +21,11 @@ class StyledAppBar extends StatefulWidget implements PreferredSizeWidget {
 class _StyledAppBarState extends State<StyledAppBar> {
   @override
   Widget build(BuildContext context) {
-    _initNotifiers();
+    widget.titleNotifier ??= ValueNotifier<String>(widget.title);
+    widget.titleNotifier!.addListener(() => setState(() {}));
 
     return AppBar(
-      backgroundColor: widget.colorNotifier!.value,
+      backgroundColor: Theme.of(context).primaryColor,
       leading: IconButton(
         highlightColor: Colors.transparent,
         onPressed: () => Navigator.of(context).pop(),
@@ -34,12 +33,5 @@ class _StyledAppBarState extends State<StyledAppBar> {
       ),
       title: StyledText(widget.titleNotifier!.value),
     );
-  }
-
-  void _initNotifiers() {
-    widget.colorNotifier ??= ValueNotifier<Color>(UserSettings.I.primaryColor);
-    widget.colorNotifier!.addListener(() => setState(() {}));
-    widget.titleNotifier ??= ValueNotifier<String>(widget.title);
-    widget.titleNotifier!.addListener(() => setState(() {}));
   }
 }

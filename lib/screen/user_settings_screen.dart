@@ -2,6 +2,7 @@ import 'dart:io';
 
 import 'package:file_picker/file_picker.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i18n_extension/i18n_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:things_game/config/user_settings.dart';
@@ -14,6 +15,7 @@ import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
 import 'package:things_game/util/color_utils.dart';
 
+import '../cubit/theme_switcher_cubit.dart';
 import '../support/logger.dart';
 
 class UserSettingsScreen extends StatefulWidget {
@@ -27,15 +29,18 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   bool isImagePicked = false;
   String? localeStr = "Spanish".i18n;
   final StyledAppBar appBar = StyledAppBar("User settings".i18n);
+  late final ThemeSwitcherCubit cubit;
 
   @override
   Widget build(BuildContext context) {
+    cubit = BlocProvider.of(context);
+
     _setup();
     return Scaffold(
       appBar: appBar,
       body: Container(
         color: UserSettings.I.backgroundColor,
-        child: _getContent(),
+        child: _getContent(context),
       ),
     );
   }
@@ -56,7 +61,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     }
   }
 
-  Widget _getContent() {
+  Widget _getContent(BuildContext context) {
     Widget icon = InkWell(
       onTap: () => _pickAvatar().then((value) {
         Logger.settings.info("avatar saved!");
@@ -68,9 +73,9 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     final cells = [
       {"Name".i18n: _getTextField()},
       {"Avatar".i18n: icon},
-      {"Primary color".i18n: _getColorIcon(PRIMARY_COLOR)},
-      {"Text color".i18n: _getColorIcon(TEXT_COLOR)},
-      {"Background color".i18n: _getColorIcon(BACKGROUND_COLOR)},
+      {"Primary color".i18n: _getColorIcon(context, PRIMARY_COLOR)},
+      {"Text color".i18n: _getColorIcon(context, TEXT_COLOR)},
+      {"Background color".i18n: _getColorIcon(context, BACKGROUND_COLOR)},
       {"Language".i18n: _getDropdown()},
     ];
 
@@ -105,7 +110,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
     );
   }
 
-  Widget _getColorIcon(String tag) {
+  Widget _getColorIcon(BuildContext context, String tag) {
     const double iconSize = 25;
     return Container(
       decoration: BoxDecoration(
@@ -117,7 +122,7 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
       child: ColorPickerWrapper(
         colorTag: tag,
         callback: () => setState(() {
-          appBar.colorNotifier?.value = UserSettings.I.primaryColor;
+          cubit.updateTheme();
         }),
       ),
     );
