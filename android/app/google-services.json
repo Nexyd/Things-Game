@@ -2,14 +2,14 @@
   "project_info": {
     "project_number": "689626236602",
     "project_id": "thingsgame-e0474",
-    "storage_bucket": "thingsgame-e0474.appspot.com"
+    "storage_bucket": "thingsgame-e0474.firebasestorage.app"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:689626236602:android:53d1f05280072e2b252483",
+        "mobilesdk_app_id": "1:689626236602:android:e64f7501ea80f6af252483",
         "android_client_info": {
-          "package_name": "com.dani.flutter.project"
+          "package_name": "com.nexyd.flutter.thingsgame"
         }
       },
       "oauth_client": [],

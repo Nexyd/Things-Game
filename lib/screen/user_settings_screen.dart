@@ -5,18 +5,19 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:i18n_extension/i18n_extension.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+
 import 'package:things_game/config/user_settings.dart';
+import 'package:things_game/cubit/theme_switcher_cubit.dart';
 import 'package:things_game/support/constants.dart';
+import 'package:things_game/support/logger.dart';
 import 'package:things_game/translations/user_settings_screen.i18n.dart';
+import 'package:things_game/util/debouncer.dart';
 import 'package:things_game/util/color_utils.dart';
 import 'package:things_game/widget/avatar_icon.dart';
 import 'package:things_game/widget/color_picker.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/widget/styled/styled_text_field.dart';
-
-import '../cubit/theme_switcher_cubit.dart';
-import '../support/logger.dart';
 
 class UserSettingsScreen extends StatefulWidget {
   const UserSettingsScreen({super.key});
@@ -100,13 +101,16 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   }
 
   Widget _getTextField() {
+    final debouncer = Debouncer(milliseconds: 500);
     TextEditingController controller = TextEditingController();
     controller.text = UserSettings.I.name;
 
     return StyledTextField(
       hint: 'Enter user name',
       controller: controller,
-      onChanged: (value) => _saveToPrefs(NAME, controller.value.text),
+      onChanged: (value) => debouncer.run(() {
+        _saveToPrefs(NAME, controller.value.text);
+      }),
     );
   }
 
@@ -202,7 +206,10 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
 
   Future<void> _saveToPrefs(String tag, String name) async {
     final prefs = await SharedPreferences.getInstance();
-    prefs.setString(tag, name);
+    prefs.setString(tag, name).then((saved) {
+      if (saved) UserSettings.I.name = name;
+      Logger.prefs.info("Saving value: $name to $tag, result: $saved");
+    });
   }
 
   Future<Widget> _pickAvatar() async {

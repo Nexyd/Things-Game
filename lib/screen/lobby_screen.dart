@@ -88,18 +88,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
   Widget _getHeader() {
     final title = "Lobby id".i18n;
     return Padding(
-      padding: const EdgeInsets.only(
-        top: 10.0,
-        left: 20.0,
-        right: 20.0,
-      ),
+      padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
           const Spacer(flex: 2),
           // TODO: find a way to shorten id (while still being usable).
-          // StyledText("$title: \n${room.id}", fontSize: 30),
-          StyledText("$title: \nSomeRandomId", fontSize: 30),
+          StyledText("$title: \n${room.id}", fontSize: 30),
+          // StyledText("$title: \nSomeRandomId", fontSize: 30),
           const Spacer(),
           Align(
             alignment: Alignment.centerRight,
@@ -123,7 +119,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       child: Container(
         width: 45,
         height: 45,
-        decoration: _getDecoration(context ,"assets/config.png"),
+        decoration: _getDecoration(context, "assets/config.png"),
       ),
     );
   }

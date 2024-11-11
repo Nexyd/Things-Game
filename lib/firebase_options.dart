@@ -57,18 +57,19 @@ class DefaultFirebaseOptions {
 
   static const FirebaseOptions android = FirebaseOptions(
     apiKey: 'AIzaSyAMZm2Q0C0OgNhH7OzQfOcDqB1M_WrY60w',
-    appId: '1:689626236602:android:53d1f05280072e2b252483',
+    appId: '1:689626236602:android:e64f7501ea80f6af252483',
     messagingSenderId: '689626236602',
     projectId: 'thingsgame-e0474',
-    storageBucket: 'thingsgame-e0474.appspot.com',
+    storageBucket: 'thingsgame-e0474.firebasestorage.app',
   );
 
   static const FirebaseOptions ios = FirebaseOptions(
     apiKey: 'AIzaSyD0YTh5-FxnDDZCoerzTTsjIkff-prl5S8',
-    appId: '1:689626236602:ios:536b61c5f2b6ced6252483',
+    appId: '1:689626236602:ios:a91aade9f72c5cab252483',
     messagingSenderId: '689626236602',
     projectId: 'thingsgame-e0474',
-    storageBucket: 'thingsgame-e0474.appspot.com',
-    iosBundleId: 'com.dani.flutter.project',
+    storageBucket: 'thingsgame-e0474.firebasestorage.app',
+    iosBundleId: 'com.nexyd.flutter.thingsgame',
   );
+
 }

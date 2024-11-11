@@ -19,22 +19,20 @@ class StyledText extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    Color textColor =
-        Theme.of(context).textTheme.bodyMedium?.color
-        ?? UserSettings.I.textColor;
+    Color textColor = Theme.of(context).textTheme.bodyMedium?.color ??
+        UserSettings.I.textColor;
 
     if (isDestructive) {
       textColor = Theme.of(context).primaryColor;
     }
 
-    return Text(
-      text,
-      style: TextStyle(
-        color: textColor,
-        fontWeight: fontWeight ?? FontWeight.normal,
-        fontSize: fontSize ?? 16,
-        fontStyle: fontStyle,
-      ),
+    final style = TextStyle(
+      color: textColor,
+      fontWeight: fontWeight ?? FontWeight.normal,
+      fontSize: fontSize ?? 16,
+      fontStyle: fontStyle,
     );
+
+    return Text(text, style: style);
   }
 }

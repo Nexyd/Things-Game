@@ -23,6 +23,7 @@ class _StyledTextState extends State<StyledSwitch> {
       light = widget.value!;
     }
 
+    // TODO: change color on deactivate
     return Switch(
       value: light,
       activeColor: Theme.of(context).primaryColor,

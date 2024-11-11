@@ -1,4 +1,4 @@
-package com.dani.flutter.project
+package com.nexyd.flutter.thingsgame
 
 import io.flutter.embedding.android.FlutterActivity
 
