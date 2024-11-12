@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:things_game/util/color_utils.dart';
 
 class StyledSwitch extends StatefulWidget {
   final bool? value;
@@ -23,10 +24,12 @@ class _StyledTextState extends State<StyledSwitch> {
       light = widget.value!;
     }
 
-    // TODO: change color on deactivate
+    final surfaceColor = Theme.of(context).colorScheme.surface;
     return Switch(
       value: light,
       activeColor: Theme.of(context).primaryColor,
+      inactiveThumbColor: surfaceColor.shade(90),
+      inactiveTrackColor: surfaceColor,
       onChanged: (value) {
         widget.onChanged.call(value);
         setState(() => light = value);

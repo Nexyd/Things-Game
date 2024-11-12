@@ -2,8 +2,7 @@ import 'dart:async';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:things_game/cubit/model/game_room.dart';
-
-import '../support/logger.dart';
+import 'package:things_game/support/logger.dart';
 
 class FirestoreRoomController {
   late final FirebaseFirestore _firestore;
@@ -21,7 +20,7 @@ class FirestoreRoomController {
   FirestoreRoomController({required this.room}) {
     _firestore = FirebaseFirestore.instance;
     _roomLocalSubscription = room.localChanges.listen(
-      (_) => _updateFirestoreFromLocal(room, roomRef),
+      (data) => _updateFirestoreFromLocal(data, roomRef),
     );
 
     Logger.firestore.info("Firestore initialized");
