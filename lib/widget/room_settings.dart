@@ -62,12 +62,7 @@ class RoomSettings extends StatelessWidget {
   Widget _getContent(BuildContext context) {
     final switchButton = StyledSwitch(
       value: config.isPrivate,
-      // onChanged: (value) => config.isPrivate = value,
-      onChanged: (value) {
-        config.isPrivate = value;
-        // TODO: try to remove this (switch doesn´t update without it).
-        BlocProvider.of<RoomCubit>(context).updateConfigSwitch(config);
-      },
+      onChanged: (value) => config.isPrivate = value,
     );
 
     // TODO: Replace maps to Records?

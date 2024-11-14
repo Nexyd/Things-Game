@@ -212,6 +212,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   Widget _getIcon([bool isReady = false]) {
+    // TODO: update isReady on firestore
     return isReady
         ? const Icon(Icons.done, color: Colors.green)
         : const Icon(Icons.close, color: Colors.red);

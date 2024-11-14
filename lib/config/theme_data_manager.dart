@@ -7,6 +7,7 @@ class ThemeDataManager {
     required Color background,
     required Color text,
   }) {
+    // TODO: think about error color (add user-defined error color?)
     return ThemeData(
       primaryColor: primary,
       colorScheme: ColorScheme(

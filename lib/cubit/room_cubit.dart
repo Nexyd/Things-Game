@@ -29,12 +29,6 @@ class RoomCubit extends Cubit<RoomState> {
     }
   }
 
-  // TODO: look for a way to remove this.
-  void updateConfigSwitch(ConfigurationData data) {
-    _actualGame = _actualGame.copyWith(config: data);
-    emit(RoomConfigUpdated(config: _actualGame.config));
-  }
-
   Future<void> createRoom() async {
     if (_actualGame == GameRoom.empty()) return;
     emit(RoomCreationInProgress());
@@ -81,7 +75,7 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> leaveRoom() async {
-    // TODO: test with 2 devices
+    // TODO: test with 2 or more devices
     final userToRemove = _actualGame.playerList
         .where((element) => element.name == UserSettings.I.name)
         .toList();

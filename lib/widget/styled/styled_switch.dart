@@ -16,23 +16,23 @@ class StyledSwitch extends StatefulWidget {
 }
 
 class _StyledTextState extends State<StyledSwitch> {
-  bool light = false;
+  bool? _active;
 
   @override
   Widget build(BuildContext context) {
-    if (widget.value != null) {
-      light = widget.value!;
+    if (widget.value != null && _active == null) {
+      _active = widget.value!;
     }
 
     final surfaceColor = Theme.of(context).colorScheme.surface;
     return Switch(
-      value: light,
+      value: _active!,
       activeColor: Theme.of(context).primaryColor,
       inactiveThumbColor: surfaceColor.shade(90),
       inactiveTrackColor: surfaceColor,
       onChanged: (value) {
         widget.onChanged.call(value);
-        setState(() => light = value);
+        setState(() => _active = value);
       },
     );
   }
