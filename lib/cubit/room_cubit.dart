@@ -29,24 +29,38 @@ class RoomCubit extends Cubit<RoomState> {
     }
   }
 
-  Future<void> createRoom() async {
-    if (_actualGame == GameRoom.empty()) return;
+  // Future<void> createRoom() async {
+  Future<void> createRoom(ConfigurationData config) async {
+    print("### [RoomCubit] checking room empty... ###");
+    // if (_actualGame == GameRoom.empty()) return;
+    if (config.isEmpty) return;
+    print("### [RoomCubit] room not empty, creation in progress... ###");
+    _actualGame = _actualGame.copyWith(config: config);
     emit(RoomCreationInProgress());
 
+    print("### [RoomCubit] adding player to list... ###");
     _actualGame.playerList.add(Player(
       name: UserSettings.I.name,
       uid: UserSettings.I.credentials?.user?.uid,
     ));
 
+    print("### [RoomCubit] creating room in firestore... ###");
     final result = await _repo.createRoom(_actualGame.toJson());
+
+    print("### [RoomCubit] checking error in result... ###");
     if (result.error != null) {
+      print("### [RoomCubit] error found: ${result.error} ###");
       emit(RoomError(error: result.error!));
       return;
     }
 
-    _actualGame.id = result.result!;
+    print("### [RoomCubit] no errors found, room created with id: ${result.id} ###");
+    _actualGame.id = result.id!;
+
+    print("### [RoomCubit] initializing firestore room controller... ###");
     controller = FirestoreRoomController(room: _actualGame);
 
+    print("### [RoomCubit] emitting room created... ###");
     emit(RoomCreated(room: _actualGame));
   }
 

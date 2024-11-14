@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 
 import 'package:things_game/cubit/model/game_room.dart';
-import 'package:things_game/widget/model/configuration_data.dart';
 
 @immutable
 abstract class RoomState {}
@@ -12,12 +11,6 @@ class RoomError extends RoomState {
   final String error;
 
   RoomError({required this.error});
-}
-
-class RoomConfigUpdated extends RoomState {
-  final ConfigurationData config;
-
-  RoomConfigUpdated({required this.config});
 }
 
 class RoomCreationInProgress extends RoomState {}

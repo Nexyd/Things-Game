@@ -7,7 +7,7 @@ import '../model/game_room.dart';
 typedef Json = Map<String, dynamic>;
 typedef DocData = QueryDocumentSnapshot<Map<String, dynamic>>;
 typedef RoomListResponse = ({List<Json> rooms, String? error});
-typedef RoomRepoResponse = ({String? result, String? error});
+typedef RoomRepoResponse = ({String? id, String? error});
 
 class RoomRepository {
   late final CollectionReference<Map<String, dynamic>> _roomsDb;
@@ -17,25 +17,25 @@ class RoomRepository {
   }
 
   Future<RoomRepoResponse> createRoom(Json roomJson) async {
-    String? result;
+    String? id;
     String? error;
 
     Logger.repository.info("Creating room with json: $roomJson");
 
     await _roomsDb
         .add(roomJson)
-        .then((value) => result = value.id)
+        .then((value) => id = value.id)
         .catchError((error) => error = "$error");
 
-    final response = (result: result, error: error);
+    final response = (id: id, error: error);
     if (response.error != null) {
       Logger.repository.error("Error creating room: $error");
       return response;
     }
 
     // TODO: search for a way to autogenerate IDs (or shorten firebase ids)
-    Logger.repository.info("Created room with ID: ${response.result}");
-    _updateField(result!, "id", result);
+    Logger.repository.info("Created room with ID: ${response.id}");
+    _updateField(id!, "id", id);
 
     return response;
   }
@@ -90,7 +90,7 @@ class RoomRepository {
         .then((value) => result = "OK")
         .catchError((error) => result = "Error: $error");
 
-    return (result: result, error: error);
+    return (id: result, error: error);
   }
 
   // Future<RoomRepoResponse> _updateField(

@@ -55,6 +55,14 @@ class ConfigurationData {
 
   String toRawJson() => jsonEncode(toJson());
 
+  bool get isEmpty {
+    return name == "" &&
+        players == 0 &&
+        rounds == 0 &&
+        maxPoints == 0 &&
+        isPrivate == true;
+  }
+
   @override
   bool operator ==(Object other) {
     if (other is! ConfigurationData) return false;

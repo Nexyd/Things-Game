@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/support/logger.dart';
 
+const _TAG = "[BoardProgressOverlay] ";
+
 class BoardProgressOverlay extends StatelessWidget {
   final Widget child;
   final Color? color;
@@ -12,24 +14,26 @@ class BoardProgressOverlay extends StatelessWidget {
     this.color,
   });
 
-  static void toggle(BuildContext context) =>
-      _tryGetController(context)?.toggle();
+  static void toggle(BuildContext context) {
+    Logger.global.debug("$_TAG toggling overlay...");
+    _tryGetController(context)?.toggle();
+  }
 
-  static void show(BuildContext context) =>
-      _tryGetController(context)?.show();
+  static void show(BuildContext context) {
+    Logger.global.debug("$_TAG showing overlay...");
+    _tryGetController(context)?.show();
+  }
 
-  static void hide(BuildContext context) =>
-      _tryGetController(context)?.hide();
+  static void hide(BuildContext context) {
+    Logger.global.debug("$_TAG hiding overlay...");
+    _tryGetController(context)?.hide();
+  }
 
   static OverlayPortalController? _tryGetController(BuildContext context) {
     try {
       return context.read<OverlayPortalController>();
     } catch (error) {
-      const tag = "[BoardProgressOverlay] ";
-      Logger.global.debug(
-        "$tag trying to toggle overlay without providing a controller...",
-      );
-
+      Logger.global.debug("$_TAG no overlay controller found on context...");
       return null;
     }
   }

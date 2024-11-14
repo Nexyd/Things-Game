@@ -41,14 +41,6 @@ class RoomSettings extends StatelessWidget {
         child: BlocBuilder<RoomCubit, RoomState>(
           bloc: BlocProvider.of<RoomCubit>(context),
           builder: (context, state) {
-            if (state is RoomConfigUpdated) {
-              config.name = state.config.name;
-              config.players = state.config.players;
-              config.rounds = state.config.rounds;
-              config.maxPoints = state.config.maxPoints;
-              config.isPrivate = state.config.isPrivate;
-            }
-
             return Container(
               color: Theme.of(context).colorScheme.secondary,
               child: _getContent(context),
@@ -78,7 +70,7 @@ class RoomSettings extends StatelessWidget {
       text: "Create".i18n,
       onPressed: () {
         if (Form.of(context).validate()) {
-          BlocProvider.of<RoomCubit>(context).createRoom();
+          BlocProvider.of<RoomCubit>(context).createRoom(config);
         }
       },
     );
