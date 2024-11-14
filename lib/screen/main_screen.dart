@@ -1,10 +1,10 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:things_game/translations/main_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
-
-import '../widget/alert_dialog.dart';
+import 'package:things_game/widget/alert_dialog.dart';
 
 class MainScreen extends StatefulWidget {
   const MainScreen({super.key});
@@ -23,7 +23,7 @@ class _MainScreenState extends State<MainScreen> {
         backgroundColor: Theme.of(context).colorScheme.secondary,
         body: Container(
           padding: const EdgeInsets.symmetric(horizontal: 5.0),
-          decoration: _getDecoration("assets/background_main.png"),
+          decoration: _getDecoration("assets/background_main.png", context),
           child: SafeArea(child: _getContent(context)),
         ),
       ),
@@ -52,7 +52,7 @@ class _MainScreenState extends State<MainScreen> {
             child: Container(
               width: 45,
               height: 45,
-              decoration: _getDecoration("assets/config.png"),
+              decoration: _getDecoration("assets/config.png", context),
             ),
           ),
         ),
@@ -88,7 +88,7 @@ class _MainScreenState extends State<MainScreen> {
     ]);
   }
 
-  BoxDecoration _getDecoration(String asset) {
+  BoxDecoration _getDecoration(String asset, BuildContext context) {
     return BoxDecoration(
       image: DecorationImage(
         image: AssetImage(asset),

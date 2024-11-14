@@ -20,6 +20,8 @@ class RoomConfigUpdated extends RoomState {
   RoomConfigUpdated({required this.config});
 }
 
+class RoomCreationInProgress extends RoomState {}
+
 class RoomCreated extends RoomState {
   final GameRoom room;
 

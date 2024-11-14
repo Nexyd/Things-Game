@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/screen/lobby_screen.dart';
 import 'package:things_game/translations/room_settings_screen.i18n.dart';
+import 'package:things_game/widget/board_progress_overlay.dart';
 import 'package:things_game/widget/styled/styled_app_bar.dart';
 import 'package:things_game/widget/alert_dialog.dart';
 import 'package:things_game/widget/model/configuration_data.dart';
@@ -17,7 +18,15 @@ class CreateRoomScreen extends StatelessWidget {
     final cubit = BlocProvider.of<RoomCubit>(context);
     return BlocConsumer<RoomCubit, RoomState>(
       bloc: cubit,
-      builder: (context, state) => _getContent(context, cubit),
+      builder: (context, state) {
+        if (state is RoomCreationInProgress) {
+          BoardProgressOverlay.show(context);
+        } else if (state is RoomCreated) {
+          BoardProgressOverlay.hide(context);
+        }
+
+        return _getContent(context);
+      },
       listenWhen: (previous, current) {
         return current is RoomError || current is RoomCreated;
       },
@@ -34,7 +43,7 @@ class CreateRoomScreen extends StatelessWidget {
     );
   }
 
-  Widget _getContent(BuildContext context, RoomCubit cubit) {
+  Widget _getContent(BuildContext context) {
     return Scaffold(
       appBar: StyledAppBar("Create a room".i18n),
       backgroundColor: Theme.of(context).colorScheme.secondary,

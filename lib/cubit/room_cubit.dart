@@ -37,6 +37,8 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> createRoom() async {
     if (_actualGame == GameRoom.empty()) return;
+    emit(RoomCreationInProgress());
+
     _actualGame.playerList.add(Player(
       name: UserSettings.I.name,
       uid: UserSettings.I.credentials?.user?.uid,

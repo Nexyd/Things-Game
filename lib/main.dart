@@ -2,17 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:flutter_localizations/flutter_localizations.dart';
 import 'package:flutter_native_splash/flutter_native_splash.dart';
-import 'package:i18n_extension/i18n_extension.dart';
-import 'package:things_game/support/route_generator.dart';
-import 'package:things_game/screen/splash_screen.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:things_game/widget/theme_switcher.dart';
-import 'cubit/theme_switcher_cubit.dart';
-import 'firebase_options.dart';
+import 'package:i18n_extension/i18n_extension.dart';
+import 'package:provider/provider.dart';
 
-import 'cubit/game_cubit.dart';
-import 'cubit/room_cubit.dart';
-import 'support/logger.dart';
+import 'package:things_game/cubit/game_cubit.dart';
+import 'package:things_game/cubit/room_cubit.dart';
+import 'package:things_game/cubit/theme_switcher_cubit.dart';
+import 'package:things_game/firebase_options.dart';
+import 'package:things_game/screen/splash_screen.dart';
+import 'package:things_game/support/logger.dart';
+import 'package:things_game/support/route_generator.dart';
+import 'package:things_game/widget/theme_switcher.dart';
 
 Future<void> main() async {
   WidgetsBinding widgetsBinding = WidgetsFlutterBinding.ensureInitialized();
@@ -35,6 +36,7 @@ class ThingsGame extends StatelessWidget {
       BlocProvider(create: (context) => RoomCubit()),
       BlocProvider(create: (context) => GameCubit()),
       BlocProvider(create: (context) => ThemeSwitcherCubit()),
+      Provider(create: (context) => OverlayPortalController()),
     ], child: const ThemeSwitcherWidget());
   }
 }

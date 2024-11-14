@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/room_cubit.dart';
+import 'package:things_game/support/logger.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
@@ -39,7 +40,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
       room = widget.args.initialRoom;
     }
 
-    // TODO: fix navigation back in iOS (add button)
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) => _leaveRoom(context),
@@ -92,11 +92,15 @@ class _LobbyScreenState extends State<LobbyScreen> {
       child: Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          const Spacer(flex: 2),
-          // TODO: find a way to shorten id (while still being usable).
-          StyledText("$title: \n${room.id}", fontSize: 30),
-          // StyledText("$title: \nSomeRandomId", fontSize: 30),
-          const Spacer(),
+          Expanded(
+            child: Padding(
+              padding: const EdgeInsets.only(right: 10.0),
+              child: FittedBox(
+                fit: BoxFit.scaleDown,
+                child: StyledText("$title: \n${room.id}", fontSize: 30),
+              ),
+            ),
+          ),
           Align(
             alignment: Alignment.centerRight,
             child: _getConfigButton(context),
@@ -263,17 +267,21 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void _leaveRoom(BuildContext context) {
-    print("### leaving room... ###");
-    cubit.leaveRoom();
-    final player = players.firstWhere(
-      (e) => e.keys.first == UserSettings.I.name,
-    );
+    try {
+      cubit.leaveRoom();
+      final player = players.firstWhere(
+        (e) => e.keys.first == UserSettings.I.name,
+      );
 
-    players.remove(player);
-    final playersOnly = _getPlayersOnlyList();
+      players.remove(player);
+      final playersList = _getPlayersOnlyList();
 
-    if (playersOnly.isEmpty) cubit.deleteRoom();
-    cubit.backToMain(context);
+      if (playersList.isEmpty) cubit.deleteRoom();
+      cubit.backToMain(context);
+    } catch (error) {
+      Logger.room.error("Error trying to exit room: $error");
+      cubit.backToMain(context);
+    }
   }
 
   List<String> _getPlayersOnlyList() {
