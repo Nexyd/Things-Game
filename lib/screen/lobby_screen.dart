@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/room_cubit.dart';
+import 'package:things_game/support/app_lifecycle_manager.dart';
 import 'package:things_game/support/logger.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
@@ -34,6 +35,19 @@ class _LobbyScreenState extends State<LobbyScreen> {
   late RoomCubit cubit;
 
   @override
+  void initState() {
+    super.initState();
+
+    AppLifecycleManager.initState();
+  }
+
+  @override
+  void dispose() {
+    AppLifecycleManager.I.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     cubit = BlocProvider.of<RoomCubit>(context);
     if (room == GameRoom.empty()) {
@@ -49,6 +63,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
           child: StreamBuilder(
             stream: cubit.roomStream,
             builder: (context, snapshot) {
+              // TODO: when users enter the room, updates saying this only appear on some devices.
               final players = snapshot.data?.data()?.playerList;
               room = room.copyWith(playerList: players);
 
@@ -268,6 +283,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void _leaveRoom(BuildContext context) {
+    // TODO: find a way to leave / delete room if the last player closes the app without tapping leave room.
     try {
       cubit.leaveRoom();
       final player = players.firstWhere(
@@ -275,12 +291,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
       );
 
       players.remove(player);
-      final playersList = _getPlayersOnlyList();
-
-      if (playersList.isEmpty) cubit.deleteRoom();
-      cubit.backToMain(context);
+      if (_getPlayersOnlyList().isEmpty) {
+        cubit.deleteRoom();
+      }
     } catch (error) {
       Logger.room.error("Error trying to exit room: $error");
+    } finally {
       cubit.backToMain(context);
     }
   }
