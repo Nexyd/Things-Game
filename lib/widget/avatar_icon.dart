@@ -2,7 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:things_game/config/user_settings.dart';
 
 class AvatarIcon extends StatelessWidget {
-  const AvatarIcon({super.key});
+  final String? letter;
+  const AvatarIcon({this.letter, super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -21,7 +22,12 @@ class AvatarIcon extends StatelessWidget {
         color: Colors.grey.shade500,
         borderRadius: BorderRadius.circular(size / 2),
       ),
-      child: Center(child: Text(initial, style: textStyle)),
+      child: Center(child: Text(letter ?? initial, style: textStyle)),
     );
+  }
+
+  String _getLanguageSpecificLetter() {
+    // TODO: get letter based on locale.
+    return "";
   }
 }

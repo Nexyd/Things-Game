@@ -19,6 +19,8 @@ class RoomCubit extends Cubit<RoomState> {
 
   RoomCubit() : super(RoomInitial());
 
+  void init() => emit(RoomInitial());
+
   Future<void> updateConfiguration(ConfigurationData data) async {
     _actualGame = _actualGame.copyWith(config: data);
     final result = await _repo.updateConfig(_actualGame.id, data.toJson());

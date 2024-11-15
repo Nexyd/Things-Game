@@ -6,6 +6,7 @@ import 'package:things_game/cubit/room_cubit.dart';
 import 'package:things_game/support/app_lifecycle_manager.dart';
 import 'package:things_game/support/logger.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
+import 'package:things_game/widget/avatar_icon.dart';
 import 'package:things_game/widget/styled/styled_button.dart';
 import 'package:things_game/widget/styled/styled_text.dart';
 import 'package:things_game/config/user_settings.dart';
@@ -161,28 +162,37 @@ class _LobbyScreenState extends State<LobbyScreen> {
       },
     );
 
+    final height = MediaQuery.of(context).size.height;
+    final width = MediaQuery.of(context).size.width;
     final physics = players.length < 9 ? NeverScrollableScrollPhysics() : null;
+
+    final listView = ListView.builder(
+      shrinkWrap: true,
+      physics: physics,
+      itemCount: players.length,
+      itemBuilder: (BuildContext context, int index) {
+        final avatar = players[index].keys.first == UserSettings.I.name
+            ? UserSettings.I.avatar
+            : AvatarIcon(letter: "P");
+
+        return ListTile(
+          leading: avatar,
+          title: StyledText(players[index].keys.first),
+          trailing: players[index].values.first,
+        );
+      },
+    );
+
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
       child: ConstrainedBox(
         constraints: BoxConstraints(
-          minHeight: 170,
-          maxHeight: 480,
-          minWidth: MediaQuery.of(context).size.width,
-          maxWidth: MediaQuery.of(context).size.width,
+          minHeight: height * 0.15,
+          maxHeight: height * 0.55,
+          minWidth: width,
+          maxWidth: width,
         ),
-        child: ListView.builder(
-          shrinkWrap: true,
-          physics: physics,
-          itemCount: players.length,
-          itemBuilder: (BuildContext context, int index) {
-            return ListTile(
-              leading: UserSettings.I.avatar,
-              title: StyledText(players[index].keys.first),
-              trailing: players[index].values.first,
-            );
-          },
-        ),
+        child: listView,
       ),
     );
   }
