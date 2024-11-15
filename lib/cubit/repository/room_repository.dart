@@ -97,10 +97,7 @@ class RoomRepository {
     print("### rooms db: $_roomsDb ###");
     print("### rooms db doc: ${_roomsDb.doc(id)} ###");
 
-    // _roomsDb.doc(id).update({PLAYER_LIST: value});
-    final foo = _roomsDb.doc(id).update({PLAYER_LIST: value});
-    print("### rooms db update doc future: $foo ###");
-    foo.then((value) => print("### rooms db updated ###"));
+    _roomsDb.doc(id).update({PLAYER_LIST: value});
   }
 
   Future<String?> deleteRoom(String id) async {

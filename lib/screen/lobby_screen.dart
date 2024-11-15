@@ -46,7 +46,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
   @override
   void dispose() {
     AppLifecycleManager.I.dispose();
-    cubit.close();
     super.dispose();
   }
 
@@ -162,23 +161,27 @@ class _LobbyScreenState extends State<LobbyScreen> {
       },
     );
 
+    final physics = players.length < 9 ? NeverScrollableScrollPhysics() : null;
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 15.0),
-      child: SizedBox(
-        height: 250,
-        width: MediaQuery.of(context).size.width,
-        child: Center(
-          child: ListView.builder(
-            shrinkWrap: true,
-            itemCount: players.length,
-            itemBuilder: (BuildContext context, int index) {
-              return ListTile(
-                leading: UserSettings.I.avatar,
-                title: StyledText(players[index].keys.first),
-                trailing: players[index].values.first,
-              );
-            },
-          ),
+      child: ConstrainedBox(
+        constraints: BoxConstraints(
+          minHeight: 170,
+          maxHeight: 480,
+          minWidth: MediaQuery.of(context).size.width,
+          maxWidth: MediaQuery.of(context).size.width,
+        ),
+        child: ListView.builder(
+          shrinkWrap: true,
+          physics: physics,
+          itemCount: players.length,
+          itemBuilder: (BuildContext context, int index) {
+            return ListTile(
+              leading: UserSettings.I.avatar,
+              title: StyledText(players[index].keys.first),
+              trailing: players[index].values.first,
+            );
+          },
         ),
       ),
     );

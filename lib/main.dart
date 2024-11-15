@@ -33,6 +33,7 @@ class ThingsGame extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiBlocProvider(providers: [
+      // TODO: create room/game cubits when they are needed instead of here?
       BlocProvider(create: (context) => RoomCubit()),
       BlocProvider(create: (context) => GameCubit()),
       BlocProvider(create: (context) => ThemeSwitcherCubit()),
