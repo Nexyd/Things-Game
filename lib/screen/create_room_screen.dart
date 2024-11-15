@@ -21,6 +21,7 @@ class CreateRoomScreen extends StatelessWidget {
     return BlocConsumer<RoomCubit, RoomState>(
       bloc: cubit,
       builder: (context, state) {
+        // TODO: check with iOS slow animations
         if (state is RoomCreationInProgress) {
           BoardProgressOverlay.show(context);
         } else if (state is RoomCreated) {
