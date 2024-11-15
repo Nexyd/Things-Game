@@ -30,7 +30,7 @@ class StyledButton extends StatelessWidget {
 
   Widget _getConstructiveButton(BuildContext context) {
     return ConstrainedBox(
-      constraints: const BoxConstraints(minWidth: 140),
+      constraints: const BoxConstraints(minWidth: 160),
       child: MaterialButton(
         onPressed: onPressed,
         color: Theme.of(context).primaryColor,
@@ -43,8 +43,8 @@ class StyledButton extends StatelessWidget {
   }
 
   Widget _getDestructiveButton(BuildContext context) {
-    return SizedBox(
-      width: 140,
+    return ConstrainedBox(
+      constraints: const BoxConstraints(minWidth: 160),
       child: OutlinedButton(
         onPressed: onPressed,
         style: OutlinedButton.styleFrom(

@@ -37,13 +37,16 @@ class _LobbyScreenState extends State<LobbyScreen> {
   @override
   void initState() {
     super.initState();
-
-    AppLifecycleManager.initState();
+    AppLifecycleManager.initState(
+      // FIXME: this runs when the app is killed, but the user is not removed.
+      onExit: () => _handleExitCleanup(),
+    );
   }
 
   @override
   void dispose() {
     AppLifecycleManager.I.dispose();
+    cubit.close();
     super.dispose();
   }
 
@@ -63,7 +66,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
           child: StreamBuilder(
             stream: cubit.roomStream,
             builder: (context, snapshot) {
-              // TODO: when users enter the room, updates saying this only appear on some devices.
+              // TODO: updates with new users only appear on some devices.
               final players = snapshot.data?.data()?.playerList;
               room = room.copyWith(playerList: players);
 
@@ -88,7 +91,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
           onPressed: () => _startGame(),
         ),
         Padding(
-          padding: const EdgeInsets.only(top: 15.0),
+          padding: const EdgeInsets.symmetric(vertical: 15.0),
           // TODO: fix button size in iOS
           child: StyledButton(
             text: "Leave room".i18n,
@@ -283,21 +286,26 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void _leaveRoom(BuildContext context) {
-    // TODO: find a way to leave / delete room if the last player closes the app without tapping leave room.
     try {
       cubit.leaveRoom();
-      final player = players.firstWhere(
-        (e) => e.keys.first == UserSettings.I.name,
-      );
-
-      players.remove(player);
-      if (_getPlayersOnlyList().isEmpty) {
-        cubit.deleteRoom();
-      }
+      _removePlayer();
     } catch (error) {
       Logger.room.error("Error trying to exit room: $error");
     } finally {
       cubit.backToMain(context);
+    }
+  }
+
+  void _removePlayer() {
+    final player = players.firstWhere(
+      (e) => e.keys.first == UserSettings.I.name,
+    );
+
+    players.remove(player);
+    print("### checking remaining players... ###");
+    if (_getPlayersOnlyList().isEmpty) {
+      print("### removing room... ###");
+      cubit.deleteRoom();
     }
   }
 
@@ -310,5 +318,13 @@ class _LobbyScreenState extends State<LobbyScreen> {
     playersOnly.remove("Player 4");
 
     return playersOnly;
+  }
+
+  void _handleExitCleanup() {
+    print("### leaving room... ###");
+    cubit.removePlayer();
+
+    print("### removing local player... ###");
+    _removePlayer();
   }
 }

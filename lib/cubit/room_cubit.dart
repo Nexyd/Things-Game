@@ -96,18 +96,24 @@ class RoomCubit extends Cubit<RoomState> {
       emit(RoomError(error: result.error!));
       return;
     }
-
-    emit(PlayerLeft(playerName: UserSettings.I.name));
   }
 
   Future<void> deleteRoom() async {
+    print("### disposing firestore controller... ###");
     controller?.dispose();
+
+    print("### removing from repo... ###");
     final result = await _repo.deleteRoom(_actualGame.id);
+
+    print("### repo result: $result ###");
     _actualGame = GameRoom.empty();
 
     if (result != null) {
+      print("### result error: $result ###");
       emit(RoomError(error: result));
     }
+
+    print("### room deleted ###");
   }
 
   void backToMain(BuildContext context) {
@@ -117,5 +123,22 @@ class RoomCubit extends Cubit<RoomState> {
         (route) => route.settings.name == "/main",
       );
     });
+  }
+
+  void removePlayer() {
+    print("### finding player... ###");
+    final userToRemove = _actualGame.playerList
+        .where((element) => element.name == UserSettings.I.name)
+        .toList();
+
+    print("### player: ${userToRemove.map((e) => e.name)} ###");
+    if (userToRemove.isNotEmpty) {
+      _actualGame.playerList.remove(userToRemove.first);
+    }
+
+    print("### getting player list... ###");
+    final playerList = _actualGame.playerList.map((e) => e.toJson()).toList();
+    print("### updating players to $playerList on id: ${_actualGame.id} ###");
+    _repo.removePlayer(_actualGame.id, playerList);
   }
 }

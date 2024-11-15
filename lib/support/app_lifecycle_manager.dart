@@ -8,14 +8,16 @@ class AppLifecycleManager {
   static AppLifecycleManager? _instance;
   static AppLifecycleManager get I => _instance!;
 
-  late final AppLifecycleListener _listener;
   final List<String> _states = <String>[];
+  late final AppLifecycleListener _listener;
   late AppLifecycleState? _state;
+  late Function()? _onExit;
 
-  static void initState() {
+  static void initState({required Function() onExit}) {
     if (_instance != null) return;
 
     _instance = AppLifecycleManager();
+    _instance!._onExit = onExit;
     _instance!._state = SchedulerBinding.instance.lifecycleState;
 
     _instance!._listener = AppLifecycleListener(
@@ -35,6 +37,7 @@ class AppLifecycleManager {
   void dispose() => _listener.dispose();
 
   void _handleStateChange(AppLifecycleState state) {
+    if (state == AppLifecycleState.detached) _onExit?.call();
     Logger.global.info('AppLifecycleState: ${state.name}');
   }
 }

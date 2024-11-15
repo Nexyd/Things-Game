@@ -65,7 +65,6 @@ class RoomRepository {
 
   Future<RoomRepoResponse> updatePlayers(
     String id,
-    // List<Player> playerList,
     List<Json> playerList,
   ) async =>
       _updateField(id, PLAYER_LIST, playerList);
@@ -93,30 +92,28 @@ class RoomRepository {
     return (id: result, error: error);
   }
 
-  // Future<RoomRepoResponse> _updateField(
-  //   String id,
-  //   String field,
-  //   dynamic value,
-  // ) async {
-  //   String? result;
-  //   String? error;
-  //
-  //   await _roomsDb
-  //       .doc(id)
-  //       .update({field: value})
-  //       .then((value) => result = "OK")
-  //       .catchError((error) => result = "Error: $error");
-  //
-  //   return (result: result, error: error);
-  // }
+  void removePlayer(String id, dynamic value) {
+    print("### removing player on firestore... ###");
+    print("### rooms db: $_roomsDb ###");
+    print("### rooms db doc: ${_roomsDb.doc(id)} ###");
+
+    // _roomsDb.doc(id).update({PLAYER_LIST: value});
+    final foo = _roomsDb.doc(id).update({PLAYER_LIST: value});
+    print("### rooms db update doc future: $foo ###");
+    foo.then((value) => print("### rooms db updated ###"));
+  }
 
   Future<String?> deleteRoom(String id) async {
     try {
+      print("### removing room from repo... ###");
       await _roomsDb.doc(id).delete();
+      print("### room removed ###");
     } catch (error) {
+      print("### error removing room ###");
       return "Error: $error";
     }
 
+    print("### delete room end ###");
     return null;
   }
 }

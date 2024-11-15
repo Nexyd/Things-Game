@@ -28,16 +28,3 @@ class RoomListLoaded extends RoomState {
 
   RoomListLoaded({required this.roomList});
 }
-
-class PlayerJoined extends RoomState {
-  final String playerName;
-  final Image? playerAvatar;
-
-  PlayerJoined({required this.playerName, this.playerAvatar});
-}
-
-class PlayerLeft extends RoomState {
-  final String playerName;
-
-  PlayerLeft({required this.playerName});
-}
