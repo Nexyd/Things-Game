@@ -171,19 +171,19 @@ class _UserSettingsScreenState extends State<UserSettingsScreen> {
   void _updateLanguage(String? language) {
     switch (language) {
       case "Spanish":
-        _saveLanguage("es_ES");
+        _saveLanguage(ESP_LANG);
         break;
 
       case "Español":
-        _saveLanguage("es_ES");
+        _saveLanguage(ESP_LANG);
         break;
 
       case "English":
-        _saveLanguage("en_GB");
+        _saveLanguage(ENG_LANG);
         break;
 
       case "Inglés":
-        _saveLanguage("en_GB");
+        _saveLanguage(ENG_LANG);
         break;
 
       default:

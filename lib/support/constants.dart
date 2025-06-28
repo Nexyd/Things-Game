@@ -1,5 +1,3 @@
-// ignore_for_file: constant_identifier_names
-
 // Shared Preferences Entries
 const String NAME = "things_game_name";
 const String AVATAR = "things_game_avatar";
@@ -12,6 +10,10 @@ const String LANGUAGE = "things_game_language";
 const String QUESTION_BOARD = "questionBoard";
 const String PLAYER_LIST = "playerList";
 const String ROOM_CONFIG = "config";
+
+// Translate Tags
+const String ESP_LANG = "es-ES";
+const String ENG_LANG = "en-GB";
 
 // Miscellaneous
 const double AVATAR_SIZE = 40;

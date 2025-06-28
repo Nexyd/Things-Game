@@ -1,5 +1,4 @@
-<manifest xmlns:android="http://schemas.android.com/apk/res/android"
-    package="com.nexyd.flutter.thingsgame">
+<manifest xmlns:android="http://schemas.android.com/apk/res/android">
    <application
         android:label="Things Game"
         android:name="${applicationName}"

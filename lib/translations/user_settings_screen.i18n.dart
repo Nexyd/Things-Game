@@ -1,42 +1,44 @@
 import 'package:i18n_extension/i18n_extension.dart';
 
+import '../support/constants.dart';
+
 extension Localization on String {
-  static final _t = Translations.byText("en_gb") +
+  static final _t = Translations.byText(ENG_LANG) +
       const {
-        "en_gb": "User settings",
-        "es_es": "Preferencias",
+        ENG_LANG: "User settings",
+        ESP_LANG: "Preferencias",
       } +
       {
-        "en_gb": "Name",
-        "es_es": "Nombre",
+        ENG_LANG: "Name",
+        ESP_LANG: "Nombre",
       } +
       {
-        "en_gb": "Avatar",
-        "es_es": "Avatar",
+        ENG_LANG: "Avatar",
+        ESP_LANG: "Avatar",
       } +
       {
-        "en_gb": "Primary color",
-        "es_es": "Color principal",
+        ENG_LANG: "Primary color",
+        ESP_LANG: "Color principal",
       } +
       {
-        "en_gb": "Text color",
-        "es_es": "Color de texto",
+        ENG_LANG: "Text color",
+        ESP_LANG: "Color de texto",
       } +
       {
-        "en_gb": "Background color",
-        "es_es": "Color de fondo",
+        ENG_LANG: "Background color",
+        ESP_LANG: "Color de fondo",
       } +
       {
-        "en_gb": "Language",
-        "es_es": "Idioma",
+        ENG_LANG: "Language",
+        ESP_LANG: "Idioma",
       } +
       {
-        "en_gb": "Spanish",
-        "es_es": "Español",
+        ENG_LANG: "Spanish",
+        ESP_LANG: "Español",
       } +
       {
-        "en_gb": "English",
-        "es_es": "Inglés",
+        ENG_LANG: "English",
+        ESP_LANG: "Inglés",
       };
 
   String get i18n => localize(this, _t);

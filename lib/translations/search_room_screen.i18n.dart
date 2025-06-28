@@ -1,26 +1,28 @@
 import 'package:i18n_extension/i18n_extension.dart';
 
+import '../support/constants.dart';
+
 extension Localization on String {
-  static final _t = Translations.byText("en_gb") +
+  static final _t = Translations.byText(ENG_LANG) +
       const {
-        "en_gb": "Search room",
-        "es_es": "Buscar sala",
+        ENG_LANG: "Search room",
+        ESP_LANG: "Buscar sala",
       } +
       {
-        "en_gb": "Room id",
-        "es_es": "Id de sala",
+        ENG_LANG: "Room id",
+        ESP_LANG: "Id de sala",
       } +
       {
-        "en_gb": "Open games",
-        "es_es": "Partidas abiertas",
+        ENG_LANG: "Open games",
+        ESP_LANG: "Partidas abiertas",
       } +
       {
-        "en_gb": "No games available",
-        "es_es": "No hay partidas disponibles",
+        ENG_LANG: "No games available",
+        ESP_LANG: "No hay partidas disponibles",
       } +
       {
-        "en_gb": "Retry",
-        "es_es": "Intentar de nuevo",
+        ENG_LANG: "Retry",
+        ESP_LANG: "Intentar de nuevo",
       };
 
   String get i18n => localize(this, _t);

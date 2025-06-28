@@ -117,9 +117,9 @@ class UserSettings {
 
   @override
   String toString() {
-    final hexPrimary = primaryColor.value.toRadixString(16);
-    final hexText = textColor.value.toRadixString(16);
-    final hexBackground = backgroundColor.value.toRadixString(16);
+    final hexPrimary = primaryColor.toARGB32().toRadixString(16);
+    final hexText = textColor.toARGB32().toRadixString(16);
+    final hexBackground = backgroundColor.toARGB32().toRadixString(16);
 
     return "{"
         "name: $name,"
@@ -128,6 +128,6 @@ class UserSettings {
         "textColor: #${hexText.toUpperCase()},"
         "backgroundColor: #${hexBackground.toUpperCase()},"
         "language: $language"
-        "}";
+      "}";
   }
 }

@@ -8,7 +8,7 @@ class AvatarIcon extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     const double size = 30;
-    String initial = "";
+    String initial = _getLanguageSpecificLetter();
 
     if (UserSettings.I.name.isNotEmpty) {
       initial = UserSettings.I.name.substring(0, 1);
