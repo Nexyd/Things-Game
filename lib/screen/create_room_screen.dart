@@ -30,6 +30,7 @@ class CreateRoomScreen extends StatelessWidget {
 
         return _getContent(context);
       },
+      // listenWhen: (prev, next) => next is RoomError || next is RoomCreated,
       listenWhen: (previous, current) {
         return current is RoomError || current is RoomCreated;
       },
@@ -50,7 +51,10 @@ class CreateRoomScreen extends StatelessWidget {
     return Scaffold(
       appBar: StyledAppBar("Create a room".i18n),
       backgroundColor: Theme.of(context).colorScheme.secondary,
-      body: RoomSettings(config: ConfigurationData(), formSubmittable: true),
+      body: RoomSettings(
+        config: ConfigurationData(),
+        formSubmittable: true,
+      ),
     );
   }
 }
