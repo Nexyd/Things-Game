@@ -62,18 +62,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       onPopInvokedWithResult: (didPop, result) => _leaveRoom(context),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: SafeArea(
-          child: StreamBuilder(
-            stream: cubit.roomStream,
-            builder: (context, snapshot) {
-              // TODO: updates with new users only appear on some devices.
-              final players = snapshot.data?.data()?.playerList;
-              room = room.copyWith(playerList: players);
-
-              return _getContent(context);
-            },
-          ),
-        ),
+        body: SafeArea(child: _getContent(context)),
       ),
     );
   }
@@ -81,11 +70,11 @@ class _LobbyScreenState extends State<LobbyScreen> {
   Widget _getContent(BuildContext context) {
     return Column(
       children: [
-        _getHeader(),
-        _getListView(context),
-        _getIndicatorBar(),
-        _getListTile("rounds"),
-        _getListTile("points"),
+        _buildHeader(),
+        _getStreamUpdates(context),
+        _buildIndicatorBar(),
+        _buildListTile("rounds"),
+        _buildListTile("points"),
         StyledButton(
           text: "Start/Ready".i18n,
           onPressed: () => _startGame(),
@@ -103,7 +92,20 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  Widget _getHeader() {
+  Widget _getStreamUpdates(BuildContext context) {
+    return StreamBuilder(
+      stream: cubit.roomStream,
+      builder: (context, snapshot) {
+        // TODO: updates with new users only appear on some devices.
+        final players = snapshot.data?.data()?.playerList;
+        room = room.copyWith(playerList: players);
+
+        return _buildListView(context);
+      },
+    );
+  }
+
+  Widget _buildHeader() {
     final title = "Lobby id".i18n;
     return Padding(
       padding: const EdgeInsets.only(top: 10.0, left: 20.0, right: 20.0),
@@ -121,14 +123,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
           ),
           Align(
             alignment: Alignment.centerRight,
-            child: _getConfigButton(context),
+            child: _buildConfigButton(context),
           ),
         ],
       ),
     );
   }
 
-  Widget _getConfigButton(BuildContext context) {
+  Widget _buildConfigButton(BuildContext context) {
     return InkWell(
       highlightColor: Colors.transparent,
       splashFactory: NoSplash.splashFactory,
@@ -141,12 +143,12 @@ class _LobbyScreenState extends State<LobbyScreen> {
       child: Container(
         width: 45,
         height: 45,
-        decoration: _getDecoration(context, "assets/config.png"),
+        decoration: _buildDecoration(context, "assets/config.png"),
       ),
     );
   }
 
-  Widget _getListView(BuildContext context) {
+  Widget _buildListView(BuildContext context) {
     players = List.generate(
       room.config.players,
       (index) {
@@ -155,8 +157,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
             : "Player ${index + 1}";
 
         final playerIcon = index < room.playerList.length
-            ? _getIcon(room.playerList[index].isReady)
-            : _getIcon();
+            ? _buildIcon(room.playerList[index].isReady)
+            : _buildIcon();
 
         return {playerName: playerIcon};
       },
@@ -197,7 +199,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  Widget _getIndicatorBar() {
+  Widget _buildIndicatorBar() {
     final width = MediaQuery.of(context).size.width / 100 * 90;
     return Center(
       child: Padding(
@@ -214,7 +216,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  Widget _getListTile(String tag) {
+  Widget _buildListTile(String tag) {
     String title = "";
     String value = "";
 
@@ -242,14 +244,14 @@ class _LobbyScreenState extends State<LobbyScreen> {
     );
   }
 
-  Widget _getIcon([bool isReady = false]) {
+  Widget _buildIcon([bool isReady = false]) {
     // TODO: update isReady on firestore
     return isReady
         ? const Icon(Icons.done, color: Colors.green)
         : const Icon(Icons.close, color: Colors.red);
   }
 
-  BoxDecoration _getDecoration(BuildContext context, String asset) {
+  BoxDecoration _buildDecoration(BuildContext context, String asset) {
     return BoxDecoration(
       image: DecorationImage(
         image: AssetImage(asset),
@@ -287,7 +289,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     final user = room.playerList[index];
     userToUpdate.update(
       UserSettings.I.name,
-      (value) => _getIcon(user.isReady),
+      (value) => _buildIcon(user.isReady),
     );
 
     cubit.updatePlayerReady(room.playerList);
