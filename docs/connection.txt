@@ -49,3 +49,9 @@ Alternativa #3:
 	- Stream API con NodeJS
 		- https://www.mongodb.com/docs/manual/changeStreams/
 	- Conectar app al API node
+
+
+
+Alternativa #4:
+Probar Redis??
+

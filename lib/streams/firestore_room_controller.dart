@@ -60,7 +60,15 @@ class FirestoreRoomController {
   ) async {
     try {
       Logger.firestore.info("Updating Firestore with local data...");
-      await ref.set(room);
+      // TODO: change 'set' to 'update' if the doc is created
+      //await ref.set(room);
+
+      try {
+        await ref.update(room.toJson());
+      } catch(error) {
+        Logger.firestore.warning("Document not found, creating...");
+        await ref.set(room);
+      }
 
       Logger.firestore.info("Firestore updated!");
     } catch (e) {

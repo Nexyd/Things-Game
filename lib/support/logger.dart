@@ -12,6 +12,7 @@ enum LoggerType {
   firestore,
   repository,
   prefs,
+  file,
 }
 
 class LoggerConfig {
@@ -44,6 +45,7 @@ final Map<LoggerType, Type> _types = {
   LoggerType.firestore: FirestoreLoggy,
   LoggerType.repository: RepositoryLoggy,
   LoggerType.prefs: SharedPrefsLoggy,
+  LoggerType.file: FileLoggy,
 };
 
 class Logger {
@@ -85,6 +87,7 @@ class Logger {
   static final Loggy repository = Loggy<RepositoryLoggy>('Repository');
   static final Loggy firestore = Loggy<FirestoreLoggy>('Firestore');
   static final Loggy prefs = Loggy<SettingsLoggy>('SharedPrefs');
+  static final Loggy file = Loggy<FileLoggy>('File');
 }
 
 class SettingsLoggy implements LoggyType {
@@ -125,4 +128,16 @@ class RepositoryLoggy implements LoggyType {
 class SharedPrefsLoggy implements LoggyType {
   @override
   Loggy<SharedPrefsLoggy> get loggy => Loggy<SharedPrefsLoggy>('SharedPrefs');
+}
+
+class FileLoggy implements LoggyType {
+  @override
+  Loggy<FileLoggy> get loggy => Loggy<FileLoggy>('File');
+}
+
+extension FileLogger on Loggy {
+  void printLog(String message) {
+    info(message);
+
+  }
 }
