@@ -1,4 +1,5 @@
 import 'package:loggy/loggy.dart';
+import 'package:things_game/support/file_writer.dart';
 
 enum LoggerLevel { debug, info, warning, error }
 
@@ -138,6 +139,6 @@ class FileLoggy implements LoggyType {
 extension FileLogger on Loggy {
   void printLog(String message) {
     info(message);
-
+    FileWriter.I.write(message);
   }
 }

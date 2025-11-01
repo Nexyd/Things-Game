@@ -14,8 +14,7 @@ class RoomCubit extends Cubit<RoomState> {
   final RoomRepository _repo = RoomRepository();
   FirestoreRoomController? controller;
 
-  Stream<DocumentSnapshot<GameRoom>>? get roomStream =>
-      controller?.roomRef.snapshots();
+  Stream<DocumentSnapshot<GameRoom>>? get roomStream => controller?.roomStream;
 
   RoomCubit() : super(RoomInitial());
 

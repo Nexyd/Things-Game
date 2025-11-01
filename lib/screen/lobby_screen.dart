@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -33,15 +34,31 @@ class _LobbyScreenState extends State<LobbyScreen> {
   GameRoom room = GameRoom.empty();
   List<Map<String, Widget>> players = [];
   List<String> playersReady = [];
+
   late RoomCubit cubit;
+  late final Stream<DocumentSnapshot<GameRoom>>? roomStream;
 
   @override
   void initState() {
     super.initState();
-    AppLifecycleManager.initState(
-      // FIXME: this runs when the app is killed, but the user is not removed.
-      onExit: () => _handleExitCleanup(),
-    );
+    // FIXME: this runs when the app is killed, but the user is not removed.
+    // AppLifecycleManager.initState(onExit: () => _handleExitCleanup());
+
+    cubit = BlocProvider.of<RoomCubit>(context);
+    if (room == GameRoom.empty()) {
+      room.id = widget.args.initialRoom.id;
+      room.config = widget.args.initialRoom.config;
+    }
+
+    // ✅ Guarda el stream una sola vez
+    roomStream = cubit.roomStream;
+
+    roomStream?.listen((snap) {
+      Logger.firestore.printLog(
+        'Device: ${UserSettings.I.name} => '
+        'update: ${snap.metadata.hasPendingWrites}, ${snap.data()?.playerList}',
+      );
+    });
   }
 
   @override
@@ -52,22 +69,17 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   @override
   Widget build(BuildContext context) {
-    cubit = BlocProvider.of<RoomCubit>(context);
-    if (room == GameRoom.empty()) {
-      room = widget.args.initialRoom;
-    }
-
     return PopScope(
       canPop: false,
       onPopInvokedWithResult: (didPop, result) => _leaveRoom(context),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
-        body: SafeArea(child: _getContent(context)),
+        body: SafeArea(child: _buildContent(context)),
       ),
     );
   }
 
-  Widget _getContent(BuildContext context) {
+  Widget _buildContent(BuildContext context) {
     return Column(
       children: [
         _buildHeader(),
@@ -94,12 +106,19 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   Widget _getStreamUpdates(BuildContext context) {
     return StreamBuilder(
-      stream: cubit.roomStream,
+      stream: roomStream,
       builder: (context, snapshot) {
         // TODO: updates with new users only appear on some devices.
-        final players = snapshot.data?.data()?.playerList;
-        room = room.copyWith(playerList: players);
+        Logger.firestore.printLog(
+          "actual players: ${room.playerList.map((element) => element.name)}",
+        );
 
+        final players = snapshot.data?.data()?.playerList;
+        Logger.firestore.printLog(
+          "new players: ${players?.map((element) => element.name)}",
+        );
+
+        room = room.copyWith(playerList: players);
         return _buildListView(context);
       },
     );
@@ -175,7 +194,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
       itemBuilder: (BuildContext context, int index) {
         final avatar = players[index].keys.first == UserSettings.I.name
             ? UserSettings.I.avatar
-            : AvatarIcon(letter: "P");
+            : AvatarIcon();
 
         return ListTile(
           leading: avatar,
@@ -335,11 +354,11 @@ class _LobbyScreenState extends State<LobbyScreen> {
     return playersOnly;
   }
 
-  void _handleExitCleanup() {
-    print("### leaving room... ###");
-    cubit.removePlayer();
-
-    print("### removing local player... ###");
-    _removePlayer();
-  }
+  // void _handleExitCleanup() {
+  //   print("### leaving room... ###");
+  //   cubit.removePlayer();
+  //
+  //   print("### removing local player... ###");
+  //   _removePlayer();
+  // }
 }

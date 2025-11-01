@@ -6,16 +6,8 @@ import 'package:things_game/support/logger.dart';
 
 class FirestoreRoomController {
   late final FirebaseFirestore _firestore;
-  GameRoom room;
-
-  late final roomRef = _firestore
-      .collection('rooms')
-      .doc(room.id)
-      .withConverter<GameRoom>(
-          fromFirestore: _convertFromRemote,
-          toFirestore: (room, options) => room.toJson());
-
   StreamSubscription? _roomLocalSubscription;
+  GameRoom room;
 
   FirestoreRoomController({required this.room}) {
     _firestore = FirebaseFirestore.instance;
@@ -31,6 +23,14 @@ class FirestoreRoomController {
     room = GameRoom.empty();
     Logger.firestore.info("Firestore disposed");
   }
+
+  DocumentReference<GameRoom> get roomRef =>
+      _firestore.collection('rooms').doc(room.id).withConverter<GameRoom>(
+            fromFirestore: _convertFromRemote,
+            toFirestore: (room, options) => room.toJson(),
+          );
+
+  Stream<DocumentSnapshot<GameRoom>> get roomStream => roomRef.snapshots();
 
   /// Takes the raw JSON snapshot coming from Firestore and attempts to
   /// convert it into a [GameRoom].
@@ -60,14 +60,13 @@ class FirestoreRoomController {
   ) async {
     try {
       Logger.firestore.info("Updating Firestore with local data...");
-      // TODO: change 'set' to 'update' if the doc is created
-      //await ref.set(room);
+      //await ref.set(room, SetOptions(merge: true));
 
       try {
         await ref.update(room.toJson());
-      } catch(error) {
+      } catch (error) {
         Logger.firestore.warning("Document not found, creating...");
-        await ref.set(room);
+        await ref.set(room, SetOptions(merge: true));
       }
 
       Logger.firestore.info("Firestore updated!");

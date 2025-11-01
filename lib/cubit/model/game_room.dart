@@ -101,7 +101,9 @@ class GameRoom with Streamable<GameRoom> {
   @override
   bool operator ==(Object other) {
     if (other is! GameRoom) return false;
-    return config == other.config && listEquals(playerList, other.playerList);
+    return id == other.id &&
+        config == other.config &&
+        listEquals(playerList, other.playerList);
   }
 
   @override

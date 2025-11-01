@@ -2,6 +2,7 @@ import 'dart:io';
 import 'package:path_provider/path_provider.dart';
 
 class FileWriter {
+  static FileWriter get I => FileWriter();
   Future<String> get _localPath async {
     final directory = await getApplicationDocumentsDirectory();
     return directory.path;
@@ -14,6 +15,6 @@ class FileWriter {
 
   Future<void> write(String msg) async {
     final file = await _localFile;
-    await file.writeAsString(msg);
+    await file.writeAsString("$msg\n");
   }
 }
