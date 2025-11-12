@@ -27,7 +27,7 @@ class _StyledTextState extends State<StyledSwitch> {
     final surfaceColor = Theme.of(context).colorScheme.surface;
     return Switch(
       value: _active!,
-      activeColor: Theme.of(context).primaryColor,
+      activeThumbColor: Theme.of(context).primaryColor,
       inactiveThumbColor: surfaceColor.shade(90),
       inactiveTrackColor: surfaceColor,
       onChanged: (value) {

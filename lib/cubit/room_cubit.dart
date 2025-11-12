@@ -72,12 +72,13 @@ class RoomCubit extends Cubit<RoomState> {
 
   Future<void> joinRoom(GameRoom selectedRoom) async {
     _actualGame = selectedRoom;
+    controller = FirestoreRoomController(room: _actualGame);
     _actualGame.playerList.add(Player(name: UserSettings.I.name));
+
     return _updatePlayers();
   }
 
   Future<void> leaveRoom() async {
-    // TODO: test with 2 or more devices
     final userToRemove = _actualGame.playerList
         .where((element) => element.name == UserSettings.I.name)
         .toList();
@@ -86,7 +87,8 @@ class RoomCubit extends Cubit<RoomState> {
       _actualGame.playerList.remove(userToRemove.first);
     }
 
-    return _updatePlayers();
+    await _updatePlayers();
+    _actualGame = GameRoom.empty();
   }
 
   Future<void> _updatePlayers() async {
@@ -100,21 +102,11 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> deleteRoom() async {
-    print("### disposing firestore controller... ###");
     controller?.dispose();
-
-    print("### removing from repo... ###");
     final result = await _repo.deleteRoom(_actualGame.id);
 
-    print("### repo result: $result ###");
     _actualGame = GameRoom.empty();
-
-    if (result != null) {
-      print("### result error: $result ###");
-      emit(RoomError(error: result));
-    }
-
-    print("### room deleted ###");
+    if (result != null) emit(RoomError(error: result));
   }
 
   void backToMain(BuildContext context) {
@@ -127,19 +119,15 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   void removePlayer() {
-    print("### finding player... ###");
     final userToRemove = _actualGame.playerList
         .where((element) => element.name == UserSettings.I.name)
         .toList();
 
-    print("### player: ${userToRemove.map((e) => e.name)} ###");
     if (userToRemove.isNotEmpty) {
       _actualGame.playerList.remove(userToRemove.first);
     }
 
-    print("### getting player list... ###");
     final playerList = _actualGame.playerList.map((e) => e.toJson()).toList();
-    print("### updating players to $playerList on id: ${_actualGame.id} ###");
     _repo.removePlayer(_actualGame.id, playerList);
   }
 }

@@ -77,9 +77,6 @@ class RoomRepository {
     String field,
     dynamic value,
   ) async {
-    // final remoteList = (getRooms() as RoomListResponse).rooms;
-    // print("### remoteList: $remoteList ###");
-
     String? result;
     String? error;
 
@@ -93,24 +90,16 @@ class RoomRepository {
   }
 
   void removePlayer(String id, dynamic value) {
-    print("### removing player on firestore... ###");
-    print("### rooms db: $_roomsDb ###");
-    print("### rooms db doc: ${_roomsDb.doc(id)} ###");
-
     _roomsDb.doc(id).update({PLAYER_LIST: value});
   }
 
   Future<String?> deleteRoom(String id) async {
     try {
-      print("### removing room from repo... ###");
       await _roomsDb.doc(id).delete();
-      print("### room removed ###");
     } catch (error) {
-      print("### error removing room ###");
       return "Error: $error";
     }
 
-    print("### delete room end ###");
     return null;
   }
 }

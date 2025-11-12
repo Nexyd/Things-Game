@@ -44,7 +44,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     // FIXME: this runs when the app is killed, but the user is not removed.
     // AppLifecycleManager.initState(onExit: () => _handleExitCleanup());
 
-    cubit = BlocProvider.of<RoomCubit>(context);
+    cubit = context.read<RoomCubit>();
     if (room == GameRoom.empty()) {
       room.id = widget.args.initialRoom.id;
       room.config = widget.args.initialRoom.config;
@@ -52,13 +52,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
     // ✅ Guarda el stream una sola vez
     roomStream = cubit.roomStream;
-
-    roomStream?.listen((snap) {
-      Logger.firestore.printLog(
-        'Device: ${UserSettings.I.name} => '
-        'update: ${snap.metadata.hasPendingWrites}, ${snap.data()?.playerList}',
-      );
-    });
   }
 
   @override
@@ -108,16 +101,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
     return StreamBuilder(
       stream: roomStream,
       builder: (context, snapshot) {
-        // TODO: updates with new users only appear on some devices.
-        Logger.firestore.printLog(
-          "actual players: ${room.playerList.map((element) => element.name)}",
-        );
-
         final players = snapshot.data?.data()?.playerList;
-        Logger.firestore.printLog(
-          "new players: ${players?.map((element) => element.name)}",
-        );
-
         room = room.copyWith(playerList: players);
         return _buildListView(context);
       },
@@ -354,11 +338,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
     return playersOnly;
   }
 
-  // void _handleExitCleanup() {
-  //   print("### leaving room... ###");
-  //   cubit.removePlayer();
-  //
-  //   print("### removing local player... ###");
-  //   _removePlayer();
-  // }
+// void _handleExitCleanup() {
+//   cubit.removePlayer();
+//   _removePlayer();
+// }
 }
