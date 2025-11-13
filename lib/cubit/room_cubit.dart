@@ -15,6 +15,8 @@ class RoomCubit extends Cubit<RoomState> {
   FirestoreRoomController? controller;
 
   Stream<DocumentSnapshot<GameRoom>>? get roomStream => controller?.roomStream;
+  // Stream<DocumentSnapshot<Map<String, dynamic>>>? get roomStream =>
+  //     controller?.roomRef.snapshots();
 
   RoomCubit() : super(RoomInitial());
 
@@ -79,23 +81,34 @@ class RoomCubit extends Cubit<RoomState> {
   }
 
   Future<void> leaveRoom() async {
+    print("### leaving room... ###");
     final userToRemove = _actualGame.playerList
         .where((element) => element.name == UserSettings.I.name)
         .toList();
 
+    print("### user to remove: ${userToRemove.map((e) => e.name)} ###");
     if (userToRemove.isNotEmpty) {
+      print("### actual player list: ${_actualGame.playerList.map((e) => e.name)} ###");
       _actualGame.playerList.remove(userToRemove.first);
+      print("### new player list: ${_actualGame.playerList.map((e) => e.name)} ###");
     }
 
+    print("### updating players... ###");
     await _updatePlayers();
     _actualGame = GameRoom.empty();
   }
 
   Future<void> _updatePlayers() async {
     final playerList = _actualGame.playerList.map((e) => e.toJson()).toList();
+    // TODO: player list should not be empty??
+
+    print("### updating players on repo... ###");
+    print("### player list to update: $playerList ###");
     final result = await _repo.updatePlayers(_actualGame.id, playerList);
+    print("### players repo result: ${result.toString()} ###");
 
     if (result.error != null) {
+      print("### emitting error: ${result.error} ###");
       emit(RoomError(error: result.error!));
       return;
     }
@@ -118,7 +131,7 @@ class RoomCubit extends Cubit<RoomState> {
     });
   }
 
-  void removePlayer() {
+  Future<void> removePlayer() async {
     final userToRemove = _actualGame.playerList
         .where((element) => element.name == UserSettings.I.name)
         .toList();
@@ -128,6 +141,6 @@ class RoomCubit extends Cubit<RoomState> {
     }
 
     final playerList = _actualGame.playerList.map((e) => e.toJson()).toList();
-    _repo.removePlayer(_actualGame.id, playerList);
+    await _repo.removePlayer(_actualGame.id, playerList);
   }
 }

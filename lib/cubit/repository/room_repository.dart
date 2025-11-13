@@ -89,8 +89,8 @@ class RoomRepository {
     return (id: result, error: error);
   }
 
-  void removePlayer(String id, dynamic value) {
-    _roomsDb.doc(id).update({PLAYER_LIST: value});
+  Future<void> removePlayer(String id, dynamic value) async {
+    await _roomsDb.doc(id).update({PLAYER_LIST: value});
   }
 
   Future<String?> deleteRoom(String id) async {

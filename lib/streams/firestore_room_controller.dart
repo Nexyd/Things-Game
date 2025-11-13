@@ -47,7 +47,7 @@ class FirestoreRoomController {
     try {
       return GameRoom.fromJson(data);
     } catch (e) {
-      throw FirestoreControllerException(
+      throw FirestoreRoomControllerException(
         'Failed to parse data from Firestore: $e',
       );
     }
@@ -71,18 +71,36 @@ class FirestoreRoomController {
 
       Logger.firestore.info("Firestore updated!");
     } catch (e) {
-      throw FirestoreControllerException(
+      throw FirestoreRoomControllerException(
         'Failed to update Firestore with local data (${room.toJson()}): $e',
       );
     }
   }
 }
 
-class FirestoreControllerException implements Exception {
+// class FirestoreRoomController {
+//   late final FirebaseFirestore _firestore;
+//   GameRoom room;
+//
+//   FirestoreRoomController({required this.room}) {
+//     _firestore = FirebaseFirestore.instance;
+//     Logger.firestore.info("Room controller initialized");
+//   }
+//
+//   void dispose() {
+//     room = GameRoom.empty();
+//     Logger.firestore.info("Room controller disposed");
+//   }
+//
+//   DocumentReference<Map<String, dynamic>> get roomRef =>
+//       _firestore.collection('rooms').doc(room.id);
+// }
+
+class FirestoreRoomControllerException implements Exception {
   final String message;
 
-  FirestoreControllerException(this.message);
+  FirestoreRoomControllerException(this.message);
 
   @override
-  String toString() => 'FirestoreControllerException: $message';
+  String toString() => 'FirestoreRoomControllerException: $message';
 }

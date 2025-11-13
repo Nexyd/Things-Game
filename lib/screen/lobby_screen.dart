@@ -4,7 +4,8 @@ import 'package:flutter/material.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:things_game/cubit/model/game_room.dart';
 import 'package:things_game/cubit/room_cubit.dart';
-import 'package:things_game/support/app_lifecycle_manager.dart';
+
+//import 'package:things_game/support/app_lifecycle_manager.dart';
 import 'package:things_game/support/logger.dart';
 import 'package:things_game/translations/lobby_screen.i18n.dart';
 import 'package:things_game/widget/avatar_icon.dart';
@@ -37,6 +38,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   late RoomCubit cubit;
   late final Stream<DocumentSnapshot<GameRoom>>? roomStream;
+  // late final Stream<DocumentSnapshot<Map<String, dynamic>>>? roomStream;
 
   @override
   void initState() {
@@ -56,7 +58,7 @@ class _LobbyScreenState extends State<LobbyScreen> {
 
   @override
   void dispose() {
-    AppLifecycleManager.I.dispose();
+    // AppLifecycleManager.I.dispose();
     super.dispose();
   }
 
@@ -64,7 +66,6 @@ class _LobbyScreenState extends State<LobbyScreen> {
   Widget build(BuildContext context) {
     return PopScope(
       canPop: false,
-      onPopInvokedWithResult: (didPop, result) => _leaveRoom(context),
       child: Scaffold(
         backgroundColor: Theme.of(context).colorScheme.secondary,
         body: SafeArea(child: _buildContent(context)),
@@ -73,28 +74,26 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   Widget _buildContent(BuildContext context) {
-    return Column(
-      children: [
-        _buildHeader(),
-        _getStreamUpdates(context),
-        _buildIndicatorBar(),
-        _buildListTile("rounds"),
-        _buildListTile("points"),
-        StyledButton(
-          text: "Start/Ready".i18n,
-          onPressed: () => _startGame(),
+    return Column(children: [
+      _buildHeader(),
+      _getStreamUpdates(context),
+      _buildIndicatorBar(),
+      _buildListTile("rounds"),
+      _buildListTile("points"),
+      StyledButton(
+        text: "Start/Ready".i18n,
+        onPressed: () => _startGame(),
+      ),
+      Padding(
+        padding: const EdgeInsets.symmetric(vertical: 15.0),
+        // TODO: fix button size in iOS
+        child: StyledButton(
+          text: "Leave room".i18n,
+          onPressed: () => _leaveRoom(context),
+          type: ButtonType.destructive,
         ),
-        Padding(
-          padding: const EdgeInsets.symmetric(vertical: 15.0),
-          // TODO: fix button size in iOS
-          child: StyledButton(
-            text: "Leave room".i18n,
-            onPressed: () => _leaveRoom(context),
-            type: ButtonType.destructive,
-          ),
-        ),
-      ],
-    );
+      ),
+    ]);
   }
 
   Widget _getStreamUpdates(BuildContext context) {
@@ -103,6 +102,13 @@ class _LobbyScreenState extends State<LobbyScreen> {
       builder: (context, snapshot) {
         final players = snapshot.data?.data()?.playerList;
         room = room.copyWith(playerList: players);
+
+        // final json = snapshot.data?.data();
+        // if (json != null) {
+        //   final players = GameRoom.fromJson(json).playerList;
+        //   room = room.copyWith(playerList: players);
+        // }
+
         return _buildListView(context);
       },
     );
@@ -304,6 +310,8 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void _leaveRoom(BuildContext context) {
+    // FIXME: if leaveRoom is triggered by the creator, the player list clears.
+
     try {
       cubit.leaveRoom();
       _removePlayer();
@@ -315,13 +323,17 @@ class _LobbyScreenState extends State<LobbyScreen> {
   }
 
   void _removePlayer() {
+    print("### remove player: ${players.map((e) => e.keys.first).toList()}");
     final player = players.firstWhere(
       (e) => e.keys.first == UserSettings.I.name,
     );
 
+    print("### removing player: $player");
     players.remove(player);
-    print("### checking remaining players... ###");
+    print("### players left: ${players.map((e) => e.keys.first).toList()}");
+
     if (_getPlayersOnlyList().isEmpty) {
+      Logger.room.info("deleting room...");
       print("### removing room... ###");
       cubit.deleteRoom();
     }
@@ -330,11 +342,13 @@ class _LobbyScreenState extends State<LobbyScreen> {
   List<String> _getPlayersOnlyList() {
     // TODO: test with 2 devices
     final playersOnly = players.map((e) => e.keys.first).toList();
+    print("### players list: $playersOnly");
     playersOnly.remove("Player 1");
     playersOnly.remove("Player 2");
     playersOnly.remove("Player 3");
     playersOnly.remove("Player 4");
 
+    print("### players list no placeholders: $playersOnly");
     return playersOnly;
   }
 
